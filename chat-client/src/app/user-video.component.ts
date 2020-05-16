@@ -37,4 +37,3 @@ export class UserVideoComponent {
         return JSON.parse(this.streamManager.stream.connection.data).clientData;
     }
 }
-

@@ -3,16 +3,16 @@ import { Component, HostListener, OnDestroy } from '@angular/core';
 import { OpenVidu, Publisher, Session, StreamEvent, StreamManager, Subscriber } from 'openvidu-browser';
 import { throwError as observableThrowError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { ServerService } from './services/server.service';
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  title = 'chat-client';
+export class AppComponent implements OnDestroy {
 
+  OPENVIDU_SERVER_URL = 'https://' + '192.168.99.100' + ':4443';
   OPENVIDU_SERVER_SECRET = 'MY_SECRET';
 
   // OpenVidu objects
@@ -29,8 +29,7 @@ export class AppComponent {
   // updated by click event in UserVideoComponent children
   mainStreamManager: StreamManager;
 
-  constructor(private httpClient: HttpClient,
-              private serverserivice:ServerService,) {
+  constructor(private httpClient: HttpClient) {
     this.generateParticipantInfo();
   }
 
@@ -143,6 +142,9 @@ export class AppComponent {
 
   updateMainStreamManager(streamManager: StreamManager) {
     this.mainStreamManager = streamManager;
+    if(this.session.forceDisconnect) {
+      streamManager.stream.connection;
+    }
   }
 
 
@@ -176,17 +178,17 @@ export class AppComponent {
           'Content-Type': 'application/json'
         })
       };
-      return this.httpClient.post(this.serverserivice.rootUrl + '/api/sessions', body, options)
+      return this.httpClient.post(this.OPENVIDU_SERVER_URL + '/api/sessions', body, options)
         .pipe(
           catchError(error => {
             if (error.status === 409) {
               resolve(sessionId);
             } else {
-              console.warn('No connection to OpenVidu Server. This may be a certificate error at ' + this.serverserivice.rootUrl);
-              if (window.confirm('No connection to OpenVidu Server. This may be a certificate error at \"' + this.serverserivice.rootUrl +
+              console.warn('No connection to OpenVidu Server. This may be a certificate error at ' + this.OPENVIDU_SERVER_URL);
+              if (window.confirm('No connection to OpenVidu Server. This may be a certificate error at \"' + this.OPENVIDU_SERVER_URL +
                 '\"\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server' +
-                'is up and running at "' + this.serverserivice.rootUrl + '"')) {
-                location.assign(this.serverserivice.rootUrl + '/accept-certificate');
+                'is up and running at "' + this.OPENVIDU_SERVER_URL + '"')) {
+                location.assign(this.OPENVIDU_SERVER_URL + '/accept-certificate');
               }
             }
             return observableThrowError(error);
@@ -209,7 +211,7 @@ export class AppComponent {
           'Content-Type': 'application/json'
         })
       };
-      return this.httpClient.post(this.serverserivice.rootUrl + '/api/tokens', body, options)
+      return this.httpClient.post(this.OPENVIDU_SERVER_URL + '/api/tokens', body, options)
         .pipe(
           catchError(error => {
             reject(error);

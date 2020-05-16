@@ -3,7 +3,7 @@
   "version": 1, 
   "newProjectRoot": "projects",
   "projects": {
-    "chat-client": {
+    "openvidu-insecure-angular": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/chat-client",
+            "outputPath": "dist/openvidu-insecure-angular",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -24,7 +24,6 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -63,18 +62,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "chat-client:build"
+            "browserTarget": "openvidu-insecure-angular:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "chat-client:build:production"
+              "browserTarget": "openvidu-insecure-angular:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "chat-client:build"
+            "browserTarget": "openvidu-insecure-angular:build"
           }
         },
         "test": {
@@ -111,15 +110,15 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "chat-client:serve"
+            "devServerTarget": "openvidu-insecure-angular:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "chat-client:serve:production"
+              "devServerTarget": "openvidu-insecure-angular:serve:production"
             }
           }
         }
       }
     }},
-  "defaultProject": "chat-client"
+  "defaultProject": "openvidu-insecure-angular"
 }
