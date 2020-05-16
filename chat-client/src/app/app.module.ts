@@ -5,16 +5,18 @@ import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { OpenviduSessionModule } from 'openvidu-angular';
+import { OpenViduVideoComponent } from './ov-video.component';
+import { UserVideoComponent } from './user-video.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    OpenViduVideoComponent,
+    UserVideoComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    OpenviduSessionModule,
+    AppRoutingModule,,
     HttpClientModule,
     FormsModule
   ],

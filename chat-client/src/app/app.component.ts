@@ -1,9 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Component, HostListener, OnDestroy } from '@angular/core';
+import { OpenVidu, Publisher, Session, StreamEvent, StreamManager, Subscriber } from 'openvidu-browser';
 import { throwError as observableThrowError } from 'rxjs';
-import { ServerService } from 'src/app/services/server.service';
 import { catchError } from 'rxjs/operators';
-import { HttpErrorResponse, HttpClient, HttpHeaders } from '@angular/common/http';
-import {OpenviduSessionComponent, StreamEvent, Session, UserModel, OpenViduLayout, OvSettings, OpenViduLayoutOptions, SessionDisconnectedEvent, Publisher} from 'openvidu-angular';
+import { ServerService } from './services/server.service';
 
 @Component({
   selector: 'app-root',
@@ -13,191 +13,186 @@ import {OpenviduSessionComponent, StreamEvent, Session, UserModel, OpenViduLayou
 export class AppComponent {
   title = 'chat-client';
 
+  OPENVIDU_SERVER_SECRET = 'MY_SECRET';
+
+  // OpenVidu objects
+  OV: OpenVidu;
+  session: Session;
+  publisher: StreamManager; // Local
+  subscribers: StreamManager[] = []; // Remotes
+
   // Join form
-  mySessionId = 'SessionA';
-  myUserName = 'Participant' + Math.floor(Math.random() * 100);
-  tokens: string[] = [];
-  session = false;
-  // JOIN form
+  mySessionId: string;
+  myUserName: string;
 
-  ovSession: Session;
-  ovLocalUsers: UserModel[];
-  ovLayout: OpenViduLayout;
-  ovLayoutOptions: OpenViduLayoutOptions;
+  // Main video of the page, will be 'publisher' or one of the 'subscribers',
+  // updated by click event in UserVideoComponent children
+  mainStreamManager: StreamManager;
 
-  @ViewChild('ovSessionComponent')
-  public ovSessionComponent: OpenviduSessionComponent;
-
-  constructor(private serverservice: ServerService,
-              private httpClient: HttpClient) {}
-
-  async joinSession() {
-    const token1 = await this.getToken();
-    const token2 = await this.getToken();
-    this.tokens.push(token1, token2);
-    this.session = true;
+  constructor(private httpClient: HttpClient,
+              private serverserivice:ServerService,) {
+    this.generateParticipantInfo();
   }
 
+  @HostListener('window:beforeunload')
+  beforeunloadHandler() {
+    // On window closed leave session
+    this.leaveSession();
+  }
 
-  // sessions
-  handlerSessionCreatedEvent(session: Session): void {
+  ngOnDestroy() {
+    // On component destroyed leave session
+    this.leaveSession();
+  }
 
-    // You can see the session documentation here
-    // https://docs.openvidu.io/en/stable/api/openvidu-browser/classes/session.html
+  joinSession() {
 
-    console.log('SESSION CREATED EVENT', session);
+    // --- 1) Get an OpenVidu object ---
 
-    session.on('streamCreated', (event: StreamEvent) => {
-      // Do something
+    this.OV = new OpenVidu();
+
+    // --- 2) Init a session ---
+
+    this.session = this.OV.initSession();
+
+    // --- 3) Specify the actions when events take place in the session ---
+
+    // On every new Stream received...
+    this.session.on('streamCreated', (event: StreamEvent) => {
+
+      // Subscribe to the Stream to receive it. Second parameter is undefined
+      // so OpenVidu doesn't create an HTML video by its own
+      let subscriber: Subscriber = this.session.subscribe(event.stream, undefined);
+      this.subscribers.push(subscriber);
     });
 
-    session.on('streamDestroyed', (event: StreamEvent) => {
-      // Do something
+    // On every Stream destroyed...
+    this.session.on('streamDestroyed', (event: StreamEvent) => {
+
+      // Remove the stream from 'subscribers' array
+      this.deleteSubscriber(event.stream.streamManager);
     });
 
-    session.on('sessionDisconnected', (event: SessionDisconnectedEvent) => {
-      this.session = false;
-      this.tokens = [];
+    // --- 4) Connect to the session with a valid user token ---
+
+    // 'getToken' method is simulating what your server-side should do.
+    // 'token' parameter should be retrieved and returned by your own backend
+    this.getToken().then(token => {
+
+      // First param is the token got from OpenVidu Server. Second param can be retrieved by every user on event
+      // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
+      this.session.connect(token, { clientData: this.myUserName })
+        .then(() => {
+
+          // --- 5) Get your own camera stream ---
+
+          // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
+          // element: we will manage it on our own) and with the desired properties
+          let publisher: Publisher = this.OV.initPublisher(undefined, {
+            audioSource: undefined, // The source of audio. If undefined default microphone
+            videoSource: undefined, // The source of video. If undefined default webcam
+            publishAudio: true,     // Whether you want to start publishing with your audio unmuted or not
+            publishVideo: true,     // Whether you want to start publishing with your video enabled or not
+            resolution: '640x480',  // The resolution of your video
+            frameRate: 30,          // The frame rate of your video
+            insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
+            mirror: false           // Whether to mirror your local video or not
+          });
+
+          // --- 6) Publish your stream ---
+
+          this.session.publish(publisher);
+
+          // Set the main video in the page to display our webcam and store our Publisher
+          this.mainStreamManager = publisher;
+          this.publisher = publisher;
+        })
+        .catch(error => {
+          console.log('There was an error connecting to the session:', error.code, error.message);
+        });
     });
-
-    this.myMethod();
-
-  }
-  // sessions
-
-  handlerPublisherCreatedEvent(publisher: Publisher) {
-
-    // You can see the publisher documentation here
-    // https://docs.openvidu.io/en/stable/api/openvidu-browser/classes/publisher.html
-
-    publisher.on('streamCreated', (e) => {
-      console.log('Publisher streamCreated', e);
-    });
-
   }
 
-  handlerErrorEvent(event): void {
-    // Do something
+  leaveSession() {
+
+    // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
+
+    if (this.session) { this.session.disconnect(); };
+
+    // Empty all properties...
+    this.subscribers = [];
+    delete this.publisher;
+    delete this.session;
+    delete this.OV;
+    this.generateParticipantInfo();
   }
 
-  myMethod() {
-    this.ovLocalUsers = this.ovSessionComponent.getLocalUsers();
-    this.ovLayout = this.ovSessionComponent.getOpenviduLayout();
-    this.ovLayoutOptions = this.ovSessionComponent.getOpenviduLayoutOptions();
+
+  private generateParticipantInfo() {
+    // Random user nickname and sessionId
+    this.mySessionId = 'SessionA';
+    this.myUserName = 'Participant' + Math.floor(Math.random() * 100);
   }
 
-  // getToken returns session and token
+  private deleteSubscriber(streamManager: StreamManager): void {
+    let index = this.subscribers.indexOf(streamManager, 0);
+    if (index > -1) {
+      this.subscribers.splice(index, 1);
+    }
+  }
+
+  updateMainStreamManager(streamManager: StreamManager) {
+    this.mainStreamManager = streamManager;
+  }
+
+
+
+  /**
+   * --------------------------
+   * SERVER-SIDE RESPONSIBILITY
+   * --------------------------
+   * This method retrieve the mandatory user token from OpenVidu Server,
+   * in this case making use Angular http API.
+   * This behavior MUST BE IN YOUR SERVER-SIDE IN PRODUCTION. In this case:
+   *   1) Initialize a session in OpenVidu Server	 (POST /api/sessions)
+   *   2) Generate a token in OpenVidu Server		   (POST /api/tokens)
+   *   3) The token must be consumed in Session.connect() method of OpenVidu Browser
+   */
+
   getToken(): Promise<string> {
-    return this.createSession(this.mySessionId).then((sessionId) => {
-      return this.createToken(sessionId);
-    });
+    return this.createSession(this.mySessionId).then(
+      sessionId => {
+        return this.createToken(sessionId);
+      })
   }
-  // myfunction   
-  // createSession(sessionId) {
-  //   return new Promise((resolve, reject) => {
-  //     return this.serverservice.createSession(sessionId)
-  //     .pipe(
-  //       catchError((error) => {
-  //         if (error.status === 409) {
-  //           resolve(sessionId);
-  //         } else {
-  //           console.warn('No connection to OpenVidu Server. This may be a certificate error at ' + this.serverservice.rootUrl);
-  //           if (
-  //             window.confirm(
-  //               'No connection to OpenVidu Server. This may be a certificate error at "' +
-  //                 this.serverservice.rootUrl +
-  //                 '"\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server' +
-  //                 'is up and running at "' +
-  //                 this.serverservice.rootUrl +
-  //                 '"',
-  //             )
-  //           ) {
-  //             location.assign(this.serverservice.rootUrl + '/accept-certificate');
-  //           }
-  //         }
-  //         return observableThrowError(error);
-  //       }),
-  //     )
-  //     .subscribe(
-  //       (response) => {
-  //         console.log(response);
-  //         resolve(response['id']);
-  //       },
-  //       (error) => {
-  //         console.log(error);
-  //       },
-  //     )
-  //   });
-  // }
-
-  // myfunction
-  // createToken(sessionId) {
-  //   return new Promise((resolve, reject) => {
-  //     return this.serverservice.createToken(sessionId)
-  //     .pipe(
-  //       catchError((error) => {
-  //         reject(error);
-  //         return observableThrowError(error);
-  //       }),
-  //     )
-  //     .subscribe(
-  //       (response) => {
-  //         console.log(response);
-  //         resolve(response['token']);
-  //       },
-  //       (error) => {
-  //         console.log(error);
-  //       },
-  //     )
-  //   });
-  // }
-
-  // test() {
-  //   this.serverservice.signUpUser()
-  //   .subscribe(
-  //     (response) => {
-  //       console.log(response);
-  //     },
-  //     (error:HttpErrorResponse) => {
-  //       console.log(error);
-  //     },
-  //   )
-  // }
 
   createSession(sessionId) {
     return new Promise((resolve, reject) => {
+
       const body = JSON.stringify({ customSessionId: sessionId });
       const options = {
         headers: new HttpHeaders({
-          Authorization: 'Basic ' + btoa('OPENVIDUAPP:' + 'MY_SECRET'),
-          'Content-Type': 'application/json',
-        }),
-      };  
-      return this.httpClient
-        .post(this.serverservice.rootUrl + '/api/sessions', body, options)
+          'Authorization': 'Basic ' + btoa('OPENVIDUAPP:' + this.OPENVIDU_SERVER_SECRET),
+          'Content-Type': 'application/json'
+        })
+      };
+      return this.httpClient.post(this.serverserivice.rootUrl + '/api/sessions', body, options)
         .pipe(
-          catchError((error) => {
+          catchError(error => {
             if (error.status === 409) {
               resolve(sessionId);
             } else {
-              console.warn('No connection to OpenVidu Server. This may be a certificate error at ' + this.serverservice.rootUrl);
-              if (
-                window.confirm(
-                  'No connection to OpenVidu Server. This may be a certificate error at "' +
-                    this.serverservice.rootUrl +
-                    '"\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server' +
-                    'is up and running at "' +
-                    this.serverservice.rootUrl +
-                    '"',
-                )
-              ) {
-                location.assign(this.serverservice.rootUrl + '/accept-certificate');
+              console.warn('No connection to OpenVidu Server. This may be a certificate error at ' + this.serverserivice.rootUrl);
+              if (window.confirm('No connection to OpenVidu Server. This may be a certificate error at \"' + this.serverserivice.rootUrl +
+                '\"\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server' +
+                'is up and running at "' + this.serverserivice.rootUrl + '"')) {
+                location.assign(this.serverserivice.rootUrl + '/accept-certificate');
               }
             }
             return observableThrowError(error);
-          }),
+          })
         )
-        .subscribe((response) => {
+        .subscribe(response => {
           console.log(response);
           resolve(response['id']);
         });
@@ -206,25 +201,26 @@ export class AppComponent {
 
   createToken(sessionId): Promise<string> {
     return new Promise((resolve, reject) => {
+
       const body = JSON.stringify({ session: sessionId });
       const options = {
         headers: new HttpHeaders({
-          Authorization: 'Basic ' + btoa('OPENVIDUAPP:' + 'MY_SECRET'),
-          'Content-Type': 'application/json',
-        }),
+          'Authorization': 'Basic ' + btoa('OPENVIDUAPP:' + this.OPENVIDU_SERVER_SECRET),
+          'Content-Type': 'application/json'
+        })
       };
-      return this.httpClient
-        .post(this.serverservice.rootUrl + '/api/tokens', body, options)
+      return this.httpClient.post(this.serverserivice.rootUrl + '/api/tokens', body, options)
         .pipe(
-          catchError((error) => {
+          catchError(error => {
             reject(error);
             return observableThrowError(error);
-          }),
+          })
         )
-        .subscribe((response) => {
+        .subscribe(response => {
           console.log(response);
           resolve(response['token']);
         });
     });
   }
+
 }
