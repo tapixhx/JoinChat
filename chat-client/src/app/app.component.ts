@@ -147,7 +147,8 @@ export class AppComponent implements OnDestroy {
     // console.log(this.tk);
     // console.log(connection);
     // console.log(this.session.forceDisconnect(connection) );
-    this.session.forceDisconnect(streamManager.stream.connection);
+    // this.session.forceDisconnect(streamManager.stream.connection);
+    this.session.forceUnpublish(streamManager.stream);
   }
 
 
