@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, HostListener, OnDestroy } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { OpenVidu, Publisher, Session, StreamEvent, StreamManager, Subscriber } from 'openvidu-browser';
 import { throwError as observableThrowError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -10,10 +10,13 @@ import { catchError } from 'rxjs/operators';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnDestroy, OnInit {
 
-  OPENVIDU_SERVER_URL = 'https://' + '192.168.99.100' + ':4443';
-  OPENVIDU_SERVER_SECRET = 'MY_SECRET';
+  // OPENVIDU_SERVER_URL = 'https://' + '192.168.99.100' + ':4443';
+  // OPENVIDU_SERVER_SECRET = 'MY_SECRET';
+
+  OPENVIDU_SERVER_URL = 'https://' + 'adimerk.studio' ;
+  OPENVIDU_SERVER_SECRET = 'qwerty@321';
 
   // OpenVidu objects
   OV: OpenVidu;
@@ -32,6 +35,13 @@ export class AppComponent implements OnDestroy {
 
   constructor(private httpClient: HttpClient) {
     this.generateParticipantInfo();
+  }
+
+  ngOnInit() {
+    // this.session.on('signal', (data)=>
+    // {
+    //   console.log(data);
+    // });
   }
 
   @HostListener('window:beforeunload')
@@ -73,6 +83,11 @@ export class AppComponent implements OnDestroy {
       this.deleteSubscriber(event.stream.streamManager);
     });
 
+    this.session.on('signal', (data)=>
+    {
+      console.log(data);
+    });
+
     // --- 4) Connect to the session with a valid user token ---
 
     // 'getToken' method is simulating what your server-side should do.
@@ -96,7 +111,7 @@ export class AppComponent implements OnDestroy {
             resolution: '640x480',  // The resolution of your video
             frameRate: 30,          // The frame rate of your video
             insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
-            mirror: false           // Whether to mirror your local video or not
+            mirror: true           // Whether to mirror your local video or not
           });
 
           // --- 6) Publish your stream ---
@@ -109,6 +124,7 @@ export class AppComponent implements OnDestroy {
         })
         .catch(error => {
           console.log('There was an error connecting to the session:', error.code, error.message);
+          console.log("1");
         });
     });
   }
@@ -147,8 +163,9 @@ export class AppComponent implements OnDestroy {
     // console.log(this.tk);
     // console.log(connection);
     // console.log(this.session.forceDisconnect(connection) );
-    // this.session.forceDisconnect(streamManager.stream.connection);
-    this.session.forceUnpublish(streamManager.stream);
+    this.session.forceDisconnect(streamManager.stream.connection);
+    
+    // this.session.forceUnpublish(streamManager.stream);
   }
 
 
@@ -200,6 +217,7 @@ export class AppComponent implements OnDestroy {
         )
         .subscribe(response => {
           console.log(response);
+          console.log("2");
           resolve(response['id']);
         });
     });
@@ -224,6 +242,7 @@ export class AppComponent implements OnDestroy {
         )
         .subscribe(response => {
           console.log(response);
+          console.log("3");
           resolve(response['token']);
           this.tk = response['token'];
         });

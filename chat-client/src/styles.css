@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
 html {
 	position: relative;
 	min-height: 100%;
@@ -7,14 +8,19 @@ nav {
 	height: 50px;
 	width: 100%;
 	z-index: 1;
-	background-color: #4d4d4d !important;
-	border-color: #4d4d4d !important;
+	background-color: #0b0c10 !important;
+	border-color: #0b0c10 !important;
 	border-top-right-radius: 0 !important;
 	border-top-left-radius: 0 !important;
 }
 
+body {
+	background-color: #1f2833;
+}
+
 .navbar-header {
 	width: 100%;
+	color:#c5c6c7;
 }
 
 .nav-icon {
@@ -88,18 +94,18 @@ input.btn {
 	bottom: 0;
 	width: 100%;
 	height: 60px;
-	background-color: #4d4d4d;
+	background-color: #0b0c10;
 }
 
 .footer .text-muted {
 	margin: 20px 0;
-	float: left;
+	float: right;
 	color: #ccc;
 }
 
 .openvidu-logo {
 	height: 35px;
-	float: right;
+	float: left;
 	margin: 12px 0;
 	-webkit-transition: all 0.1s ease-in-out;
 	-moz-transition: all 0.1s ease-in-out;
