@@ -1,19 +1,19 @@
 <div id="main-container" class="container">
-	<div *ngIf="!session" id="join">
+	<div *ngIf="!session" style="background-color: #1f2833;" id="join">
 		<div id="img-div"><img src="../assets/images/jc-logo.png" /></div>
-		<div id="join-dialog" class="jumbotron vertical-center">
-			<h1>Join a video session</h1>
+		<div id="join-dialog" class="jumbotron join-box vertical-center">
+			<h1 class="box-head">Join a video session</h1>
 			<form class="form-group" (submit)="joinSession()">
 				<p>
-					<label>Participant</label>
-					<input class="form-control" type="text" id="userName" name="userName" [(ngModel)]="myUserName" required>
+					<label style="color:#c5c6c7;">Participant</label>
+					<input class="form-control form-int" type="text" id="userName" name="userName" [(ngModel)]="myUserName" required>
 				</p>
 				<p>
-					<label>Session</label>
-					<input class="form-control" type="text" id="sessionId" name="sessionId" [(ngModel)]="mySessionId" required>
+					<label style="color:#c5c6c7;">Session</label>
+					<input class="form-control form-int" type="text" id="sessionId" name="sessionId" [(ngModel)]="mySessionId" required>
 				</p>
 				<p class="text-center">
-					<input class="btn btn-lg btn-success" type="submit" name="commit" value="Join!">
+					<input class="join-btn" type="submit" name="commit" value="Join!">
 				</p>
 			</form>
 		</div>
@@ -21,8 +21,10 @@
 
 	<div *ngIf="session" id="session">
 		<div id="session-header">
-			<h1 id="session-title">{{mySessionId}}</h1>
-			<input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" (click)="leaveSession()" value="Leave session">
+			<h1 id="session-title" class="box-head">{{mySessionId}}</h1>
+			<input class="join-btn" type="button" id="buttonLeaveSession" (click)="leaveSession()" value="Leave session">
+			<input class="join-btn" type="button" value="Video Off">
+			<input class="join-btn" type="button" value="Mute">
 		</div>
 		<div *ngIf="mainStreamManager" id="main-video" class="col-md-6">
 			<user-video [streamManager]="mainStreamManager"></user-video>
@@ -33,6 +35,7 @@
 			</div>
 			<div *ngFor="let sub of subscribers" class="stream-container col-md-6 col-xs-6">
 				<user-video [streamManager]="sub" (click)="updateMainStreamManager(sub)"></user-video>
+				<!-- <button (click)="updateMainStreamManager(sub)" class="btn btn-primary">leave</button> -->
 			</div>
 		</div>
 	</div>

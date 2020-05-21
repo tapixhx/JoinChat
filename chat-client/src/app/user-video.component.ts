@@ -12,20 +12,22 @@ import { StreamManager } from 'openvidu-browser';
         }
         div div {
             position: absolute;
-            background: #f8f8f8;
+            background: rgb(11,12,16,0.5);
             padding-left: 5px;
             padding-right: 5px;
-            color: #777777;
+            color: #66fcf1;
             font-weight: bold;
             border-bottom-right-radius: 4px;
         }
         p {
             margin: 0;
+            background-color: rgb(11,12,16,0.5) !important;
+            color: #66fcf1 !important;
         }`],
     template: `
         <div>
             <ov-video [streamManager]="streamManager"></ov-video>
-            <div><p>{{getNicknameTag()}}</p></div>
+            <div class="name"><p>{{getNicknameTag()}}</p></div>
         </div>`
 })
 export class UserVideoComponent {
