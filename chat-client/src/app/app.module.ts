@@ -6,12 +6,20 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { UserVideoComponent } from './user-video.component';
 import { OpenViduVideoComponent } from './ov-video.component';
+import { HomeComponent } from './home/home.component';
+import { RoomComponent } from './room/room.component';
+import { LoginComponent } from './auth/login/login.component';
+import { SignupComponent } from './auth/signup/signup.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserVideoComponent,
-    OpenViduVideoComponent
+    OpenViduVideoComponent,
+    HomeComponent,
+    RoomComponent,
+    LoginComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
