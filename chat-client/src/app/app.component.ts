@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { OpenVidu, Publisher, Session, StreamEvent, StreamManager, Subscriber } from 'openvidu-browser';
-import { throwError as observableThrowError } from 'rxjs';
+import { throwError as observableThrowError, Subscription } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { ChangeService } from './services/change.service';
 
 
 @Component({
@@ -14,6 +15,8 @@ export class AppComponent implements OnDestroy, OnInit {
 
   // OPENVIDU_SERVER_URL = 'https://' + '192.168.99.100' + ':4443';
   // OPENVIDU_SERVER_SECRET = 'MY_SECRET';
+  videoSubscription:Subscription;
+  audioSubscription:Subscription;
 
   OPENVIDU_SERVER_URL = 'https://' + 'adimerk.studio' ;
   OPENVIDU_SERVER_SECRET = 'qwerty@321';
@@ -21,28 +24,30 @@ export class AppComponent implements OnDestroy, OnInit {
   // OpenVidu objects
   OV: OpenVidu;
   session: Session;
-  publisher: StreamManager; // Local
+  publisher: any; // Local
   subscribers: StreamManager[] = []; // Remotes
 
   // Join form
   mySessionId: string;
   myUserName: string;
   tk:any;
-
+  pub=true
+   publishvideo=false;
+   publishaudio=true;
+   exp:any;
   // Main video of the page, will be 'publisher' or one of the 'subscribers',
   // updated by click event in UserVideoComponent children
   mainStreamManager: StreamManager;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,private ChangeService:ChangeService) {
     this.generateParticipantInfo();
   }
 
   ngOnInit() {
-    // this.session.on('signal', (data)=>
-    // {
-    //   console.log(data);
-    // });
+  
   }
+ 
+ 
 
   @HostListener('window:beforeunload')
   beforeunloadHandler() {
@@ -64,6 +69,7 @@ export class AppComponent implements OnDestroy, OnInit {
     // --- 2) Init a session ---
 
     this.session = this.OV.initSession();
+    
 
     // --- 3) Specify the actions when events take place in the session ---
 
@@ -106,7 +112,7 @@ export class AppComponent implements OnDestroy, OnInit {
           let publisher: Publisher = this.OV.initPublisher(undefined, {
             audioSource: undefined, // The source of audio. If undefined default microphone
             videoSource: undefined, // The source of video. If undefined default webcam
-            publishAudio: true,     // Whether you want to start publishing with your audio unmuted or not
+            publishAudio: true ,     // Whether you want to start publishing with your audio unmuted or not
             publishVideo: true,     // Whether you want to start publishing with your video enabled or not
             resolution: '640x480',  // The resolution of your video
             frameRate: 30,          // The frame rate of your video
@@ -117,6 +123,7 @@ export class AppComponent implements OnDestroy, OnInit {
           // --- 6) Publish your stream ---
 
           this.session.publish(publisher);
+         
 
           // Set the main video in the page to display our webcam and store our Publisher
           this.mainStreamManager = publisher;
@@ -158,17 +165,33 @@ export class AppComponent implements OnDestroy, OnInit {
   }
 
   updateMainStreamManager(streamManager: StreamManager) {
-    // this.mainStreamManager = streamManager;
+    this.mainStreamManager = streamManager;
     // streamManager.stream.getMediaStream().id;
     // console.log(this.tk);
     // console.log(connection);
     // console.log(this.session.forceDisconnect(connection) );
-    this.session.forceDisconnect(streamManager.stream.connection);
     
     // this.session.forceUnpublish(streamManager.stream);
   }
 
+  disconnect(streamManager: StreamManager)
+  {
+    this.session.forceDisconnect(streamManager.stream.connection);
+     
+  }
+  unpublish(streamManager: any)
+  {   
+      this.session.forceUnpublish(streamManager.stream)
+      this.exp = streamManager
+    
+    
 
+  }
+  publishers()
+  {
+     this.session.unpublish(this.publisher)
+  }
+  
 
   /**
    * --------------------------
@@ -247,6 +270,7 @@ export class AppComponent implements OnDestroy, OnInit {
           this.tk = response['token'];
         });
     });
+
   }
 
 }

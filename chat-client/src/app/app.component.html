@@ -23,8 +23,8 @@
 		<div id="session-header">
 			<h1 id="session-title" class="box-head">{{mySessionId}}</h1>
 			<input class="join-btn" type="button" id="buttonLeaveSession" (click)="leaveSession()" value="Leave session">
-			<input class="join-btn" type="button" value="Video Off">
-			<input class="join-btn" type="button" value="Mute">
+			<input class="join-btn" type="button" (click)="video()" value="Video Off">
+			<input class="join-btn" type="button" (click)="audio()" value="Mute">
 		</div>
 		<div *ngIf="mainStreamManager" id="main-video" class="col-md-6">
 			<user-video [streamManager]="mainStreamManager"></user-video>
@@ -35,8 +35,18 @@
 			</div>
 			<div *ngFor="let sub of subscribers" class="stream-container col-md-6 col-xs-6">
 				<user-video [streamManager]="sub" (click)="updateMainStreamManager(sub)"></user-video>
-				<!-- <button (click)="updateMainStreamManager(sub)" class="btn btn-primary">leave</button> -->
+				<div class="row">
+			     <div class="col-xs-6">		
+				<button (click)="disconnect(sub)" class="btn btn-primary">x</button>
+				</div>
+				<div class="col-xs-6">
+				<button (click)="unpublish(sub)" class="btn btn-primary">unpublish</button>
+				</div>
+				</div>
+
 			</div>
+			<button (click)="publishers()" class="btn btn-primary">publisher</button>
+			
 		</div>
 	</div>
 </div>
