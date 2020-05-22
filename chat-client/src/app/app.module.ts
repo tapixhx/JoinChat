@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { RoomComponent } from './room/room.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
+import { ChangeService } from './services/change.service';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,7 @@ import { SignupComponent } from './auth/signup/signup.component';
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [ChangeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
