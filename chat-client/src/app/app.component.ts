@@ -47,9 +47,7 @@ export class AppComponent implements OnDestroy, OnInit {
   
   }
  
-  audio()
-  {     
-  }
+ 
 
   @HostListener('window:beforeunload')
   beforeunloadHandler() {
