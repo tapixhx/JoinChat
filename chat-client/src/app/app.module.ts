@@ -11,6 +11,8 @@ import { RoomComponent } from './room/room.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { ChangeService } from './services/change.service';
+import { AppRoutingModule } from './app-routing.model';
+import { ChatComponent } from './chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -20,12 +22,15 @@ import { ChangeService } from './services/change.service';
     HomeComponent,
     RoomComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    AppRoutingModule,
+
   ],
   providers: [ChangeService],
   bootstrap: [AppComponent]
