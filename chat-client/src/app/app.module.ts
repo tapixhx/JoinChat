@@ -11,8 +11,10 @@ import { RoomComponent } from './room/room.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { ChangeService } from './services/change.service';
-import { AppRoutingModule } from './app-routing.model';
+import { AppRoutingModule } from './app-routing.module';
 import { ChatComponent } from './chat/chat.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { ChatComponent } from './chat/chat.component';
     RoomComponent,
     LoginComponent,
     SignupComponent,
-    ChatComponent
+    ChatComponent,
+    NavbarComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

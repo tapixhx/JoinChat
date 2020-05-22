@@ -1,0 +1,35 @@
+nav {
+	height: 50px;
+	width: 100%;
+	z-index: 1;
+	background-color: #0b0c10 !important;
+	border-color: #0b0c10 !important;
+	border-top-right-radius: 0 !important;
+	border-top-left-radius: 0 !important;
+}
+.navbar-header {
+	width: 100%;
+	color:#c5c6c7;
+}
+
+.nav-icon {
+	padding: 5px 15px 5px 15px;
+	float: right;
+}
+
+nav a {
+	color: #ccc !important;
+}
+
+nav i.fa {
+	font-size: 40px;
+	color: #ccc;
+}
+
+nav a:hover {
+	color: #a9a9a9 !important;
+}
+
+nav i.fa:hover {
+	color: #a9a9a9;
+}

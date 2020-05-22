@@ -9,7 +9,7 @@ import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-
+  title = 'chat-client';
  
 
   ngOnInit() {
