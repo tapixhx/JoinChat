@@ -41,14 +41,15 @@
 			</div>
 			<div *ngFor="let sub of subscribers" class="stream-container col-md-6 col-xs-6">
 				<user-video [streamManager]="sub" (click)="updateMainStreamManager(sub)"></user-video>
-				<div class="row">
+				<!-- <div class="row">
 			     <div class="col-xs-6">		
 				<button (click)="disconnect(sub)" class="btn btn-primary">x</button>
 				</div>
 				<div class="col-xs-6">
 				<button (click)="unpublish(sub)" class="btn btn-primary">unpublish</button>
 				</div>
-				</div>
+				</div> -->
+				
 
 			</div>
 			
