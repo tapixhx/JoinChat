@@ -1,0 +1,32 @@
+.stream-container {
+	padding: 0;
+}
+.join-box {
+	font-family: 'Raleway', sans-serif;
+	background-color: transparent;
+}
+.box-head {
+	color:#c5c6c7 !important;
+	font-family: 'Raleway', sans-serif;
+}
+.form-int {
+	background-color:transparent;
+	border:1.5px solid #66fcf1;
+	border-radius:0px;
+	color:#c5c6c7;
+}
+.join-btn {
+	border:1.5px solid #66fcf1;
+	background-color:transparent;
+	color:#66fcf1;
+	padding:.4rem 4rem;
+	margin-left:5rem;
+}
+.join-btn:hover {
+	background-color:#66fcf1;
+	color:#0b0c10;
+	transition:.4s all ease-in-out;
+}
+.join-btn:focus {
+	outline:none;
+}
