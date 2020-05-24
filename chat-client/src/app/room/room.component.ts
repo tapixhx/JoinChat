@@ -1,9 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { OpenVidu, Publisher, Session, StreamEvent, StreamManager, Subscriber } from 'openvidu-browser';
+import { OpenVidu, Publisher, Session, StreamEvent, StreamManager, Subscriber, Connection } from 'openvidu-browser';
 import { throwError as observableThrowError, Subscription } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ActivatedRoute, Params } from '@angular/router';
+import { NgForm } from '@angular/forms';
+import { ChangeService } from '../services/chat.service';
+import { messages } from '../shared/message.model';
 
 
 @Component({
@@ -29,7 +32,8 @@ export class RoomComponent implements OnInit,OnDestroy {
   session: Session;
   publisher: any; // Local
   subscribers: StreamManager[] = []; // Remotes
-
+  connection: Connection[] = [];
+  show=false;
   // Join form
   mySessionId: string;
   myUserName: string;
@@ -45,9 +49,10 @@ export class RoomComponent implements OnInit,OnDestroy {
   // my_var
   audioOn=true;
   videoOn=true;
-  // my_var
+   messages:messages[];
+   messageSubscription:Subscription
 
-  constructor(private httpClient: HttpClient, private Router:ActivatedRoute) {
+  constructor(private httpClient: HttpClient, private Router:ActivatedRoute,private chatService:ChangeService) {
     this.generateParticipantInfo();
   }
   ngOnInit()
@@ -58,6 +63,11 @@ export class RoomComponent implements OnInit,OnDestroy {
         this.mySessionId = params.id;
 
       })
+      this.messageSubscription =this.chatService.messageChanged
+      .subscribe((messages)=>{
+        this.messages = messages
+        console.log(messages)
+      }) 
   }
 
   @HostListener('window:beforeunload')
@@ -81,7 +91,15 @@ export class RoomComponent implements OnInit,OnDestroy {
 
     this.session = this.OV.initSession();
     
-
+    this.session.on('reconnecting', () => alert('Oops! Trying to reconnect to the session'));
+    this.session.on('reconnected', () => alert('Hurray! You successfully reconnected to the session'));
+    this.session.on('sessionDisconnected', (event:any) => {
+        if (event.reason === 'networkDisconnect') {
+            alert('Dang-it... You lost your connection to the session');
+        } else {
+            // Disconnected from the session for other reason than a network drop
+        }
+    });
     // --- 3) Specify the actions when events take place in the session ---
 
     // On every new Stream received...
@@ -91,6 +109,7 @@ export class RoomComponent implements OnInit,OnDestroy {
       // so OpenVidu doesn't create an HTML video by its own
       let subscriber: Subscriber = this.session.subscribe(event.stream, undefined);
       this.subscribers.push(subscriber);
+      this.connection.push(subscriber.stream.connection);
     });
 
     // On every Stream destroyed...
@@ -100,9 +119,12 @@ export class RoomComponent implements OnInit,OnDestroy {
       this.deleteSubscriber(event.stream.streamManager);
     });
 
-    this.session.on('signal', (data)=>
-    {
-      console.log(data);
+    this.session.on('signal', (data:any)=>
+     {  const clientData = JSON.parse(data.from.data) 
+      const messages:messages = {'name':clientData.clientData ,'message':data.data}
+      this.chatService.addmessage(messages)
+      
+
     });
 
     // --- 4) Connect to the session with a valid user token ---
@@ -147,206 +169,7 @@ export class RoomComponent implements OnInit,OnDestroy {
     });
   }
 
-
-  audioOff() {
-    if(this.videoOn) {
-      this.session.unpublish(this.publisher);
-      let publisher: Publisher = this.OV.initPublisher(undefined, {
-        audioSource: undefined, // The source of audio. If undefined default microphone
-        videoSource: undefined, // The source of video. If undefined default webcam
-        publishAudio: false ,     // Whether you want to start publishing with your audio unmuted or not
-        publishVideo: true,     // Whether you want to start publishing with your video enabled or not
-        resolution: '640x480',  // The resolution of your video
-        frameRate: 30,          // The frame rate of your video
-        insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
-        mirror: true           // Whether to mirror your local video or not
-      });
-      // console.log(this.publisher.publishVideo);
-      // console.log(this.publisher);
-      this.session.publish(publisher);
-      this.audioOn=false;
-      this.videoOn=true;
-      this.mainStreamManager=publisher;
-      this.publisher=publisher;
-      console.log(this.audioOn);
-      console.log(this.videoOn);
-      console.log("if");
-    }
-    else {
-      this.session.unpublish(this.publisher);
-      let publisher: Publisher = this.OV.initPublisher(undefined, {
-        audioSource: undefined, // The source of audio. If undefined default microphone
-        videoSource: undefined, // The source of video. If undefined default webcam
-        publishAudio: false ,     // Whether you want to start publishing with your audio unmuted or not
-        publishVideo: false,     // Whether you want to start publishing with your video enabled or not
-        resolution: '640x480',  // The resolution of your video
-        frameRate: 30,          // The frame rate of your video
-        insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
-        mirror: true           // Whether to mirror your local video or not
-      });
-      // console.log(this.publisher.publishVideo);
-      // console.log(this.publisher);
-      this.session.publish(publisher);
-      this.audioOn=false;
-      this.videoOn=false;
-      this.mainStreamManager=publisher;
-      this.publisher=publisher;
-      console.log(this.audioOn);
-      console.log(this.videoOn);
-      console.log("else");
-    }
-  }
-  audioon() {
-    if(this.videoOn) {
-      this.session.unpublish(this.publisher);
-      let publisher: Publisher = this.OV.initPublisher(undefined, {
-        audioSource: undefined, // The source of audio. If undefined default microphone
-        videoSource: undefined, // The source of video. If undefined default webcam
-        publishAudio: true ,     // Whether you want to start publishing with your audio unmuted or not
-        publishVideo: true,     // Whether you want to start publishing with your video enabled or not
-        resolution: '640x480',  // The resolution of your video
-        frameRate: 30,          // The frame rate of your video
-        insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
-        mirror: true           // Whether to mirror your local video or not
-      });
-      // console.log(this.publisher.publishVideo);
-      // console.log(this.publisher);
-      this.session.publish(publisher);
-      this.audioOn=true;
-      this.videoOn=true;
-      this.mainStreamManager=publisher;
-      this.publisher=publisher;
-      console.log(this.audioOn);
-      console.log(this.videoOn);
-      console.log("if");
-    }
-    else {
-      this.session.unpublish(this.publisher);
-      let publisher: Publisher = this.OV.initPublisher(undefined, {
-        audioSource: undefined, // The source of audio. If undefined default microphone
-        videoSource: undefined, // The source of video. If undefined default webcam
-        publishAudio: true ,     // Whether you want to start publishing with your audio unmuted or not
-        publishVideo: false,     // Whether you want to start publishing with your video enabled or not
-        resolution: '640x480',  // The resolution of your video
-        frameRate: 30,          // The frame rate of your video
-        insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
-        mirror: true           // Whether to mirror your local video or not
-      });
-      // console.log(this.publisher.publishVideo);
-      // console.log(this.publisher);
-      this.session.publish(publisher);
-      this.audioOn=true;
-      this.videoOn=false;
-      this.mainStreamManager=publisher;
-      this.publisher=publisher;
-      console.log(this.audioOn);
-      console.log(this.videoOn);
-      console.log("else");
-    }
-  }
-
-
-  videoOff() {
-    if(this.audioOn) {
-      this.session.unpublish(this.publisher);
-      let publisher: Publisher = this.OV.initPublisher(undefined, {
-        audioSource: undefined, // The source of audio. If undefined default microphone
-        videoSource: undefined, // The source of video. If undefined default webcam
-        publishAudio: true ,     // Whether you want to start publishing with your audio unmuted or not
-        publishVideo: false,     // Whether you want to start publishing with your video enabled or not
-        resolution: '640x480',  // The resolution of your video
-        frameRate: 30,          // The frame rate of your video
-        insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
-        mirror: true           // Whether to mirror your local video or not
-      });
-      // console.log(this.publisher.publishVideo);
-      // console.log(this.publisher);
-      this.session.publish(publisher);
-      this.videoOn=false;
-      this.audioOn=true;
-      this.mainStreamManager=publisher;
-      this.publisher=publisher;
-      console.log(this.audioOn);
-      console.log(this.videoOn);
-      console.log("if");
-    }
-    else {
-      this.session.unpublish(this.publisher);
-      let publisher: Publisher = this.OV.initPublisher(undefined, {
-        audioSource: undefined, // The source of audio. If undefined default microphone
-        videoSource: undefined, // The source of video. If undefined default webcam
-        publishAudio: false ,     // Whether you want to start publishing with your audio unmuted or not
-        publishVideo: false,     // Whether you want to start publishing with your video enabled or not
-        resolution: '640x480',  // The resolution of your video
-        frameRate: 30,          // The frame rate of your video
-        insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
-        mirror: true           // Whether to mirror your local video or not
-      });
-      // console.log(this.publisher.publishVideo);
-      // console.log(this.publisher);
-      this.session.publish(publisher);
-      this.audioOn=false;
-      this.videoOn=false;
-      this.mainStreamManager=publisher;
-      this.publisher=publisher;
-      console.log(this.audioOn);
-      console.log(this.videoOn);
-      console.log("else");
-    }
-  }
-  videoon() {
-    if(this.audioOn) {
-      this.session.unpublish(this.publisher);
-      let publisher: Publisher = this.OV.initPublisher(undefined, {
-        audioSource: undefined, // The source of audio. If undefined default microphone
-        videoSource: undefined, // The source of video. If undefined default webcam
-        publishAudio: true ,     // Whether you want to start publishing with your audio unmuted or not
-        publishVideo: true,     // Whether you want to start publishing with your video enabled or not
-        resolution: '640x480',  // The resolution of your video
-        frameRate: 30,          // The frame rate of your video
-        insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
-        mirror: true           // Whether to mirror your local video or not
-      });
-      // console.log(this.publisher.publishVideo);
-      // console.log(this.publisher);
-      this.session.publish(publisher);
-      this.videoOn=true;
-      this.audioOn=true;
-      this.mainStreamManager=publisher;
-      this.publisher=publisher;
-      console.log(this.audioOn);
-      console.log(this.videoOn);
-      console.log("if");
-    }
-    else {
-      this.session.unpublish(this.publisher);
-      let publisher: Publisher = this.OV.initPublisher(undefined, {
-        audioSource: undefined, // The source of audio. If undefined default microphone
-        videoSource: undefined, // The source of video. If undefined default webcam
-        publishAudio: false ,     // Whether you want to start publishing with your audio unmuted or not
-        publishVideo: true,     // Whether you want to start publishing with your video enabled or not
-        resolution: '640x480',  // The resolution of your video
-        frameRate: 30,          // The frame rate of your video
-        insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
-        mirror: true           // Whether to mirror your local video or not
-      });
-      // console.log(this.publisher.publishVideo);
-      // console.log(this.publisher);
-      this.session.publish(publisher);
-      this.audioOn=false;
-      this.videoOn=true;
-      this.mainStreamManager=publisher;
-      this.publisher=publisher;
-      console.log(this.audioOn);
-      console.log(this.videoOn);
-      console.log("else");
-    }
-  }
-
-
-
-
-  leaveSession() {
+leaveSession() {
 
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
@@ -480,13 +303,54 @@ export class RoomComponent implements OnInit,OnDestroy {
 
   }
 
-  video()
-  {
-
+  
+  onSubmit(f:NgForm)
+  {  
+    const data = f.value.chat
+    const mess:any = {"data":data, "to":this.connection}
+    const messages:messages = {"name":this.myUserName ,"message":f.value.chat}
+    this.session.signal(mess)
+    this.chatService.addmessage(messages)
+    f.reset()
+        
   }
-  audio()
+  chat()
   {
-
+    this.show=!this.show;
+    
+  }
+  videoon()
+  {
+    this.videoOn= true
+    this.change()
+  }
+  videoOff()
+  {
+    this.videoOn=false;
+    this.change()
+  }
+  audioon()
+  {
+    this.audioOn=true;
+    this.change()
+  }
+  audioOff()
+  {
+    this.audioOn=false;
+    this.change();
   }
 
+  change() {
+    this.initCamera({ video: this.videoOn, audio: this.audioOn });
+  }
+  
+  
+    initCamera(config:any) {
+    var browser = <any>navigator;
+
+    browser.getUserMedia = (browser.getUserMedia ||
+      browser.webkitGetUserMedia ||
+      browser.mozGetUserMedia ||
+      browser.msGetUserMedia);
+}
 }

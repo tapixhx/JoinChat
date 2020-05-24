@@ -31,6 +31,7 @@
 			<input class="join-btn" type="button" *ngIf="!videoOn" (click)="videoon()" value="Video On">
 			<input class="join-btn" *ngIf="audioOn" type="button" (click)="audioOff()" value="Mute">
 			<input class="join-btn" *ngIf="!audioOn" type="button" (click)="audioon()" value="Unmute"> -->
+			<button class="chat"(click)="chat()">click</button>
 		</div>
 		<div *ngIf="mainStreamManager" id="main-video" class="col-md-6">
 			<user-video [streamManager]="mainStreamManager"></user-video>
@@ -56,4 +57,26 @@
 			
 		</div>
 	</div>
+</div>
+<div class="text-box" [class.display]="show" [class.undisplay]="!show">
+
+ <div *ngFor="let message of messages">
+	 <div class="name">{{message.name}}</div>
+	 <div class="message">{{message.message}}</div>
+ </div>
+
+<form (ngSubmit)="onSubmit(f)" #f="ngForm">
+  <input type="email" 
+	id="email"
+	 name="chat"
+	 placeholder="email"
+	 pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" 
+	 class="form-control"
+	 ngModel
+	 required
+	 #email="ngModel"
+
+> 
+ <button type="submit">send</button>
+</form>
 </div>
