@@ -10,7 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { RoomComponent } from './room/room.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
-import { ChangeService } from './services/change.service';
+import { ChangeService } from './services/chat.service';
 import { AppRoutingModule } from './app-routing.module';
 import { ChatComponent } from './chat/chat.component';
 import { NavbarComponent } from './navbar/navbar.component';

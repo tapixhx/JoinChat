@@ -1,9 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { OpenVidu, Publisher, Session, StreamEvent, StreamManager, Subscriber } from 'openvidu-browser';
+import { OpenVidu, Publisher, Session, StreamEvent, StreamManager, Subscriber, Connection } from 'openvidu-browser';
 import { throwError as observableThrowError, Subscription } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ActivatedRoute, Params } from '@angular/router';
+import { NgForm } from '@angular/forms';
+import { ChangeService } from '../services/chat.service';
+import { messages } from '../shared/message.model';
 
 
 @Component({
@@ -29,13 +32,14 @@ export class RoomComponent implements OnInit,OnDestroy {
   session: Session;
   publisher: any; // Local
   subscribers: StreamManager[] = []; // Remotes
-
+  connection: Connection[] = [];
+  show=false;
   // Join form
   mySessionId: string;
   myUserName: string;
   tk:any;
   pub=true
-   publishvideo=false;
+   publishvideo=true;
    publishaudio=true;
    exp:any;
   // Main video of the page, will be 'publisher' or one of the 'subscribers',
@@ -45,9 +49,10 @@ export class RoomComponent implements OnInit,OnDestroy {
   // my_var
   audioOn=true;
   videoOn=true;
-  // my_var
+   messages:messages[];
+   messageSubscription:Subscription
 
-  constructor(private httpClient: HttpClient, private Router:ActivatedRoute) {
+  constructor(private httpClient: HttpClient, private Router:ActivatedRoute,private chatService:ChangeService) {
     this.generateParticipantInfo();
   }
   ngOnInit()
@@ -58,6 +63,11 @@ export class RoomComponent implements OnInit,OnDestroy {
         this.mySessionId = params.id;
 
       })
+      this.messageSubscription =this.chatService.messageChanged
+      .subscribe((messages)=>{
+        this.messages = messages
+        console.log(messages)
+      }) 
   }
 
   @HostListener('window:beforeunload')
@@ -80,8 +90,16 @@ export class RoomComponent implements OnInit,OnDestroy {
     // --- 2) Init a session ---
 
     this.session = this.OV.initSession();
-    
-
+   
+    this.session.on('reconnecting', () => alert('Oops! Trying to reconnect to the session'));
+    this.session.on('reconnected', () => alert('Hurray! You successfully reconnected to the session'));
+    this.session.on('sessionDisconnected', (event:any) => {
+        if (event.reason === 'networkDisconnect') {
+            alert('Dang-it... You lost your connection to the session');
+        } else {
+            // Disconnected from the session for other reason than a network drop
+        }
+    });
     // --- 3) Specify the actions when events take place in the session ---
 
     // On every new Stream received...
@@ -91,6 +109,7 @@ export class RoomComponent implements OnInit,OnDestroy {
       // so OpenVidu doesn't create an HTML video by its own
       let subscriber: Subscriber = this.session.subscribe(event.stream, undefined);
       this.subscribers.push(subscriber);
+      this.connection.push(subscriber.stream.connection);
     });
 
     // On every Stream destroyed...
@@ -100,9 +119,12 @@ export class RoomComponent implements OnInit,OnDestroy {
       this.deleteSubscriber(event.stream.streamManager);
     });
 
-    this.session.on('signal', (data)=>
-    {
-      console.log(data);
+    this.session.on('signal', (data:any)=>
+     {  const clientData = JSON.parse(data.from.data) 
+      const messages:messages = {'name':clientData.clientData ,'message':data.data}
+      this.chatService.addmessage(messages)
+      
+
     });
 
     // --- 4) Connect to the session with a valid user token ---
@@ -135,7 +157,6 @@ export class RoomComponent implements OnInit,OnDestroy {
 
           this.session.publish(publisher);
          
-
           // Set the main video in the page to display our webcam and store our Publisher
           this.mainStreamManager = publisher;
           this.publisher = publisher;
@@ -147,7 +168,156 @@ export class RoomComponent implements OnInit,OnDestroy {
     });
   }
 
+leaveSession() {
 
+    // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
+
+    if (this.session) { this.session.disconnect(); };
+
+    // Empty all properties...
+    this.subscribers = [];
+    delete this.publisher;
+    delete this.session;
+    delete this.OV;
+    this.generateParticipantInfo();
+  }
+
+
+  private generateParticipantInfo() {
+    // Random user nickname and sessionId
+    
+    this.myUserName = 'Participant' + Math.floor(Math.random() * 100);
+  }
+
+  private deleteSubscriber(streamManager: StreamManager): void {
+    let index = this.subscribers.indexOf(streamManager, 0);
+    if (index > -1) {
+      this.subscribers.splice(index, 1);
+    }
+  }
+
+  updateMainStreamManager(streamManager: StreamManager) {
+    this.mainStreamManager = streamManager;
+    // streamManager.stream.getMediaStream().id;
+    // console.log(this.tk);
+    // console.log(connection);
+    // console.log(this.session.forceDisconnect(connection) );
+    
+    // this.session.forceUnpublish(streamManager.stream);
+  }
+
+  disconnect(streamManager: StreamManager)
+  {
+    this.session.forceDisconnect(streamManager.stream.connection);
+     
+  }
+  unpublish(streamManager: any)
+  {   
+      this.session.forceUnpublish(streamManager.stream)
+      this.exp = streamManager
+    
+    
+
+  }
+
+  
+
+  /**
+   * --------------------------
+   * SERVER-SIDE RESPONSIBILITY
+   * --------------------------
+   * This method retrieve the mandatory user token from OpenVidu Server,
+   * in this case making use Angular http API.
+   * This behavior MUST BE IN YOUR SERVER-SIDE IN PRODUCTION. In this case:
+   *   1) Initialize a session in OpenVidu Server	 (POST /api/sessions)
+   *   2) Generate a token in OpenVidu Server		   (POST /api/tokens)
+   *   3) The token must be consumed in Session.connect() method of OpenVidu Browser
+   */
+
+  getToken(): Promise<string> {
+    return this.createSession(this.mySessionId).then(
+      sessionId => {
+        return this.createToken(sessionId);
+      })
+  }
+
+  createSession(sessionId) {
+    return new Promise((resolve, reject) => {
+
+      const body = JSON.stringify({ customSessionId: sessionId });
+      const options = {
+        headers: new HttpHeaders({
+          'Authorization': 'Basic ' + btoa('OPENVIDUAPP:' + this.OPENVIDU_SERVER_SECRET),
+          'Content-Type': 'application/json'
+        })
+      };
+      return this.httpClient.post(this.OPENVIDU_SERVER_URL + '/api/sessions', body, options)
+        .pipe(
+          catchError(error => {
+            if (error.status === 409) {
+              resolve(sessionId);
+            } else {
+              console.warn('No connection to OpenVidu Server. This may be a certificate error at ' + this.OPENVIDU_SERVER_URL);
+              if (window.confirm('No connection to OpenVidu Server. This may be a certificate error at \"' + this.OPENVIDU_SERVER_URL +
+                '\"\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server' +
+                'is up and running at "' + this.OPENVIDU_SERVER_URL + '"')) {
+                location.assign(this.OPENVIDU_SERVER_URL + '/accept-certificate');
+              }
+            }
+            return observableThrowError(error);
+          })
+        )
+        .subscribe(response => {
+          console.log(response);
+          console.log("2");
+          resolve(response['id']);
+        });
+    });
+  }
+
+  createToken(sessionId): Promise<string> {
+    return new Promise((resolve, reject) => {
+
+      const body = JSON.stringify({ session: sessionId, role: "MODERATOR"});
+      const options = {
+        headers: new HttpHeaders({
+          'Authorization': 'Basic ' + btoa('OPENVIDUAPP:' + this.OPENVIDU_SERVER_SECRET),
+          'Content-Type': 'application/json'
+        })
+      };
+      return this.httpClient.post(this.OPENVIDU_SERVER_URL + '/api/tokens', body, options)
+        .pipe(
+          catchError(error => {
+            reject(error);
+            return observableThrowError(error);
+          })
+        )
+        .subscribe(response => {
+          console.log(response);
+          console.log("3");
+          resolve(response['token']);
+          this.tk = response['token'];
+        });
+    });
+
+  }
+
+  
+  onSubmit(f:NgForm)
+  {  
+    const data = f.value.chat
+    const mess:any = {"data":data, "to":this.connection}
+    const messages:messages = {"name":this.myUserName ,"message":f.value.chat}
+    this.session.signal(mess)
+    this.chatService.addmessage(messages)
+    f.reset()
+        
+  }
+  chat()
+  {
+    this.show=!this.show;
+    
+  }
   audioOff() {
     if(this.videoOn) {
       this.session.unpublish(this.publisher);
@@ -341,152 +511,6 @@ export class RoomComponent implements OnInit,OnDestroy {
       console.log(this.videoOn);
       console.log("else");
     }
-  }
-
-
-
-
-  leaveSession() {
-
-    // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
-
-    if (this.session) { this.session.disconnect(); };
-
-    // Empty all properties...
-    this.subscribers = [];
-    delete this.publisher;
-    delete this.session;
-    delete this.OV;
-    this.generateParticipantInfo();
-  }
-
-
-  private generateParticipantInfo() {
-    // Random user nickname and sessionId
-    
-    this.myUserName = 'Participant' + Math.floor(Math.random() * 100);
-  }
-
-  private deleteSubscriber(streamManager: StreamManager): void {
-    let index = this.subscribers.indexOf(streamManager, 0);
-    if (index > -1) {
-      this.subscribers.splice(index, 1);
-    }
-  }
-
-  updateMainStreamManager(streamManager: StreamManager) {
-    this.mainStreamManager = streamManager;
-    // streamManager.stream.getMediaStream().id;
-    // console.log(this.tk);
-    // console.log(connection);
-    // console.log(this.session.forceDisconnect(connection) );
-    
-    // this.session.forceUnpublish(streamManager.stream);
-  }
-
-  disconnect(streamManager: StreamManager)
-  {
-    this.session.forceDisconnect(streamManager.stream.connection);
-     
-  }
-  unpublish(streamManager: any)
-  {   
-      this.session.forceUnpublish(streamManager.stream)
-      this.exp = streamManager
-    
-    
-
-  }
-
-  
-
-  /**
-   * --------------------------
-   * SERVER-SIDE RESPONSIBILITY
-   * --------------------------
-   * This method retrieve the mandatory user token from OpenVidu Server,
-   * in this case making use Angular http API.
-   * This behavior MUST BE IN YOUR SERVER-SIDE IN PRODUCTION. In this case:
-   *   1) Initialize a session in OpenVidu Server	 (POST /api/sessions)
-   *   2) Generate a token in OpenVidu Server		   (POST /api/tokens)
-   *   3) The token must be consumed in Session.connect() method of OpenVidu Browser
-   */
-
-  getToken(): Promise<string> {
-    return this.createSession(this.mySessionId).then(
-      sessionId => {
-        return this.createToken(sessionId);
-      })
-  }
-
-  createSession(sessionId) {
-    return new Promise((resolve, reject) => {
-
-      const body = JSON.stringify({ customSessionId: sessionId });
-      const options = {
-        headers: new HttpHeaders({
-          'Authorization': 'Basic ' + btoa('OPENVIDUAPP:' + this.OPENVIDU_SERVER_SECRET),
-          'Content-Type': 'application/json'
-        })
-      };
-      return this.httpClient.post(this.OPENVIDU_SERVER_URL + '/api/sessions', body, options)
-        .pipe(
-          catchError(error => {
-            if (error.status === 409) {
-              resolve(sessionId);
-            } else {
-              console.warn('No connection to OpenVidu Server. This may be a certificate error at ' + this.OPENVIDU_SERVER_URL);
-              if (window.confirm('No connection to OpenVidu Server. This may be a certificate error at \"' + this.OPENVIDU_SERVER_URL +
-                '\"\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server' +
-                'is up and running at "' + this.OPENVIDU_SERVER_URL + '"')) {
-                location.assign(this.OPENVIDU_SERVER_URL + '/accept-certificate');
-              }
-            }
-            return observableThrowError(error);
-          })
-        )
-        .subscribe(response => {
-          console.log(response);
-          console.log("2");
-          resolve(response['id']);
-        });
-    });
-  }
-
-  createToken(sessionId): Promise<string> {
-    return new Promise((resolve, reject) => {
-
-      const body = JSON.stringify({ session: sessionId, role: "MODERATOR"});
-      const options = {
-        headers: new HttpHeaders({
-          'Authorization': 'Basic ' + btoa('OPENVIDUAPP:' + this.OPENVIDU_SERVER_SECRET),
-          'Content-Type': 'application/json'
-        })
-      };
-      return this.httpClient.post(this.OPENVIDU_SERVER_URL + '/api/tokens', body, options)
-        .pipe(
-          catchError(error => {
-            reject(error);
-            return observableThrowError(error);
-          })
-        )
-        .subscribe(response => {
-          console.log(response);
-          console.log("3");
-          resolve(response['token']);
-          this.tk = response['token'];
-        });
-    });
-
-  }
-
-  video()
-  {
-
-  }
-  audio()
-  {
-
   }
 
 }

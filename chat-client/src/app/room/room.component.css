@@ -30,3 +30,44 @@
 .join-btn:focus {
 	outline:none;
 }
+.text-box
+{
+	position: absolute;
+	top:100;
+	width: 500px;
+	height: 700px;
+	margin-left: 100px;
+	
+}
+.display
+{
+	display:block;
+}
+.undisplay
+{
+	display:none;
+}
+.chat
+{
+	position: absolute;
+	z-index: center;
+}
+.text{
+
+	height: 500px;
+	margin-left: 100px;
+
+}
+.message
+{
+	color: white;
+	margin-bottom:10px;
+
+}
+.name
+{
+	color: white;
+	font-size: 120%;
+	margin-bottom:2px;
+
+}
