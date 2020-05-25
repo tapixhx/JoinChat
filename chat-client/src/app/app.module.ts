@@ -15,6 +15,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { ChatComponent } from './chat/chat.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
+import { HostComponent } from './host/host.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { FooterComponent } from './footer/footer.component';
     SignupComponent,
     ChatComponent,
     NavbarComponent,
-    FooterComponent
+    FooterComponent,
+    HostComponent
   ],
   imports: [
     BrowserModule,

@@ -3,7 +3,7 @@ import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { OpenVidu, Publisher, Session, StreamEvent, StreamManager, Subscriber, Connection } from 'openvidu-browser';
 import { throwError as observableThrowError, Subscription } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { ChangeService } from '../services/chat.service';
 import { messages } from '../shared/message.model';
@@ -34,6 +34,7 @@ export class RoomComponent implements OnInit,OnDestroy {
   subscribers: StreamManager[] = []; // Remotes
   connection: Connection[] = [];
   show=false;
+  Host =false;
   // Join form
   mySessionId: string;
   myUserName: string;
@@ -52,17 +53,36 @@ export class RoomComponent implements OnInit,OnDestroy {
    messages:messages[];
    messageSubscription:Subscription
 
-  constructor(private httpClient: HttpClient, private Router:ActivatedRoute,private chatService:ChangeService) {
+  constructor(private httpClient: HttpClient, private Router:ActivatedRoute,private chatService:ChangeService,private Route:Router) {
     this.generateParticipantInfo();
   }
   ngOnInit()
   {
+      
       this.Router.params
       .subscribe((params:Params)=>
       {
-        this.mySessionId = params.id;
+          if(params.session)
+          {
+            this.Host = true;
+         this.mySessionId = params.session
 
-      })
+             this.joinSession()
+          }
+          if(params.name)
+          {
+              this.myUserName = params.name;
+          }
+          if(params.id)
+          {
+        this.mySessionId = params.id;
+                 
+          }
+
+         
+      }
+      )
+      
       this.messageSubscription =this.chatService.messageChanged
       .subscribe((messages)=>{
         this.messages = messages
@@ -180,6 +200,7 @@ leaveSession() {
     delete this.session;
     delete this.OV;
     this.generateParticipantInfo();
+    this.Route.navigate([''])
   }
 
 
@@ -277,8 +298,18 @@ leaveSession() {
 
   createToken(sessionId): Promise<string> {
     return new Promise((resolve, reject) => {
+      let body
+      if(this.Host)
+      {
+       body = JSON.stringify({ session: sessionId, role: "MODERATOR"});
+       
+      }
+      else
+      {
+       body = JSON.stringify({ session: sessionId});
+       
 
-      const body = JSON.stringify({ session: sessionId, role: "MODERATOR"});
+      }
       const options = {
         headers: new HttpHeaders({
           'Authorization': 'Basic ' + btoa('OPENVIDUAPP:' + this.OPENVIDU_SERVER_SECRET),

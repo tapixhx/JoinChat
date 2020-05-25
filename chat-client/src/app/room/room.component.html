@@ -1,23 +1,40 @@
-<div id="main-container" class="container">
-	<div *ngIf="!session" style="background-color: #1f2833;" id="join">
-		<div id="img-div"><img src="../assets/images/jc-logo.png" /></div>
-		<div id="join-dialog" class="jumbotron join-box vertical-center">
-			<h1 class="box-head">Join a video session</h1>
-			<form class="form-group" (submit)="joinSession()" >
-				<p>
-					<label style="color:#c5c6c7;">Participant</label>
-					<input  class="form-control form-int"  type="text" id="userName" name="userName" [(ngModel)]="myUserName" required>
-				</p>
-				<p>
-					<label style="color:#c5c6c7;">Session</label>
-					<input  class="form-control form-int" type="text" id="sessionId" name="sessionId" [(ngModel)]="mySessionId" required>
-				</p>
-				<p class="text-center">
-					<input class="join-btn" type="submit" name="commit"  value="Join!">
-				</p>
+<div >
+	<div *ngIf="!session" id="join">
+		<div class="row body">
+		<div  class="col-sm-4 col-xs-0 height center display2">
+			<img class="image1" src="../../assets/images/Layer 1.svg">
+		</div>	
+		<div class="col-sm-4 col-xs-12"> 
+			<div class="heading">Join a meeting</div>
+			<div class="padding">
+			<form class="form-group" (submit)="joinSession()" #c="ngForm" >
+			<label class="left">Name</label>	
+			<input  class="form-control "  type="text"  id="userName" name="userName" [(ngModel)]="myUserName" required>
+			<label class="left">Session</label>
+			<input  placeholder="Enter session " class="form-control " type="text" id="sessionId" name="sessionId" [(ngModel)]="mySessionId" required>
+			<div class="center">
+			<button class="join-button" >Join the meeting</button>
+			</div>
 			</form>
+			</div>
 		</div>
-	</div>
+		<div class="col-sm-4 col-xs-0 height2 center display2">
+			<img class="image2" src="../../assets/images/Layer 2.svg">
+		</div>
+		
+		</div>	
+		<div class="row undisplay2">
+			<div class="col-xs-6 center">
+				<img class="image1" src="../../assets/images/Layer 1.svg">
+
+			</div>
+			<div class="col-xs-6 center">
+			<img class="image2" src="../../assets/images/Layer 2.svg">
+
+			</div>
+		</div>
+		
+</div>
 
 	<div *ngIf="session" id="session">
 		<div id="session-header">
@@ -66,11 +83,10 @@
  </div>
 
 <form (ngSubmit)="onSubmit(f)" #f="ngForm">
-  <input type="email" 
+  <input  
 	id="email"
 	 name="chat"
 	 placeholder="email"
-	 pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" 
 	 class="form-control"
 	 ngModel
 	 required
