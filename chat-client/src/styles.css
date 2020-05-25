@@ -58,16 +58,9 @@ nav i.fa:hover {
 	margin: 0 auto;
 }
 
-.form-control {
-	color: #0088aa;
-	font-weight: bold;
-}
 
-.form-control:focus {
-	border-color: #0088aa;
-	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 136, 170, 0.6);
-	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 136, 170, 0.6);
-}
+
+
 
 input.btn {
 	font-weight: bold;
