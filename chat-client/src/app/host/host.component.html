@@ -6,13 +6,13 @@
     <div class="col-sm-4 col-xs-12"> 
         <div class="heading">Host the meeting</div>
         <div class="padding">
-        <form class="form-group"  #c="ngForm" >
+        <form class="form-group" (submit)="host(c)" #c="ngForm" >
         <label class="left">Name</label>	
-        <input placeholder="Enter Your Name" class="form-control "  type="text"  id="userName" name="userName"  required>
+        <input placeholder="Enter Your Name" class="form-control " ngModel  type="text"  id="userName" name="userName"  required>
         <label class="left">Password</label>
-        <input  placeholder="Enter Your Password " class="form-control " type="text" id="sessionId" name="password"  required>
+        <input  placeholder="Enter Your Password " ngModel class="form-control " type="text" id="sessionId" name="password"  required>
         <div class="center">
-        <button class="join-button" >Host the meeting</button>
+        <button type="submit" class="join-button" >Host the meeting</button>
         </div>
         </form>
         </div>

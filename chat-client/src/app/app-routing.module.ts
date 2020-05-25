@@ -11,6 +11,7 @@ const appRoutes: Routes=[
     {path:'', component:HomeComponent},
     {path:'room/:id',component:RoomComponent},
     {path:'room',component:RoomComponent},
+    {path:'room/:name/:session',component:RoomComponent},
     {path:'chat',component:ChatComponent},
     {path:'host-chat',component:HostComponent}
 ]
