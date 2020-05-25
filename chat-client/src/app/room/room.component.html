@@ -66,11 +66,10 @@
  </div>
 
 <form (ngSubmit)="onSubmit(f)" #f="ngForm">
-  <input type="email" 
+  <input  
 	id="email"
 	 name="chat"
 	 placeholder="email"
-	 pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" 
 	 class="form-control"
 	 ngModel
 	 required

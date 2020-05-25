@@ -14,9 +14,7 @@ nav {
 	border-top-left-radius: 0 !important;
 }
 
-body {
-	background-color: #1f2833;
-}
+
 
 .navbar-header {
 	width: 100%;
@@ -222,7 +220,7 @@ video {
 }
 
 
-/* xs ans md screen resolutions*/
+
 
 @media screen and (max-width: 991px) {
 	.vertical-center {
