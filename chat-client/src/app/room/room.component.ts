@@ -26,7 +26,6 @@ export class RoomComponent implements OnInit,OnDestroy {
 
   // OpenVidu objects
 
- 
 
   OV: OpenVidu;
   session: Session;
@@ -57,17 +56,16 @@ export class RoomComponent implements OnInit,OnDestroy {
   }
   ngOnInit()
   {
-      this.Router.params
-      .subscribe((params:Params)=>
-      {
-        this.mySessionId = params.id;
-
-      })
-      this.messageSubscription =this.chatService.messageChanged
-      .subscribe((messages)=>{
-        this.messages = messages
-        console.log(messages)
-      }) 
+    this.Router.params
+    .subscribe((params:Params)=>
+    {
+      this.mySessionId = params.id;
+    })
+    this.messageSubscription =this.chatService.messageChanged
+    .subscribe((messages)=>{
+      this.messages = messages
+      console.log(messages)
+    })
   }
 
   @HostListener('window:beforeunload')
@@ -120,7 +118,7 @@ export class RoomComponent implements OnInit,OnDestroy {
     });
 
     this.session.on('signal', (data:any)=>
-     {  const clientData = JSON.parse(data.from.data) 
+     {  const clientData = JSON.parse(data.from.data)
       const messages:messages = {'name':clientData.clientData ,'message':data.data}
       this.chatService.addmessage(messages)
       
@@ -302,6 +300,88 @@ leaveSession() {
 
   }
 
+  // screen share
+  // shareScreen() {
+  //   var OV = new OpenVidu();
+  //   var publisher = OV.initPublisher('share', { videoSource: "screen" }, function(error) {
+  //       if (error.name == 'SCREEN_EXTENSION_NOT_INSTALLED') {
+
+  //           // showWarning could show a button with href 'error.message',
+  //           // so the user can navigate to install the extension.
+  //           // A browser refresh is also needed after installation
+
+  //       } else if (error.name == 'SCREEN_SHARING_NOT_SUPPORTED') {
+  //           alert('Your browser does not support screen sharing');
+  //       } else if (error.name == 'SCREEN_EXTENSION_DISABLED') {
+  //           alert('You need to enable screen sharing extension');
+  //       } else if (error.name == 'SCREEN_CAPTURE_DENIED') {
+  //           alert('You need to choose a window or application to share');
+  //       }
+  //   });
+  // }
+  // stopShareScreen() {
+  //   var OV = new OpenVidu();
+  //   var publisher = OV.initPublisherAsync({
+  //       videoSource: "screen"
+  //   }).then(publisher => {
+  //       publisher.stream.getMediaStream().addEventListener('inactive', () => {
+  //           console.log('User pressed the "Stop sharing" button');
+  //           // You can send a signal with Session.signal method to warn other participants
+  //       });
+  //   });
+  // }
+  // screen share
+
+
+  // screen recording
+  recordingSession() {
+    return new Promise((resolve, reject) => {
+
+      const body = JSON.stringify({ session: this.mySessionId });
+      const options = {
+        headers: new HttpHeaders({
+          'Authorization': 'Basic ' + btoa('OPENVIDUAPP:' + this.OPENVIDU_SERVER_SECRET),
+          'Content-Type': 'application/json'
+        })
+      };
+      return this.httpClient.post(this.OPENVIDU_SERVER_URL + '/api/recordings/start', body, options)
+        .pipe(
+          catchError(error => {
+            reject(error);
+            return observableThrowError(error);
+          })
+        )
+        .subscribe(response => {
+          console.log(response);
+          console.log("34");
+        });
+    });
+  }
+
+  stoprecordingSession() {
+      return new Promise((resolve, reject) => {
+
+        const body = JSON.stringify({ session: this.mySessionId });
+        const options = {
+          headers: new HttpHeaders({
+            'Authorization': 'Basic ' + btoa('OPENVIDUAPP:' + this.OPENVIDU_SERVER_SECRET),
+            'Content-Type': 'application/json'
+          })
+        };
+        return this.httpClient.post(this.OPENVIDU_SERVER_URL + '/api/recordings/stop', body, options)
+          .pipe(
+            catchError(error => {
+              reject(error);
+              return observableThrowError(error);
+            })
+          )
+          .subscribe(response => {
+            console.log(response);
+            console.log("34");
+          });
+      });
+  }
+  // screen recording
   
   onSubmit(f:NgForm)
   {  
