@@ -1,40 +1,23 @@
-<div >
-	<div *ngIf="!session" id="join">
-		<div class="row body">
-		<div  class="col-sm-4 col-xs-0 height center display2">
-			<img class="image1" src="../../assets/images/Layer 1.svg">
-		</div>	
-		<div class="col-sm-4 col-xs-12"> 
-			<div class="heading">Join a meeting</div>
-			<div class="padding">
-			<form class="form-group" (submit)="joinSession()" #c="ngForm" >
-			<label class="left">Name</label>	
-			<input  class="form-control "  type="text"  id="userName" name="userName" [(ngModel)]="myUserName" required>
-			<label class="left">Session</label>
-			<input  placeholder="Enter session " class="form-control " type="text" id="sessionId" name="sessionId" [(ngModel)]="mySessionId" required>
-			<div class="center">
-			<button class="join-button" >Join the meeting</button>
-			</div>
+<div id="main-container" class="container">
+	<div *ngIf="!session" style="background-color: #1f2833;" id="join">
+		<div id="img-div"><img src="../assets/images/jc-logo.png" /></div>
+		<div id="join-dialog" class="jumbotron join-box vertical-center">
+			<h1 class="box-head">Join a video session</h1>
+			<form class="form-group" (submit)="joinSession()" >
+				<p>
+					<label style="color:#c5c6c7;">Participant</label>
+					<input  class="form-control form-int"  type="text" id="userName" name="userName" [(ngModel)]="myUserName" required>
+				</p>
+				<p>
+					<label style="color:#c5c6c7;">Session</label>
+					<input  class="form-control form-int" type="text" id="sessionId" name="sessionId" [(ngModel)]="mySessionId" required>
+				</p>
+				<p class="text-center">
+					<input class="join-btn" type="submit" name="commit"  value="Join!">
+				</p>
 			</form>
-			</div>
 		</div>
-		<div class="col-sm-4 col-xs-0 height2 center display2">
-			<img class="image2" src="../../assets/images/Layer 2.svg">
-		</div>
-		
-		</div>	
-		<div class="row undisplay2">
-			<div class="col-xs-6 center">
-				<img class="image1" src="../../assets/images/Layer 1.svg">
-
-			</div>
-			<div class="col-xs-6 center">
-			<img class="image2" src="../../assets/images/Layer 2.svg">
-
-			</div>
-		</div>
-		
-</div>
+	</div>
 
 	<div *ngIf="session" id="session">
 		<div id="session-header">
@@ -44,8 +27,10 @@
 			<img src="../../assets/images/video.png" alt="video-on" style="width:3rem; margin-left:1rem;" *ngIf="!videoOn" (click)="videoon()">
 			<img src="../../assets/images/mic-off.png" alt="mic-off" style="width:3rem; margin-left:1rem;" (click)="audioOff()" *ngIf="audioOn">
 			<img src="../../assets/images/mic.png" alt="mic-on" style="width:2rem; margin-left:1rem;" (click)="audioon()" *ngIf="!audioOn">
-			
-			<button class="chat"(click)="chat()">click</button>
+			<!-- <input class="join-btn" type="button" *ngIf="videoOn" (click)="videoOff()" value="Video Off">
+			<input class="join-btn" type="button" *ngIf="!videoOn" (click)="videoon()" value="Video On">
+			<input class="join-btn" *ngIf="audioOn" type="button" (click)="audioOff()" value="Mute">
+			<input class="join-btn" *ngIf="!audioOn" type="button" (click)="audioon()" value="Unmute"> -->
 		</div>
 		<div *ngIf="mainStreamManager" id="main-video" class="col-md-6">
 			<user-video [streamManager]="mainStreamManager"></user-video>
@@ -56,32 +41,19 @@
 			</div>
 			<div *ngFor="let sub of subscribers" class="stream-container col-md-6 col-xs-6">
 				<user-video [streamManager]="sub" (click)="updateMainStreamManager(sub)"></user-video>
-			<div *ngIf="!sub.stream.audioActive">audiooff</div>
-			<div *ngIf="sub.stream.connection.connectionId == connectionId">
-			<div *ngIf="startSpeaking" ><img class="small" src="../../assets/images/giphy.gif"></div>
+				<!-- <div class="row">
+			     <div class="col-xs-6">		
+				<button (click)="disconnect(sub)" class="btn btn-primary">x</button>
+				</div>
+				<div class="col-xs-6">
+				<button (click)="unpublish(sub)" class="btn btn-primary">unpublish</button>
+				</div>
+				</div> -->
+				
+
 			</div>
-		    </div>
+			
+			
 		</div>
 	</div>
-</div>
-<div class="text-box" [class.display]="show" [class.undisplay]="!show">
-
- <div *ngFor="let message of messages">
-	 <div class="name">{{message.name}}</div>
-	 <div class="message">{{message.message}}</div>
- </div>
-
-<form (ngSubmit)="onSubmit(f)" #f="ngForm">
-  <input  
-	id="email"
-	 name="chat"
-	 placeholder="email"
-	 class="form-control"
-	 ngModel
-	 required
-	 #email="ngModel"
-
-> 
- <button type="submit">send</button>
-</form>
 </div>
