@@ -4,6 +4,7 @@ import { RoomComponent } from './room/room.component';
 import { ChatComponent } from './chat/chat.component';
 import { HomeComponent } from './home/home.component';
 import { HostComponent } from './host/host.component';
+import { VerficationComponent } from './verfication/verfication.component';
 
 
 
@@ -13,7 +14,8 @@ const appRoutes: Routes=[
     {path:'room',component:RoomComponent},
     {path:'room/:name/:session',component:RoomComponent},
     {path:'chat',component:ChatComponent},
-    {path:'host-chat',component:HostComponent}
+    {path:'host-chat',component:HostComponent},
+    {path:'verify/:id',component:VerficationComponent},
 ]
 
 @NgModule({

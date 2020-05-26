@@ -18,10 +18,7 @@
     font-family: Montserrat;
     font-weight: 700;
     font-size: 3.5vw;
-    letter-spacing: 2px;
-    
-    
-    
+    letter-spacing: 2px;   
 }
 .statement
 {
@@ -51,7 +48,6 @@
 }
 .join-button:hover,.host-button:hover{
     box-shadow: 0 0px 0px;
-
 }
 .body
 {
@@ -64,7 +60,7 @@
 }
 button:focus
 {
-   border: 0px ;
+   outline: none ;
 }
 .host-button
 {
