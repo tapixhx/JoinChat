@@ -16,6 +16,8 @@ import { ChatComponent } from './chat/chat.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { HostComponent } from './host/host.component';
+import { ConfirmPasswordDirective } from './shared/confirm-password.directive';
+import { VerficationComponent } from './verfication/verfication.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { HostComponent } from './host/host.component';
     ChatComponent,
     NavbarComponent,
     FooterComponent,
-    HostComponent
+    HostComponent,
+    ConfirmPasswordDirective,
+    VerficationComponent
   ],
   imports: [
     BrowserModule,

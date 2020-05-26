@@ -6,7 +6,164 @@
                     <img class="demo-logo text-center mx-auto" src="assets/images/jc-logo.png"/> JoinChat
                 </a>
             </div>
-           
+            <div class="col-2 pull-right"><a class="navbar-brand text-center mx-auto" *ngIf="!authservice.loggedIn()" (click)="signup()"> SignUp</a></div>
+            <div class="col-2 pull-right"><a class="navbar-brand text-center mx-auto"   *ngIf="!authservice.loggedIn()" (click)="login()"> Login</a></div>
+            <div class="col-2 pull-right"><a class="navbar-brand text-center mx-auto" *ngIf="authservice.loggedIn()"  (click)="authservice.logout()"> LogOut</a></div>
         </div>
     </div>
 </nav>
+
+<!-- signup -->
+<div *ngIf=wnt_signup class="popup-background">
+    <div class="contain-popup">
+        <div>
+            <div class="row body">
+                <div  class="col-sm-4 col-xs-0 height center display2">
+                    <img class="image1" src="../../assets/images/Layer 1.svg">
+                </div>	
+                <div class="col-md-4 col-sm-12 col-wid"> 
+                    <div class="heading">SignUp</div>
+                    <div class="padding">
+                    <form class="form-group" (submit)="signupform(sf)" #sf="ngForm" >
+
+                        <input 
+                        placeholder="Enter Your name here" 
+                        class="form-control"
+                        ngModel
+                        type="text"  
+                        id="name" 
+                        name="name" 
+                        required
+                        #username="ngModel">
+                        <span 
+                        class="help-block"
+                        *ngIf="!username.valid && username.touched"
+                        style="color:red;">Your name is required</span>
+
+                        <input 
+                        placeholder="Enter Your email address" 
+                        class="form-control"
+                        ngModel
+                        type="text"
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                        id="email" 
+                        name="email"  
+                        required
+                        #email="ngModel">
+                        <span 
+                        class="help-block"
+                        *ngIf="!email.valid && email.touched"
+                        style="color:red;">Enter a valid Email</span>
+
+                        <input  
+                        placeholder="Create Your Password " 
+                        ngModel 
+                        class="form-control" 
+                        type="password"
+                        id="password" 
+                        name="password"
+                        [minlength]="6"
+                        required
+                        #password="ngModel">
+                        <span
+                        class="help-block"
+                        *ngIf="!password.valid && password.touched"
+                        style="color:red;">Enter minimum 6 character password</span>
+
+                        <input
+                        placeholder = "Confirm your Password"
+                        appConfirmPassword="password"
+                        type="password" 
+                        id="confirmPassword" 
+                        name="confirmPassword" 
+                        ngModel 
+                        class="form-control"
+                        required 
+                        [minlength]="6"
+                        #confirmPassword="ngModel">
+                        <span
+                        class="help-block"
+                        *ngIf="confirmPassword.touched && confirmPassword.errors?.required "
+                        style="color:red;">Confirm Password is required</span>
+                        <span
+                        class="help-block"
+                        *ngIf="confirmPassword.touched && confirmPassword.errors?.notEqual &&
+                        !confirmPassword.errors?.required" 
+                        style="color:red;">Password doesn't match</span>
+
+                        <div class="center">
+                        <button type="submit" class="join-button" [disabled]="!sf.valid">SignUp</button>
+                        </div> 
+
+                    </form>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-xs-0 height2 center display2">
+                    <img class="image2" src="../../assets/images/Layer 2.svg">
+                </div>
+                
+                </div>	                
+            </div>
+    </div>
+</div>
+<!-- signup -->
+
+<!-- login -->
+<div *ngIf=wnt_login class="popup-background">
+    <div class="contain-popup">
+        <div>
+            <div class="row body">
+                <div  class="col-sm-4 col-xs-0 height center display2">
+                    <img class="image1" src="../../assets/images/Layer 1.svg">
+                </div>	
+                <div class="col-md-4 col-sm-12 col-wid"> 
+                    <div class="heading">LogIn</div>
+                    <div class="padding">
+                    <form class="form-group" (submit)="loginform(f)" #f="ngForm" >
+
+                    <input 
+                    placeholder="Enter Your email address" 
+                    class="form-control"
+                    ngModel
+                    type="text"
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" 
+                    id="email" 
+                    name="email"  
+                    required
+                    #email="ngModel">
+                    <span 
+                    class="help-block"
+                    *ngIf="!email.valid && email.touched"
+                    style="color:red;">Enter a valid Email</span>
+
+                    <input  
+                    placeholder="Enter Your Password " 
+                    ngModel 
+                    class="form-control" 
+                    type="password" 
+                    id="password" 
+                    name="password"
+                    [minlength]="6"
+                    required
+                    #password="ngModel">
+                    <span
+                    class="help-block"
+                    *ngIf="!password.valid && password.touched"
+                    style="color:red;">Enter minimum 6 character password</span>
+
+                    <div class="center">
+                    <button type="submit" class="join-button" [disabled]="!f.valid">LogIn</button>
+                    </div>
+
+                    </form>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-xs-0 height2 center display2">
+                    <img class="image2" src="../../assets/images/Layer 2.svg">
+                </div>
+                
+                </div>	                
+            </div>
+    </div>
+</div>
+<!-- login -->
