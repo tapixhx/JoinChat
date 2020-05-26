@@ -44,10 +44,7 @@
 			<img src="../../assets/images/video.png" alt="video-on" style="width:3rem; margin-left:1rem;" *ngIf="!videoOn" (click)="videoon()">
 			<img src="../../assets/images/mic-off.png" alt="mic-off" style="width:3rem; margin-left:1rem;" (click)="audioOff()" *ngIf="audioOn">
 			<img src="../../assets/images/mic.png" alt="mic-on" style="width:2rem; margin-left:1rem;" (click)="audioon()" *ngIf="!audioOn">
-			<!-- <input class="join-btn" type="button" *ngIf="videoOn" (click)="videoOff()" value="Video Off">
-			<input class="join-btn" type="button" *ngIf="!videoOn" (click)="videoon()" value="Video On">
-			<input class="join-btn" *ngIf="audioOn" type="button" (click)="audioOff()" value="Mute">
-			<input class="join-btn" *ngIf="!audioOn" type="button" (click)="audioon()" value="Unmute"> -->
+			
 			<button class="chat"(click)="chat()">click</button>
 		</div>
 		<div *ngIf="mainStreamManager" id="main-video" class="col-md-6">
@@ -59,19 +56,11 @@
 			</div>
 			<div *ngFor="let sub of subscribers" class="stream-container col-md-6 col-xs-6">
 				<user-video [streamManager]="sub" (click)="updateMainStreamManager(sub)"></user-video>
-				<!-- <div class="row">
-			     <div class="col-xs-6">		
-				<button (click)="disconnect(sub)" class="btn btn-primary">x</button>
-				</div>
-				<div class="col-xs-6">
-				<button (click)="unpublish(sub)" class="btn btn-primary">unpublish</button>
-				</div>
-				</div> -->
-				
-
+			<div *ngIf="!sub.stream.audioActive">audiooff</div>
+			<div *ngIf="sub.stream.connection.connectionId == connectionId">
+			<div *ngIf="startSpeaking" ><img class="small" src="../../assets/images/giphy.gif"></div>
 			</div>
-			
-			
+		    </div>
 		</div>
 	</div>
 </div>

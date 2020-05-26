@@ -39,6 +39,9 @@ export class RoomComponent implements OnInit,OnDestroy {
   mySessionId: string;
   myUserName: string;
   tk:any;
+  startSpeaking=false;
+  connectionId:any;
+ 
   pub=true
    publishvideo=true;
    publishaudio=true;
@@ -186,6 +189,19 @@ export class RoomComponent implements OnInit,OnDestroy {
           console.log("1");
         });
     });
+
+    this.session.on('publisherStartSpeaking', (event:any) => {
+      console.log('Publisher ' + event + ' start speaking');
+      this.startSpeaking = true;
+      this.connectionId = event.connection.connectionId
+      
+  });
+  
+  this.session.on('publisherStopSpeaking', (event:any) => {
+      console.log('Publisher ' + event + ' stop speaking');
+      this.startSpeaking=false;
+
+  });
   }
 
 leaveSession() {

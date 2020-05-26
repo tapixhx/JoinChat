@@ -12,7 +12,10 @@
 	 margin-bottom: 3vw;
 	 margin-top: 5vw;
 }
-
+.small
+{
+	width: 10px;
+}
 .body
 {
 	width: 100vw;
