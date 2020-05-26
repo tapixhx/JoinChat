@@ -36,6 +36,11 @@ export class NavbarComponent implements OnInit {
     this.wnt_signup=true;
   }
 
+  close() {
+    this.wnt_login=false;
+    this.wnt_signup=false;
+  }
+
   loginform(form:NgForm) {
     const value = form.value;
     this.serverservice.login(value)
@@ -45,7 +50,7 @@ export class NavbarComponent implements OnInit {
         this.wnt_login = false;
         this.res=response;
         localStorage.setItem('token',this.res.token);
-        localStorage.setItem('token',this.res.name);
+        localStorage.setItem('name',this.res.name);
       },
       (error:HttpErrorResponse) => {
         console.log(error);

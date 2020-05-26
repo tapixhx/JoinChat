@@ -58,7 +58,7 @@ nav i.fa:hover {
     left:32.5rem;
     width:80rem;
     height:auto;
-    overflow:auto;
+    overflow-x:none;
     padding:2rem 2rem;
     border-radius:5px;
     animation: appear 0.5s 1;
@@ -141,6 +141,18 @@ nav i.fa:hover {
     box-shadow: 0 10px 20px rgba(0,0,0,0.14), 0 6px 6px rgba(0,0,0,0.20);
 	transition: all 0.3s;
 	background: #5BC0BE;
+	color: white;
+}
+.close-button
+{
+    padding: 10px 30px;
+    font-size: 120%;
+    font-family: Montserrat;
+    border-radius: 100px 100px;
+    border: 0px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.14), 0 6px 6px rgba(0,0,0,0.20);
+	transition: all 0.3s;
+	background: black;
 	color: white;
 }
 .join-button:hover{

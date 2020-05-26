@@ -10,7 +10,9 @@
         <label class="left">Name</label>	
         <input placeholder="Enter Your Name" class="form-control " ngModel  type="text"  id="userName" name="userName"  required>
         <label class="left">Password</label>
-        <input  placeholder="Enter Your Password " ngModel class="form-control " type="text" id="sessionId" name="password"  required>
+        <input  placeholder="Enter Your Password " ngModel class="form-control " type="text" id="password" name="password"  required>
+        <input  placeholder="Your meeting link will appear here" ngModel class="form-control" type="text" id="sessionId" name="sessionid" required>
+        <input type="button" class="join-button" (click)="copytext()" value="Copy Link">
         <div class="center">
         <button type="submit" class="join-button" >Host the meeting</button>
         </div>

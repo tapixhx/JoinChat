@@ -37,4 +37,10 @@ export class ServerService {
     {headers: headers});
   }
 
+  getSessionId() {
+    const headers = new HttpHeaders({'Content-Type':'application/json'})
+    return this.http.post(this.rootUrl+'user/getSession',
+    {headers: headers});
+  }
+
 }
