@@ -54,8 +54,8 @@ nav i.fa:hover {
 .contain-popup {
     background-color: #fff;
     position:fixed;
-    top:10rem;
-    left:32.5rem;
+    top:150px;
+    left:27vw;
     width:80rem;
     height:auto;
     overflow-x:none;
