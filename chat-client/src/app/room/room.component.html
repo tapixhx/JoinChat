@@ -1,95 +1,91 @@
-<div >
+<div>
 	<div *ngIf="!session" id="join">
 		<div class="row body">
-		<div  class="col-sm-4 col-xs-0 height center display2">
-			<img class="image1" src="../../assets/images/Layer 1.svg">
-		</div>	
-		<div class="col-sm-4 col-xs-12"> 
-			<div class="heading">Join a meeting</div>
-			<div class="padding">
-			<form class="form-group" (submit)="joinSession()" #c="ngForm" >
-			<label class="left">Name</label>	
-			<input  class="form-control "  type="text"  id="userName" name="userName" [(ngModel)]="myUserName" required>
-			<label class="left">Session</label>
-			<input  placeholder="Enter session " class="form-control " type="text" id="sessionId" name="sessionId" [(ngModel)]="mySessionId" required>
-			<div class="center">
-			<button class="join-button" >Join the meeting</button>
+			<div class="col-sm-4 col-xs-0 height center display2">
+				<img class="image1" src="../../assets/images/Layer 1.svg">
 			</div>
-			</form>
+			<div class="col-sm-4 col-xs-12">
+				<div class="heading">Join a meeting</div>
+				<div class="padding">
+					<form class="form-group" (submit)="joinSession()" #c="ngForm">
+						<label class="left">Name</label>
+						<input class="form-control " type="text" id="userName" name="userName" [(ngModel)]="myUserName"
+							required>
+						<label class="left">Session</label>
+						<input placeholder="Enter session " class="form-control " type="text" id="sessionId"
+							name="sessionId" [(ngModel)]="mySessionId" required>
+						<div class="center">
+							<button class="join-button">Join the meeting</button>
+						</div>
+					</form>
+				</div>
 			</div>
+			<div class="col-sm-4 col-xs-0 height2 center display2">
+				<img class="image2" src="../../assets/images/Layer 2.svg">
+			</div>
+
 		</div>
-		<div class="col-sm-4 col-xs-0 height2 center display2">
-			<img class="image2" src="../../assets/images/Layer 2.svg">
-		</div>
-		
-		</div>	
 		<div class="row undisplay2">
 			<div class="col-xs-6 center">
 				<img class="image1" src="../../assets/images/Layer 1.svg">
 
 			</div>
 			<div class="col-xs-6 center">
-			<img class="image2" src="../../assets/images/Layer 2.svg">
+				<img class="image2" src="../../assets/images/Layer 2.svg">
 
 			</div>
 		</div>
-		
-</div>
+
+	</div>
 
 	<div *ngIf="session" id="session">
 		<h1 id="session-title" class="box-head">{{mySessionId}}</h1>
 
 		<div id="session-header">
-			<button class="normal-button" (click)="videochange()"><img [src]="src" alt="video-off" style="width:30px; margin-right:20px;"></button>
-			<button class="leave-button" (click)="leaveSession()"><img style="width: 20px;" src="../../assets/images/phone.svg"></button>
-			<button class="normal-button" (click)="audiochange()"><img [src]="src2"  style="width:30px; margin-left:20px;"  ></button>
-			<button class="normal-button" (click)="chat()"><img src="../../assets/images/chat.svg"  style="width:30px; margin-left:20px;"  ></button>
+			<button class="normal-button" (click)="videochange()"><img [src]="src" alt="video-off"
+					style="width:30px; margin-right:20px;"></button>
+			<button class="leave-button" (click)="leaveSession()"><img style="width: 20px;"
+					src="../../assets/images/phone.svg"></button>
+			<button class="normal-button" (click)="audiochange()"><img [src]="src2"
+					style="width:30px; margin-left:20px;"></button>
+			<button class="normal-button" (click)="chat()"><img src="../../assets/images/chat.svg"
+					style="width:30px; margin-left:20px;"></button>
 
 		</div>
 		<div id="video-container" class="row border">
 			<div *ngIf="publisher" class="stream-container col-md-2">
 				<user-video [streamManager]="publisher" (click)="updateMainStreamManager(publisher)"></user-video>
-			<div *ngFor="let sub of subscribers" class="stream-container">
-				<div class="border-sub">
-				<user-video [streamManager]="sub" (click)="updateMainStreamManager(sub)"></user-video>
-				<div *ngIf="!sub.stream.audioActive">audiooff</div>
-				<div *ngIf="sub.stream.connection.connectionId == connectionId">
+				<div *ngFor="let sub of subscribers" class="stream-container">
+					<div class="border-sub">
+						<user-video [streamManager]="sub" (click)="updateMainStreamManager(sub)"></user-video>
+						<div *ngIf="!sub.stream.audioActive">audiooff</div>
+						<div *ngIf="sub.stream.connection.connectionId == connectionId">
 
-					<div *ngIf="startSpeaking" ><img class="small" src="../../assets/images/giphy.gif"></div>
-				</div>
+							<div *ngIf="startSpeaking"><img class="small" src="../../assets/images/giphy.gif"></div>
+						</div>
+					</div>
 				</div>
 			</div>
+			<div *ngIf="mainStreamManager" id="main-video" class="col-md-10">
+				<user-video class="mainstream" [streamManager]="mainStreamManager"></user-video>
+
 			</div>
-		<div *ngIf="mainStreamManager" id="main-video" class="col-md-10">
-			<user-video class="mainstream" [streamManager]="mainStreamManager"></user-video>
-			
-		</div>
 		</div>
 		<div class="text-box" [class.display]="show" [class.undisplay]="!show">
-        
-		<div *ngFor="let message of messages">
-			<div class="name">{{message.name}}</div>
-			<div class="message">{{message.message}}</div>
+
+			<div *ngFor="let message of messages">
+				<div class="name">{{message.name}}</div>
+				<div class="message">{{message.message}}</div>
+			</div>
+
+
+			<form (ngSubmit)="onSubmit(f)" #f="ngForm">
+				<input id="email" name="chat" placeholder="email" class="form-control" ngModel required
+					#email="ngModel">
+				<button type="submit">send</button>
+			</form>
 		</div>
-	    
-	   
-	   <form (ngSubmit)="onSubmit(f)" #f="ngForm">
-		 <input  
-		   id="email"
-			name="chat"
-			placeholder="email"
-			class="form-control"
-			ngModel
-			required
-			#email="ngModel"
-	   
-	   > 
-		<button type="submit">send</button>
-	   </form>
+
 	</div>
-	
-	</div>
-	
+
 </div>
-
-

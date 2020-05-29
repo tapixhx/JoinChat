@@ -7,6 +7,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { ChangeService } from '../services/chat.service';
 import { messages } from '../shared/message.model';
+import { stringify } from 'querystring';
 
 
 @Component({
@@ -140,7 +141,7 @@ export class RoomComponent implements OnInit,OnDestroy {
       this.deleteSubscriber(event.stream.streamManager);
     });
 
-    this.session.on('signal', (data:any)=>
+    this.session.on('signal:chat', (data:any)=>
      {  const clientData = JSON.parse(data.from.data) 
       const messages:messages = {'name':clientData.clientData ,'message':data.data}
       this.chatService.addmessage(messages)
@@ -354,7 +355,7 @@ leaveSession() {
   onSubmit(f:NgForm)
   {  
     const data = f.value.chat
-    const mess:any = {"data":data, "to":this.connection}
+    const mess:any = {"data":data, "to":this.connection,"type":"chat"}
     const messages:messages = {"name":this.myUserName ,"message":f.value.chat}
     this.session.signal(mess)
     this.chatService.addmessage(messages)
@@ -369,6 +370,8 @@ leaveSession() {
   audiochange() {
     this.audioOn=!this.audioOn
     this.publisher.publishAudio(this.audioOn);
+    const mess:any = {"data":String(this.audioOn), "to":this.connection,"type":"audio"}
+    this.session.signal(mess)
     if(this.audioOn)
     {
       this.src2="../../assets/images/mic.png"
@@ -383,6 +386,8 @@ leaveSession() {
   videochange() {
     this.videoOn=!this.videoOn
     this.publisher.publishVideo(this.videoOn)
+    const mess:any = {"data":String(this.videoOn), "to":this.connection,"type":"video"}
+    this.session.signal(mess)
     if(this.videoOn)
     {
       this.src="../../assets/images/video.png"
