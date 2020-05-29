@@ -40,7 +40,7 @@
 
 	<div *ngIf="session" id="session">
 		<h1 id="session-title" class="box-head">{{mySessionId}}</h1>
-		
+
 		<div id="session-header">
 			<button class="normal-button" (click)="videochange()"><img [src]="src" alt="video-off"
 					style="width:30px; margin-right:20px;"></button>
@@ -58,19 +58,13 @@
 		<div id="video-container" class="col-md-6">
 			<div *ngIf="publisher" class="stream-container col-md-6 col-xs-6">
 				<user-video [streamManager]="publisher" (click)="updateMainStreamManager(publisher)"></user-video>
-				<div *ngFor="let sub of subscribers" class="stream-container">
-					<div class="border-sub">
-						<user-video [streamManager]="sub" (click)="updateMainStreamManager(sub)"></user-video>
-						<div *ngIf="!sub.stream.audioActive">audiooff</div>
-						<div *ngIf="sub.stream.connection.connectionId == connectionId">
-
-							<div *ngIf="startSpeaking"><img class="small" src="../../assets/images/giphy.gif"></div>
-						</div>
-					</div>
-				</div>
 			</div>
-			<div *ngIf="mainStreamManager" id="main-video" class="col-md-10">
-				<user-video class="mainstream" [streamManager]="mainStreamManager"></user-video>
+			<div *ngFor="let sub of subscribers" class="stream-container col-md-6 col-xs-6">
+				<user-video [streamManager]="sub" (click)="updateMainStreamManager(sub)"></user-video>
+				<div *ngIf="!sub.stream.audioActive">audiooff</div>
+				<div *ngIf="sub.stream.connection.connectionId == connectionId">
+					<div *ngIf="startSpeaking" ><img class="small" src="../../assets/images/giphy.gif"></div>
+				</div>
 			</div>
 		</div>
 		<div class="text-box" [class.display]="show" [class.undisplay]="!show">
