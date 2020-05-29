@@ -52,23 +52,22 @@
 					style="width:30px; margin-left:20px;"></button>
 
 		</div>
-		<div id="video-container" class="row border">
-			<div *ngIf="publisher" class="stream-container col-md-2">
+		<div *ngIf="mainStreamManager" id="main-video" class="col-md-6">
+			<user-video [streamManager]="mainStreamManager"></user-video>
+		</div>
+		<div id="video-container" class="col-md-6">
+			<div *ngIf="publisher" class="stream-container col-md-6 col-xs-6">
 				<user-video [streamManager]="publisher" (click)="updateMainStreamManager(publisher)"></user-video>
-				<div *ngFor="let sub of subscribers" class="stream-container">
-					<div class="border-sub">
-						<user-video [streamManager]="sub" (click)="updateMainStreamManager(sub)"></user-video>
-						<div *ngIf="!sub.stream.audioActive">audioofekfjvnjfkvnfjkvnkfjf</div>
-						<div *ngIf="sub.stream.connection.connectionId == connectionId">
 
-							<div *ngIf="startSpeaking"><img class="small" src="../../assets/images/giphy.gif"></div>
-						</div>
-					</div>
-				</div>
 			</div>
-			<div *ngIf="mainStreamManager" id="main-video" class="col-md-10">
-				<user-video class="mainstream" [streamManager]="mainStreamManager"></user-video>
-
+			<div *ngFor="let sub of subscribers" class="stream-container col-md-6 col-xs-6">
+				<user-video [streamManager]="sub" (click)="updateMainStreamManager(sub)"></user-video>
+				<div *ngIf="sub.stream.connection.connectionId==audioconnectionId">
+				<div *ngIf="!subaudio" ><img class="audiooff"  src="../../assets/images/audiooff.png"></div>
+                </div>
+				<div *ngIf="sub.stream.connection.connectionId == connectionId">
+					<div *ngIf="startSpeaking" ><img class="small" src="../../assets/images/giphy.gif"></div>
+				</div>
 			</div>
 		</div>
 		<div class="text-box" [class.display]="show" [class.undisplay]="!show">

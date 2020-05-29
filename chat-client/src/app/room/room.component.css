@@ -10,6 +10,12 @@
 {
 	height: 200px !important;
 }
+.audiooff
+{
+	width: 20%;
+	position: relative;
+	top:-10px;
+}
 
 .heading
 {

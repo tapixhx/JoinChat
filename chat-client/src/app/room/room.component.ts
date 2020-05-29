@@ -15,81 +15,78 @@ import { stringify } from 'querystring';
   templateUrl: './room.component.html',
   styleUrls: ['./room.component.css']
 })
-export class RoomComponent implements OnInit,OnDestroy {
+export class RoomComponent implements OnInit, OnDestroy {
 
-   // OPENVIDU_SERVER_URL = 'https://' + '192.168.99.100' + ':4443';
+  // OPENVIDU_SERVER_URL = 'https://' + '192.168.99.100' + ':4443';
   // OPENVIDU_SERVER_SECRET = 'MY_SECRET';
-  videoSubscription:Subscription;
-  audioSubscription:Subscription;
+  videoSubscription: Subscription;
+  audioSubscription: Subscription;
 
-  OPENVIDU_SERVER_URL = 'https://' + 'adimerk.studio' ;
+  OPENVIDU_SERVER_URL = 'https://' + 'adimerk.studio';
   OPENVIDU_SERVER_SECRET = 'qwerty@321';
-  src="../../assets/images/video.png"
-  src2="../../assets/images/mic.png"
+  src = "../../assets/images/video.png"
+  src2 = "../../assets/images/mic.png"
 
   // OpenVidu objects
 
- 
+
 
   OV: OpenVidu;
   session: Session;
   publisher: any; // Local
   subscribers: StreamManager[] = []; // Remotes
   connection: Connection[] = [];
-  show=false;
-  Host =false;
+  show = false;
+  Host = false;
   // Join form
   mySessionId: string;
   myUserName: string;
-  tk:any;
-  startSpeaking=false;
-  connectionId:any;
+  tk: any;
+  startSpeaking = false;
+  connectionId: any;
+  audioconnectionId:any;
+  subaudio:any;
 
-  pub=true
-   exp:any;
+  pub = true
+  exp: any;
   // Main video of the page, will be 'publisher' or one of the 'subscribers',
   // updated by click event in UserVideoComponent children
   mainStreamManager: StreamManager;
-  audioOn=true;
-  videoOn=true;
-   messages:messages[];
-   messageSubscription:Subscription
+  audioOn = true;
+  videoOn = true;
+  messages: messages[];
+  messageSubscription: Subscription
 
-  constructor(private httpClient: HttpClient, private Router:ActivatedRoute,private chatService:ChangeService,private Route:Router) {
+  constructor(private httpClient: HttpClient, private Router: ActivatedRoute, private chatService: ChangeService, private Route: Router) {
     this.generateParticipantInfo();
   }
-  ngOnInit()
-  {
-      
-      this.Router.params
-      .subscribe((params:Params)=>
-      {
-          if(params.session)
-          {
-            this.Host = true;
-         this.mySessionId = params.session
+  ngOnInit() {
 
-             this.joinSession()
-          }
-          if(params.name)
-          {
-              this.myUserName = params.name;
-          }
-          if(params.id)
-          {
-        this.mySessionId = params.id;
-                 
-          }
+    this.Router.params
+      .subscribe((params: Params) => {
+        if (params.session) {
+          this.Host = true;
+          this.mySessionId = params.session
 
-         
+          this.joinSession()
+        }
+        if (params.name) {
+          this.myUserName = params.name;
+        }
+        if (params.id) {
+          this.mySessionId = params.id;
+
+        }
+
+
       }
       )
-      
-      this.messageSubscription =this.chatService.messageChanged
-      .subscribe((messages)=>{
+
+    this.messageSubscription = this.chatService.messageChanged
+      .subscribe((messages) => {
         this.messages = messages
         console.log(messages)
-      }) 
+      })
   }
 
   @HostListener('window:beforeunload')
@@ -112,15 +109,15 @@ export class RoomComponent implements OnInit,OnDestroy {
     // --- 2) Init a session ---
 
     this.session = this.OV.initSession();
-   
+
     this.session.on('reconnecting', () => alert('Oops! Trying to reconnect to the session'));
     this.session.on('reconnected', () => alert('Hurray! You successfully reconnected to the session'));
-    this.session.on('sessionDisconnected', (event:any) => {
-        if (event.reason === 'networkDisconnect') {
-            alert('Dang-it... You lost your connection to the session');
-        } else {
-            // Disconnected from the session for other reason than a network drop
-        }
+    this.session.on('sessionDisconnected', (event: any) => {
+      if (event.reason === 'networkDisconnect') {
+        alert('Dang-it... You lost your connection to the session');
+      } else {
+        // Disconnected from the session for other reason than a network drop
+      }
     });
     // --- 3) Specify the actions when events take place in the session ---
 
@@ -141,13 +138,26 @@ export class RoomComponent implements OnInit,OnDestroy {
       this.deleteSubscriber(event.stream.streamManager);
     });
 
+
     this.session.on('signal:chat', (data:any)=>
      {  const clientData = JSON.parse(data.from.data) 
       const messages:messages = {'name':clientData.clientData ,'message':data.data}
       this.chatService.addmessage(messages)
-      
+
 
     });
+    this.session.on('signal:audio', (data:any)=>
+    {  
+        this.subaudio=JSON.parse(data.data)
+        this.audioconnectionId = data.from.connectionId
+        console.log(this.subaudio)
+        console.log(this.audioconnectionId)
+   });
+   this.session.on('signal:video', (data:any)=>
+   {  
+       console.log(data)
+  });
+
 
     // --- 4) Connect to the session with a valid user token ---
 
@@ -167,7 +177,7 @@ export class RoomComponent implements OnInit,OnDestroy {
           let publisher: Publisher = this.OV.initPublisher(undefined, {
             audioSource: undefined, // The source of audio. If undefined default microphone
             videoSource: undefined, // The source of video. If undefined default webcam
-            publishAudio: true ,     // Whether you want to start publishing with your audio unmuted or not
+            publishAudio: true,     // Whether you want to start publishing with your audio unmuted or not
             publishVideo: true,     // Whether you want to start publishing with your video enabled or not
             resolution: '640x480',  // The resolution of your video
             frameRate: 30,          // The frame rate of your video
@@ -178,7 +188,7 @@ export class RoomComponent implements OnInit,OnDestroy {
           // --- 6) Publish your stream ---
 
           this.session.publish(publisher);
-         
+
           // Set the main video in the page to display our webcam and store our Publisher
           this.mainStreamManager = publisher;
           this.publisher = publisher;
@@ -190,23 +200,23 @@ export class RoomComponent implements OnInit,OnDestroy {
         });
     });
 
-    this.session.on('publisherStartSpeaking', (event:any) => {
+    this.session.on('publisherStartSpeaking', (event: any) => {
       console.log('Publisher ' + event + ' start speaking');
       this.startSpeaking = true;
       this.connectionId = event.connection.connectionId;
-       console.log(event)
+      console.log(event)
       //  this.mainStreamManager = event.connection.stream
-      
+
     });
-    
-    this.session.on('publisherStopSpeaking', (event:any) => {
-        console.log('Publisher ' + event + ' stop speaking');
-        this.startSpeaking=false;
+
+    this.session.on('publisherStopSpeaking', (event: any) => {
+      console.log('Publisher ' + event + ' stop speaking');
+      this.startSpeaking = false;
 
     });
   }
 
-leaveSession() {
+  leaveSession() {
 
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
@@ -224,7 +234,7 @@ leaveSession() {
 
   private generateParticipantInfo() {
     // Random user nickname and sessionId
-    
+
     this.myUserName = 'Participant' + Math.floor(Math.random() * 100);
   }
 
@@ -241,25 +251,23 @@ leaveSession() {
     // console.log(this.tk);
     // console.log(connection);
     // console.log(this.session.forceDisconnect(connection) );
-    
+
     // this.session.forceUnpublish(streamManager.stream);
   }
 
-  disconnect(streamManager: StreamManager)
-  {
+  disconnect(streamManager: StreamManager) {
     this.session.forceDisconnect(streamManager.stream.connection);
-     
+
   }
-  unpublish(streamManager: any)
-  {   
-      this.session.forceUnpublish(streamManager.stream)
-      this.exp = streamManager
-    
-    
+  unpublish(streamManager: any) {
+    this.session.forceUnpublish(streamManager.stream)
+    this.exp = streamManager
+
+
 
   }
 
-  
+
 
   /**
    * --------------------------
@@ -317,15 +325,13 @@ leaveSession() {
   createToken(sessionId): Promise<string> {
     return new Promise((resolve, reject) => {
       let body
-      if(this.Host)
-      {
-       body = JSON.stringify({ session: sessionId, role: "MODERATOR"});
-       
+      if (this.Host) {
+        body = JSON.stringify({ session: sessionId, role: "MODERATOR" });
+
       }
-      else
-      {
-       body = JSON.stringify({ session: sessionId});
-       
+      else {
+        body = JSON.stringify({ session: sessionId });
+
 
       }
       const options = {
@@ -351,25 +357,24 @@ leaveSession() {
 
   }
 
-  
-  onSubmit(f:NgForm)
-  {  
+
+  onSubmit(f: NgForm) {
     const data = f.value.chat
     const mess:any = {"data":data, "to":this.connection,"type":"chat"}
     const messages:messages = {"name":this.myUserName ,"message":f.value.chat}
     this.session.signal(mess)
     this.chatService.addmessage(messages)
     f.reset()
-        
   }
-  chat()
-  {
-    this.show=!this.show;
-    
+
+  chat() {
+    this.show = !this.show;
+
   }
   audiochange() {
-    this.audioOn=!this.audioOn
+    this.audioOn = !this.audioOn
     this.publisher.publishAudio(this.audioOn);
+
     const mess:any = {"data":String(this.audioOn), "to":this.connection,"type":"audio"}
     this.session.signal(mess)
     if(this.audioOn)
@@ -377,15 +382,14 @@ leaveSession() {
       this.src2="../../assets/images/mic.png"
 
     }
-    else
-    {
-       this.src2="../../assets/images/mic-off.png"
+    else {
+      this.src2 = "../../assets/images/mic-off.png"
     }
 
   }
   videochange() {
-    this.videoOn=!this.videoOn
-    this.publisher.publishVideo(this.videoOn)
+    this.videoOn = !this.videoOn
+    this.publisher.publishVideo(this.videoOn);
     const mess:any = {"data":String(this.videoOn), "to":this.connection,"type":"video"}
     this.session.signal(mess)
     if(this.videoOn)
@@ -393,11 +397,11 @@ leaveSession() {
       this.src="../../assets/images/video.png"
 
     }
-    else{
-      this.src="../../assets/images/video-off.png"
+    else {
+      this.src = "../../assets/images/video-off.png"
 
     }
-    
+
   }
  
 
