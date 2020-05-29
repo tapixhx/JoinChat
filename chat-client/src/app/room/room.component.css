@@ -1,6 +1,16 @@
 .stream-container {
-	padding: 0;
+	
+	padding:0px 0px
 }
+.border
+{
+	padding: 0px 100px;
+}
+.mainstream
+{
+	height: 200px !important;
+}
+
 .heading
 {
 	color: #0B132B;
@@ -20,11 +30,13 @@
 
 .text-box
 {
-	position: absolute;
-	top:100;
+	position: fixed;
+	top:50;
 	width: 500px;
-	height: 700px;
+	height: 750px;
 	margin-left: 100px;
+	left:1100;
+	background: white;
 	
 }
 .display
@@ -60,7 +72,7 @@
 	margin-bottom:2px;
 
 }
-.join-button
+.join-button,.leave-button,.normal-button
 {
     padding: 10px 30px;
     font-size: 120%;
@@ -72,10 +84,27 @@
 	background: #5BC0BE;
 	color: white;
 }
-.join-button:hover{
+.join-button:hover,.leave-button:hover,.normal-button:hover{
     box-shadow: 0 0px 0px;
 
 }
+.leave-button
+{
+	background: red;
+	color: white;
+	border-radius: 3px;
+	margin: 10px;
+	
+}
+.normal-button
+{
+	background: white;
+	border-radius: 3px;
+	margin: 10px;
+
+
+}
+
 .center{
   text-align: center;
 }
@@ -115,6 +144,17 @@
 }
 .undisplay2{
 	display: none;
+}
+#session-header{
+	position:fixed;
+	bottom:10px;
+	z-index: 10;
+	width: 100%;
+	text-align: center;
+}
+#session
+{
+	background: #0b0c10;
 }
 @media only screen and (max-width: 768px)
 {

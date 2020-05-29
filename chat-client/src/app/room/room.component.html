@@ -37,54 +37,59 @@
 </div>
 
 	<div *ngIf="session" id="session">
+		<h1 id="session-title" class="box-head">{{mySessionId}}</h1>
+
 		<div id="session-header">
-			<h1 id="session-title" class="box-head">{{mySessionId}}</h1>
-			<input class="join-btn" type="button" id="buttonLeaveSession" (click)="leaveSession()" value="Leave session">
-			<img src="../../assets/images/video-off.png" alt="video-off" style="width:3rem; margin-left:1rem;" *ngIf="videoOn" (click)="videoOff()">
-			<img src="../../assets/images/video.png" alt="video-on" style="width:3rem; margin-left:1rem;" *ngIf="!videoOn" (click)="videoon()">
-			<img src="../../assets/images/mic-off.png" alt="mic-off" style="width:3rem; margin-left:1rem;" (click)="audioOff()" *ngIf="audioOn">
-			<img src="../../assets/images/mic.png" alt="mic-on" style="width:2rem; margin-left:1rem;" (click)="audioon()" *ngIf="!audioOn">
-			<!-- <input class="join-btn" type="button" *ngIf="videoOn" (click)="videoOff()" value="Video Off">
-			<input class="join-btn" type="button" *ngIf="!videoOn" (click)="videoon()" value="Video On">
-			<input class="join-btn" *ngIf="audioOn" type="button" (click)="audioOff()" value="Mute">
-			<input class="join-btn" *ngIf="!audioOn" type="button" (click)="audioon()" value="Unmute"> -->
-			<button class="chat"(click)="chat()">click</button>
+			<button class="normal-button" (click)="videochange()"><img [src]="src" alt="video-off" style="width:30px; margin-right:20px;"></button>
+			<button class="leave-button" (click)="leaveSession()"><img style="width: 20px;" src="../../assets/images/phone.svg"></button>
+			<button class="normal-button" (click)="audiochange()"><img [src]="src2"  style="width:30px; margin-left:20px;"  ></button>
+			<button class="normal-button" (click)="chat()"><img src="../../assets/images/chat.svg"  style="width:30px; margin-left:20px;"  ></button>
+
 		</div>
-		<div *ngIf="mainStreamManager" id="main-video" class="col-md-6">
-			<user-video [streamManager]="mainStreamManager"></user-video>
-		</div>
-		<div id="video-container" class="col-md-6">
-			<div *ngIf="publisher" class="stream-container col-md-6 col-xs-6">
+		<div id="video-container" class="row border">
+			<div *ngIf="publisher" class="stream-container col-md-2">
 				<user-video [streamManager]="publisher" (click)="updateMainStreamManager(publisher)"></user-video>
-			</div>
-			<div *ngFor="let sub of subscribers" class="stream-container col-md-6 col-xs-6">
+			<div *ngFor="let sub of subscribers" class="stream-container">
+				<div class="border-sub">
 				<user-video [streamManager]="sub" (click)="updateMainStreamManager(sub)"></user-video>
 				<div *ngIf="!sub.stream.audioActive">audiooff</div>
 				<div *ngIf="sub.stream.connection.connectionId == connectionId">
+
 					<div *ngIf="startSpeaking" ><img class="small" src="../../assets/images/giphy.gif"></div>
 				</div>
+				</div>
 			</div>
+			</div>
+		<div *ngIf="mainStreamManager" id="main-video" class="col-md-10">
+			<user-video class="mainstream" [streamManager]="mainStreamManager"></user-video>
+			
 		</div>
+		</div>
+		<div class="text-box" [class.display]="show" [class.undisplay]="!show">
+        
+		<div *ngFor="let message of messages">
+			<div class="name">{{message.name}}</div>
+			<div class="message">{{message.message}}</div>
+		</div>
+	    
+	   
+	   <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+		 <input  
+		   id="email"
+			name="chat"
+			placeholder="email"
+			class="form-control"
+			ngModel
+			required
+			#email="ngModel"
+	   
+	   > 
+		<button type="submit">send</button>
+	   </form>
 	</div>
+	
+	</div>
+	
 </div>
-<div class="text-box" [class.display]="show" [class.undisplay]="!show">
 
- <div *ngFor="let message of messages">
-	 <div class="name">{{message.name}}</div>
-	 <div class="message">{{message.message}}</div>
- </div>
 
-<form (ngSubmit)="onSubmit(f)" #f="ngForm">
-  <input  
-	id="email"
-	 name="chat"
-	 placeholder="email"
-	 class="form-control"
-	 ngModel
-	 required
-	 #email="ngModel"
-
-> 
- <button type="submit">send</button>
-</form>
-</div>

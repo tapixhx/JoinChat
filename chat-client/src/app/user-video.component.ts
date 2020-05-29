@@ -7,7 +7,6 @@ import { StreamManager } from 'openvidu-browser';
         ov-video {
             width: 100%;
             height: auto;
-            float: left;
             cursor: pointer;
         }
         div div {
