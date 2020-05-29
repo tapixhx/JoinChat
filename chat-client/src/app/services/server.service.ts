@@ -38,8 +38,12 @@ export class ServerService {
   }
 
   getSessionId() {
-    const headers = new HttpHeaders({'Content-Type':'application/json'})
-    return this.http.post(this.rootUrl+'user/getSession',
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Content-Type':'application/json',
+      'Authorization': `Bearer `+token,
+    })
+    return this.http.get(this.rootUrl+'user/getSession',
     {headers: headers});
   }
 
