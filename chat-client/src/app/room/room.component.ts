@@ -44,8 +44,8 @@ export class RoomComponent implements OnInit, OnDestroy {
   tk: any;
   startSpeaking = false;
   connectionId: any;
-  audioconnectionId:any;
-  subaudio:any;
+  audioconnectionId: any;
+  subaudio: any;
 
   pub = true
   exp: any;
@@ -139,24 +139,51 @@ export class RoomComponent implements OnInit, OnDestroy {
     });
 
 
-    this.session.on('signal:chat', (data:any)=>
-     {  const clientData = JSON.parse(data.from.data) 
-      const messages:messages = {'name':clientData.clientData ,'message':data.data}
+    this.session.on('signal:chat', (data: any) => {
+      const clientData = JSON.parse(data.from.data)
+      const messages: messages = { 'name': clientData.clientData, 'message': data.data }
       this.chatService.addmessage(messages)
 
 
     });
-    this.session.on('signal:audio', (data:any)=>
-    {  
-        this.subaudio=JSON.parse(data.data)
-        this.audioconnectionId = data.from.connectionId
-        console.log(this.subaudio)
-        console.log(this.audioconnectionId)
-   });
-   this.session.on('signal:video', (data:any)=>
-   {  
-       console.log(data)
-  });
+    this.session.on('signal:audio', (data: any) => {
+      this.subaudio = JSON.parse(data.data)
+      this.audioconnectionId = data.from.connectionId
+    });
+    this.session.on('signal:video', (data: any) => {
+      console.log(data)
+    });
+    this.session.on('signal:hostAudioOff', (data: any) => {
+       if(JSON.parse(data.data).connectionId == this.publisher.stream.connection.connectionId)
+       {
+         this.audioOn=true;
+         this.audiochange()
+       }
+       if(this.myUserName!=JSON.parse(data.data).name)
+       {
+       alert(JSON.parse(data.data).Host+' muted '+JSON.parse(data.data).name)
+       }
+       else{
+       alert(JSON.parse(data.data).Host+' muted You')
+
+       }
+
+    })
+    this.session.on('signal:hostVideoOff', (data: any) => {
+      if(JSON.parse(data.data).connectionId == this.publisher.stream.connection.connectionId)
+      {
+        this.videoOn=true
+        this.videochange()
+      }
+      if(this.myUserName!=JSON.parse(data.data).name)
+      {
+      alert(JSON.parse(data.data).Host+' Unpublish '+JSON.parse(data.data).name)
+      }
+      else{
+      alert(JSON.parse(data.data).Host+' Unpublish You')
+
+      }
+    })
 
 
     // --- 4) Connect to the session with a valid user token ---
@@ -192,7 +219,6 @@ export class RoomComponent implements OnInit, OnDestroy {
           // Set the main video in the page to display our webcam and store our Publisher
           this.mainStreamManager = publisher;
           this.publisher = publisher;
-          // console.log(publisher)
         })
         .catch(error => {
           console.log('There was an error connecting to the session:', error.code, error.message);
@@ -201,16 +227,13 @@ export class RoomComponent implements OnInit, OnDestroy {
     });
 
     this.session.on('publisherStartSpeaking', (event: any) => {
-      console.log('Publisher ' + event + ' start speaking');
       this.startSpeaking = true;
       this.connectionId = event.connection.connectionId;
-      console.log(event)
-      //  this.mainStreamManager = event.connection.stream
+      
 
     });
 
     this.session.on('publisherStopSpeaking', (event: any) => {
-      console.log('Publisher ' + event + ' stop speaking');
       this.startSpeaking = false;
 
     });
@@ -245,8 +268,9 @@ export class RoomComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateMainStreamManager(streamManager: StreamManager) {
+  updateMainStreamManager(streamManager: any) {
     this.mainStreamManager = streamManager;
+    streamManager.subscribeToVideo(false);
     // streamManager.stream.getMediaStream().id;
     // console.log(this.tk);
     // console.log(connection);
@@ -259,13 +283,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.session.forceDisconnect(streamManager.stream.connection);
 
   }
-  unpublish(streamManager: any) {
-    this.session.forceUnpublish(streamManager.stream)
-    this.exp = streamManager
 
-
-
-  }
 
 
 
@@ -315,8 +333,7 @@ export class RoomComponent implements OnInit, OnDestroy {
           })
         )
         .subscribe(response => {
-          console.log(response);
-          console.log("2");
+         
           resolve(response['id']);
         });
     });
@@ -360,8 +377,8 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   onSubmit(f: NgForm) {
     const data = f.value.chat
-    const mess:any = {"data":data, "to":this.connection,"type":"chat"}
-    const messages:messages = {"name":this.myUserName ,"message":f.value.chat}
+    const mess: any = { "data": data, "to": this.connection, "type": "chat" }
+    const messages: messages = { "name": this.myUserName, "message": f.value.chat }
     this.session.signal(mess)
     this.chatService.addmessage(messages)
     f.reset()
@@ -375,11 +392,10 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.audioOn = !this.audioOn
     this.publisher.publishAudio(this.audioOn);
 
-    const mess:any = {"data":String(this.audioOn), "to":this.connection,"type":"audio"}
+    const mess: any = { "data": String(this.audioOn), "to": this.connection, "type": "audio" }
     this.session.signal(mess)
-    if(this.audioOn)
-    {
-      this.src2="../../assets/images/mic.png"
+    if (this.audioOn) {
+      this.src2 = "../../assets/images/mic.png"
 
     }
     else {
@@ -390,11 +406,10 @@ export class RoomComponent implements OnInit, OnDestroy {
   videochange() {
     this.videoOn = !this.videoOn
     this.publisher.publishVideo(this.videoOn);
-    const mess:any = {"data":String(this.videoOn), "to":this.connection,"type":"video"}
+    const mess: any = { "data": String(this.videoOn), "to": this.connection, "type": "video" }
     this.session.signal(mess)
-    if(this.videoOn)
-    {
-      this.src="../../assets/images/video.png"
+    if (this.videoOn) {
+      this.src = "../../assets/images/video.png"
 
     }
     else {
@@ -403,7 +418,19 @@ export class RoomComponent implements OnInit, OnDestroy {
     }
 
   }
- 
+  subaudiooff(sub: any) {
+    const message: any = { "connectionId": sub.stream.connection.connectionId, "name": JSON.parse(sub.stream.connection.data).clientData, "Host": this.myUserName }
+    const mess: any = { "data":JSON.stringify(message), "to": this.connection, "type": "hostAudioOff" }
+    this.session.signal(mess)
+
+  }
+  subvideooff(sub: any) {
+    const message: any = { "connectionId": sub.stream.connection.connectionId, "name": JSON.parse(sub.stream.connection.data).clientData, "Host": this.myUserName }
+    const mess: any = { "data":JSON.stringify(message), "to": this.connection, "type": "hostVideoOff" }
+    this.session.signal(mess)    
+
+  }
+
 
 
 }
