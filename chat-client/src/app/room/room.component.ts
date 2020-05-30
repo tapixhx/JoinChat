@@ -153,34 +153,32 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.session.on('signal:video', (data: any) => {
       console.log(data)
     });
-    this.session.on('signal:hostAudioOff', (data: any) => {
-       if(JSON.parse(data.data).connectionId == this.publisher.stream.connection.connectionId)
-       {
-         this.audioOn=true;
-         this.audiochange()
-       }
-       if(this.myUserName!=JSON.parse(data.data).name)
-       {
-       alert(JSON.parse(data.data).Host+' muted '+JSON.parse(data.data).name)
-       }
-       else{
-       alert(JSON.parse(data.data).Host+' muted You')
+    this.session.on('signal:stopRemoteAudio', (data: any) => {
+      const message = data.data.split(',')
+      if (message[1] == this.publisher.stream.connection.connectionId) {
+        this.audioOn = true;
+        this.audiochange()
+      }
+      if (this.myUserName != message[0]) {
+        alert(message[2] + ' muted ' + message[0])
+      }
+      else {
+        alert(message[2] + ' muted You')
 
-       }
+      }
 
     })
-    this.session.on('signal:hostVideoOff', (data: any) => {
-      if(JSON.parse(data.data).connectionId == this.publisher.stream.connection.connectionId)
-      {
-        this.videoOn=true
+    this.session.on('signal:stopRemoteVideo', (data: any) => {
+      const message = data.data.split(',')
+      if (message[1] == this.publisher.stream.connection.connectionId) {
+        this.videoOn = true;
         this.videochange()
       }
-      if(this.myUserName!=JSON.parse(data.data).name)
-      {
-      alert(JSON.parse(data.data).Host+' Unpublish '+JSON.parse(data.data).name)
+      if (this.myUserName != message[0]) {
+        alert(message[2] + ' unpublish ' + message[0])
       }
-      else{
-      alert(JSON.parse(data.data).Host+' Unpublish You')
+      else {
+        alert(message[2] + ' unpublish You')
 
       }
     })
@@ -229,7 +227,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.session.on('publisherStartSpeaking', (event: any) => {
       this.startSpeaking = true;
       this.connectionId = event.connection.connectionId;
-      
+
 
     });
 
@@ -270,13 +268,6 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   updateMainStreamManager(streamManager: any) {
     this.mainStreamManager = streamManager;
-    streamManager.subscribeToVideo(false);
-    // streamManager.stream.getMediaStream().id;
-    // console.log(this.tk);
-    // console.log(connection);
-    // console.log(this.session.forceDisconnect(connection) );
-
-    // this.session.forceUnpublish(streamManager.stream);
   }
 
   disconnect(streamManager: StreamManager) {
@@ -333,7 +324,7 @@ export class RoomComponent implements OnInit, OnDestroy {
           })
         )
         .subscribe(response => {
-         
+
           resolve(response['id']);
         });
     });
@@ -419,15 +410,18 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   }
   subaudiooff(sub: any) {
-    const message: any = { "connectionId": sub.stream.connection.connectionId, "name": JSON.parse(sub.stream.connection.data).clientData, "Host": this.myUserName }
-    const mess: any = { "data":JSON.stringify(message), "to": this.connection, "type": "hostAudioOff" }
+    const message: string = "" + (JSON.parse(sub.stream.connection.data)).clientData + ',' + sub.stream.connection.connectionId + ',' + this.myUserName + ""
+    console.log(message)
+    const mess: any = { "data": message, "to": this.connection, "type": "stopRemoteAudio" }
     this.session.signal(mess)
 
   }
   subvideooff(sub: any) {
-    const message: any = { "connectionId": sub.stream.connection.connectionId, "name": JSON.parse(sub.stream.connection.data).clientData, "Host": this.myUserName }
-    const mess: any = { "data":JSON.stringify(message), "to": this.connection, "type": "hostVideoOff" }
-    this.session.signal(mess)    
+
+    const message: string = "" + (JSON.parse(sub.stream.connection.data)).clientData + ',' + sub.stream.connection.connectionId + ',' + this.myUserName + ""
+    console.log(message)
+    const mess: any = { "data": message, "to": this.connection, "type": "stopRemoteVideo" }
+    this.session.signal(mess)
 
   }
 
