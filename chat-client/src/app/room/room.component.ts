@@ -9,6 +9,7 @@ import { ChangeService } from '../services/chat.service';
 import { messages } from '../shared/message.model';
 import { stringify } from 'querystring';
 import { ServerService } from '../services/server.service';
+import { CommonVarService } from '../services/common-var.service';
 
 
 @Component({
@@ -58,7 +59,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   messages: messages[];
   messageSubscription: Subscription
 
-  constructor(private httpClient: HttpClient, private Router: ActivatedRoute, private chatService: ChangeService, private Route: Router,private ServerService:ServerService) {
+  constructor(private httpClient: HttpClient, private Router: ActivatedRoute, private chatService: ChangeService, private Route: Router,private ServerService:ServerService,private commeonservice:CommonVarService) {
     this.generateParticipantInfo();
   }
   ngOnInit() {
@@ -102,6 +103,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.leaveSession();
   }
   getToken()
+  { if(localStorage.getItem('token'))
   {
     this.ServerService.gettoken(this.mySessionId)
     .subscribe((response:any)=>
@@ -120,6 +122,10 @@ export class RoomComponent implements OnInit, OnDestroy {
     {
       alert(error.error.error)
     })
+  }
+  else{
+    this.commeonservice.loginopen()
+  }
   }
 
   joinSession() {

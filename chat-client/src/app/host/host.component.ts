@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { ServerService } from '../services/server.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { CommonVarService } from '../services/common-var.service';
 
 
 
@@ -20,10 +21,12 @@ export class HostComponent implements OnInit {
 
   constructor(private Router: Router,
     private serverservice: ServerService,
-    private httpClient: HttpClient) { }
+    private httpClient: HttpClient,
+    private ChangeService:CommonVarService) { }
   session: any;
   ngOnInit(): void {
-
+    if(localStorage.getItem('token'))
+    {
     this.serverservice.getSessionId()
       .subscribe(
         (response) => {
@@ -37,6 +40,10 @@ export class HostComponent implements OnInit {
         }
       )
   }
+  else{
+    this.ChangeService.loginopen()
+  }
+}
 
   copytext() {
     this.copyText = document.getElementById("sessionId");
@@ -56,6 +63,9 @@ export class HostComponent implements OnInit {
 
         }
         )
+    }
+    else{
+      this.ChangeService.loginopen()
     }
 
 
