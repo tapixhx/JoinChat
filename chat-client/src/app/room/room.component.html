@@ -7,7 +7,7 @@
 			<div class="col-sm-4 col-xs-12">
 				<div class="heading">Join a meeting</div>
 				<div class="padding">
-					<form class="form-group" (submit)="joinSession()" #c="ngForm">
+					<form class="form-group" (submit)="getToken()" #c="ngForm">
 						<label class="left">Name</label>
 						<input class="form-control " type="text" id="userName" name="userName" [(ngModel)]="myUserName"
 							required>
@@ -15,7 +15,7 @@
 						<input placeholder="Enter session " class="form-control " type="text" id="sessionId"
 							name="sessionId" [(ngModel)]="mySessionId" required>
 						<div class="center">
-							<button class="join-button">Join the meeting</button>
+							<button  class="join-button">Join the meeting</button>
 						</div>
 					</form>
 				</div>
@@ -70,10 +70,10 @@
 				</div>
 				<div class="row">
 					<div class="col-xs-6">
-                     <button (click)="subaudiooff(sub)" class="leave-button">AudioOff</button>
+                     <button *ngIf="Host" (click)="subaudiooff(sub)" class="leave-button">AudioOff</button>
 					</div>
 					<div class="col-xs-6">
-					<button (click)="subvideooff(sub)" class="leave-button">VideoOff</button>
+					<button *ngIf="Host" (click)="subvideooff(sub)" class="leave-button">VideoOff</button>
 					</div>
 				</div>
 			</div>
