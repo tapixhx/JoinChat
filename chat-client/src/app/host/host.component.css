@@ -17,7 +17,14 @@
 {
 	width: 100vw;
 }
-
+.border
+{
+	border-bottom:2px solid #9F9F9F;
+	margin-bottom:50px
+}
+.center{
+	text-align: center;
+}
 .text-box
 {
 	position: absolute;
@@ -72,6 +79,14 @@
 	background: #5BC0BE;
 	color: white;
 }
+.copy-button
+{
+  color:#5BC0BE;
+  font-family: Montserrat;
+  background: white;
+  border:0px
+
+}
 .join-button:hover{
     box-shadow: 0 0px 0px;
 
@@ -89,10 +104,10 @@
 }
 .form-control
 {
-	margin-bottom: 3vw;
+	margin-bottom: 50px;
 	border-radius: 10px 10px ;
 	height: 40px;
-	border: 2px solid #9F9F9F;
+	border: 1.5px solid #9F9F9F;
 	padding: 2px 0px 2px 10px;
 	color: black;
 	font-weight: 600;
