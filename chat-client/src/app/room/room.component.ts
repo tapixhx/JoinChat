@@ -8,6 +8,8 @@ import { NgForm } from '@angular/forms';
 import { ChangeService } from '../services/chat.service';
 import { messages } from '../shared/message.model';
 import { stringify } from 'querystring';
+import { ServerService } from '../services/server.service';
+import { CommonVarService } from '../services/common-var.service';
 
 
 @Component({
@@ -22,8 +24,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   videoSubscription: Subscription;
   audioSubscription: Subscription;
 
-  OPENVIDU_SERVER_URL = 'https://' + 'adimerk.studio';
-  OPENVIDU_SERVER_SECRET = 'qwerty@321';
+  
   src = "../../assets/images/video.png"
   src2 = "../../assets/images/mic.png"
 
@@ -46,6 +47,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   connectionId: any;
   audioconnectionId: any;
   subaudio: any;
+  token:any
 
   pub = true
   exp: any;
@@ -57,7 +59,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   messages: messages[];
   messageSubscription: Subscription
 
-  constructor(private httpClient: HttpClient, private Router: ActivatedRoute, private chatService: ChangeService, private Route: Router) {
+  constructor(private httpClient: HttpClient, private Router: ActivatedRoute, private chatService: ChangeService, private Route: Router,private ServerService:ServerService,private commeonservice:CommonVarService) {
     this.generateParticipantInfo();
   }
   ngOnInit() {
@@ -67,6 +69,7 @@ export class RoomComponent implements OnInit, OnDestroy {
         if (params.session) {
           this.Host = true;
           this.mySessionId = params.session
+          this.token=this.ServerService.getsettoken()
 
           this.joinSession()
         }
@@ -98,6 +101,31 @@ export class RoomComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     // On component destroyed leave session
     this.leaveSession();
+  }
+  getToken()
+  { if(localStorage.getItem('token'))
+  {
+    this.ServerService.gettoken(this.mySessionId)
+    .subscribe((response:any)=>
+    {
+       this.token = response.token
+       
+       if(response.role=="MODERATOR")
+       {
+         this.Host=true
+       }
+        
+       this.joinSession()
+        
+    },
+    error=>
+    {
+      alert(error.error.error)
+    })
+  }
+  else{
+    this.commeonservice.loginopen()
+  }
   }
 
   joinSession() {
@@ -188,11 +216,11 @@ export class RoomComponent implements OnInit, OnDestroy {
 
     // 'getToken' method is simulating what your server-side should do.
     // 'token' parameter should be retrieved and returned by your own backend
-    this.getToken().then(token => {
+    
 
       // First param is the token got from OpenVidu Server. Second param can be retrieved by every user on event
       // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
-      this.session.connect(token, { clientData: this.myUserName })
+      this.session.connect(this.token, { clientData: this.myUserName })
         .then(() => {
 
           // --- 5) Get your own camera stream ---
@@ -222,7 +250,7 @@ export class RoomComponent implements OnInit, OnDestroy {
           console.log('There was an error connecting to the session:', error.code, error.message);
           console.log("1");
         });
-    });
+   
 
     this.session.on('publisherStartSpeaking', (event: any) => {
       this.startSpeaking = true;
@@ -290,81 +318,11 @@ export class RoomComponent implements OnInit, OnDestroy {
    *   3) The token must be consumed in Session.connect() method of OpenVidu Browser
    */
 
-  getToken(): Promise<string> {
-    return this.createSession(this.mySessionId).then(
-      sessionId => {
-        return this.createToken(sessionId);
-      })
-  }
+  
 
-  createSession(sessionId) {
-    return new Promise((resolve, reject) => {
+  
 
-      const body = JSON.stringify({ customSessionId: sessionId });
-      const options = {
-        headers: new HttpHeaders({
-          'Authorization': 'Basic ' + btoa('OPENVIDUAPP:' + this.OPENVIDU_SERVER_SECRET),
-          'Content-Type': 'application/json'
-        })
-      };
-      return this.httpClient.post(this.OPENVIDU_SERVER_URL + '/api/sessions', body, options)
-        .pipe(
-          catchError(error => {
-            if (error.status === 409) {
-              resolve(sessionId);
-            } else {
-              console.warn('No connection to OpenVidu Server. This may be a certificate error at ' + this.OPENVIDU_SERVER_URL);
-              if (window.confirm('No connection to OpenVidu Server. This may be a certificate error at \"' + this.OPENVIDU_SERVER_URL +
-                '\"\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server' +
-                'is up and running at "' + this.OPENVIDU_SERVER_URL + '"')) {
-                location.assign(this.OPENVIDU_SERVER_URL + '/accept-certificate');
-              }
-            }
-            return observableThrowError(error);
-          })
-        )
-        .subscribe(response => {
-
-          resolve(response['id']);
-        });
-    });
-  }
-
-  createToken(sessionId): Promise<string> {
-    return new Promise((resolve, reject) => {
-      let body
-      if (this.Host) {
-        body = JSON.stringify({ session: sessionId, role: "MODERATOR" });
-
-      }
-      else {
-        body = JSON.stringify({ session: sessionId });
-
-
-      }
-      const options = {
-        headers: new HttpHeaders({
-          'Authorization': 'Basic ' + btoa('OPENVIDUAPP:' + this.OPENVIDU_SERVER_SECRET),
-          'Content-Type': 'application/json'
-        })
-      };
-      return this.httpClient.post(this.OPENVIDU_SERVER_URL + '/api/tokens', body, options)
-        .pipe(
-          catchError(error => {
-            reject(error);
-            return observableThrowError(error);
-          })
-        )
-        .subscribe(response => {
-          console.log(response);
-          console.log("3");
-          resolve(response['token']);
-          this.tk = response['token'];
-        });
-    });
-
-  }
-
+  
 
   onSubmit(f: NgForm) {
     const data = f.value.chat
