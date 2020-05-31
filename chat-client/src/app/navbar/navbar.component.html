@@ -18,10 +18,10 @@
     <div class="contain-popup">
         <div>
             <div class="row body">
-                <div  class="col-sm-4 col-xs-0 height center display2">
+                <div  class="col-sm-3 col-xs-0 height center display2">
                     <img class="image1" src="../../assets/images/Layer 1.svg">
                 </div>	
-                <div class="col-md-4 col-sm-12 col-wid"> 
+                <div class="col-md-6 col-sm-12 col-wid"> 
                     <div class="heading">SignUp</div>
                     <div class="padding">
                     <form class="form-group" (submit)="signupform(sf)" #sf="ngForm" >
@@ -91,15 +91,19 @@
                         !confirmPassword.errors?.required" 
                         style="color:red;">Password doesn't match</span>
 
-                        <div class="center">
+                        <div class="center row">
+                        <div class="col-xs-6">    
                         <button type="submit" class="join-button" [disabled]="!sf.valid">SignUp</button>
+                        </div>
+                        <div class="col-xs-6">
                         <button type="submit" class="close-button" (click)="close()">Close</button>
+                        </div>
                         </div> 
 
                     </form>
                     </div>
                 </div>
-                <div class="col-sm-4 col-xs-0 height2 center display2">
+                <div class="col-sm-3 col-xs-0 height2 center display2">
                     <img class="image2" src="../../assets/images/Layer 2.svg">
                 </div>
                 
@@ -114,10 +118,10 @@
     <div class="contain-popup">
         <div>
             <div class="row body">
-                <div  class="col-sm-4 col-xs-0 height center display2">
+                <div  class="col-sm-3 col-xs-0 height center display2">
                     <img class="image1" src="../../assets/images/Layer 1.svg">
                 </div>	
-                <div class="col-md-4 col-sm-12 col-wid"> 
+                <div class="col-md-6 col-sm-12 col-wid"> 
                     <div class="heading">LogIn</div>
                     <div class="padding">
                     <form class="form-group" (submit)="loginform(f)" #f="ngForm" >
@@ -152,15 +156,19 @@
                     *ngIf="!password.valid && password.touched"
                     style="color:red;">Enter minimum 6 character password</span>
 
-                    <div class="center">
+                    <div class="center row">
+                    <div class="col-xs-6">
                     <button type="submit" class="join-button" [disabled]="!f.valid">LogIn</button>
+                    </div>
+                    <div class="col-xs-6">
                     <button type="submit" class="close-button" (click)="close()">Close</button>
+                    </div>
                     </div>
 
                     </form>
                     </div>
                 </div>
-                <div class="col-sm-4 col-xs-0 height2 center display2">
+                <div class="col-sm-3 col-xs-0 height2 center display2">
                     <img class="image2" src="../../assets/images/Layer 2.svg">
                 </div>
                 
