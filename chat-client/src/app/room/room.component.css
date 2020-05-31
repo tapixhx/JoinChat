@@ -78,12 +78,14 @@
 	margin-bottom:2px;
 
 }
+button:focus {
+	outline:none;
+}
 .join-button,.leave-button,.normal-button
 {
-    padding: 10px 30px;
     font-size: 120%;
     font-family: Montserrat;
-    border-radius: 100px 100px;
+    border-radius: 50%;
     border: 0px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.14), 0 6px 6px rgba(0,0,0,0.20);
 	transition: all 0.3s;
@@ -94,21 +96,30 @@
     box-shadow: 0 0px 0px;
 
 }
+.join-button {
+	padding: 10px 30px;
+	border-radius:100px 100px;
+}
 .leave-button
 {
 	background: red;
 	color: white;
-	border-radius: 3px;
+	padding: 10px 30px;
 	margin: 10px;
-	
 }
 .normal-button
 {
-	background: white;
-	border-radius: 3px;
+	background: black;
 	margin: 10px;
-
-
+}
+.pd1 {
+	padding:10px 30px;
+}
+.pd2 {
+	padding:6px 30px;
+}
+.pd3 {
+	padding:6px 30px;
 }
 
 .center{
@@ -132,6 +143,10 @@
 	color: black;
 	font-weight: 600;
 }
+.small {
+	width:5rem !important;
+	height:5rem !important;
+}
 .form-control::placeholder
 {
 	color: black !important;
@@ -153,7 +168,7 @@
 }
 #session-header{
 	position:fixed;
-	bottom:10px;
+	bottom:4rem;
 	z-index: 10;
 	width: 100%;
 	text-align: center;
