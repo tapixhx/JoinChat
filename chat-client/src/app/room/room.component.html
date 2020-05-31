@@ -65,15 +65,18 @@
 				<div *ngIf="sub.stream.connection.connectionId==audioconnectionId">
 				<div *ngIf="!subaudio" ><img class="audiooff"  src="../../assets/images/audiooff.png"></div>
                 </div>
-				<div *ngIf="sub.stream.connection.connectionId == connectionId">
-					<div *ngIf="startSpeaking" ><img class="small" src="../../assets/images/giphy.gif"></div>
-				</div>
 				<div class="row">
-					<div class="col-xs-6">
-                     <button (click)="subaudiooff(sub)" class="leave-button">AudioOff</button>
+					<div class="col-xs-4">
+						<div *ngIf="sub.stream.connection.connectionId == connectionId">
+							<div *ngIf="startSpeaking" ><img class="small" src="../../assets/images/giphy.gif"></div>
+							<div *ngIf="!startSpeaking" ><img class="small" src="../../assets/images/stopspeak.png"></div>
+						</div>
 					</div>
-					<div class="col-xs-6">
-					<button (click)="subvideooff(sub)" class="leave-button">VideoOff</button>
+					<div class="col-xs-4">
+                    	<button (click)="subaudiooff(sub)" class="leave-button">AudioOff</button>
+					</div>
+					<div class="col-xs-4">
+						<button (click)="subvideooff(sub)" class="leave-button">VideoOff</button>
 					</div>
 				</div>
 			</div>

@@ -132,6 +132,10 @@
 	color: black;
 	font-weight: 600;
 }
+.small {
+	width:5rem !important;
+	height:5rem !important;
+}
 .form-control::placeholder
 {
 	color: black !important;
