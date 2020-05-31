@@ -30,6 +30,7 @@
     font-size: 1.2vw;
     letter-spacing: 0px;
     margin-top:30px;
+    font-weight: 600;
 }
 .padding
 {
@@ -107,26 +108,41 @@ button:focus
 @media only screen and (max-width: 455px)
 {
   .col-md-6{
-      width: 103vw;
+      width: 100vw;
+  }
+  .body{
+      margin: 0px 0px ;
+  }
+  .heading{
+      font-size: 8vw;
+      font-weight: 900;
+      width: 100vw;
+
   }
   .col-xs-12
     {
         text-align: left!important;
+        padding: 0px 4px;
         
     }
   .statement{
-      font-size: 3vw;
+      font-size: 3.5vw;
+      width: 100vw;
+
   }
   .join-button,.host-button
   {
      font-size: 4vw;
   }
+  .buttons
+  {
+      margin-left: 10px ;
+      margin-right: 0px;
+  }
+  .images{
+      margin-top: 30px;
+  }
  
 }
-@media only screen and (max-width: 376px)
-{
-  .col-md-6{
-      width: 103.2vw;
-  }
-}
+
 

@@ -9,12 +9,24 @@
         <form class="form-group" (submit)="host(c)" #c="ngForm" >
         <label class="left">Name</label>	
         <input placeholder="Enter Your Name" class="form-control " ngModel  type="text"  id="userName" name="userName"  required>
-        <label class="left">Password</label>
-        <input  placeholder="Enter Your Password " ngModel class="form-control " type="text" id="password" name="password"  required>
-        <input  placeholder="Your meeting link will appear here" ngModel class="form-control" type="text" id="sessionId" name="sessionid" required>
-        <input type="button" class="join-button" (click)="copytext()" value="Copy Link">
+        <div class="row border">
+        <div class="col-xs-9">    
+        <input   placeholder="Your meeting link will appear here" ngModel class="form-control" style="border:0px; margin-bottom: 1px;" type="text" id="sessionId" name="sessionid" required>
+        </div>
+        <div class="col-xs-3 center">
+        <input type="button" style="padding-top:10px;" class="copy-button" (click)="copytext()" value="Copy Link">
+        </div>
+        </div>
+        <div class="row border">
+            <div class="col-xs-9">    
+            <input    placeholder="Your meeting ID will appear here" ngModel class="form-control" style="border:0px; margin-bottom: 1px;" type="text" id="sessionIdID" name="sessionidID" required>
+            </div>
+            <div class="col-xs-3 center">
+            <input type="button" style="padding-top:10px;" class="copy-button" (click)="copyID()" value="Copy ID">
+            </div>
+            </div>
         <div class="center">
-        <button type="submit" class="join-button" >Host the meeting</button>
+        <button type="submit" class="join-button"  >Host the meeting</button>
         </div>
         </form>
         </div>
