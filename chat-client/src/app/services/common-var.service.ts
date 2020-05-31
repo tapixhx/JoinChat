@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 export class CommonVarService {
   loginchange= new Subject<boolean>();
   signupchange=new Subject<boolean>()
+  loginIdentification = new Subject<boolean>();
   constructor() { }
   loginopen()
   {
@@ -25,6 +26,10 @@ export class CommonVarService {
   signupOff()
   {
     this.signupchange.next(false)
+  }
+  logined()
+  {
+     this.loginIdentification.next(true)
   }
 
 }

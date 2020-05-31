@@ -19,7 +19,9 @@ export class HostComponent implements OnInit {
   link: any;
   linkbox: any;
   Id:any;
-  name:any
+  myname:any
+  Host=false;
+  
 
   constructor(private Router: Router,
     private serverservice: ServerService,
@@ -27,28 +29,26 @@ export class HostComponent implements OnInit {
     private ChangeService:CommonVarService) { }
   session: any;
   ngOnInit(): void {
+    this.Host=true
     if(localStorage.getItem('token'))
     {
-     this.name= localStorage.getItem('name')
-     
-    this.serverservice.getSessionId()
-      .subscribe(
-        (response) => {
-          this.res = response;
-          this.link = "joinchat-3c9d4.web.app/room/" + this.res.id;
-          this.linkbox = document.getElementById('sessionId');
-          this.linkbox.value = this.link
-          this.Id = document.getElementById('sessionIdID')
-          this.Id.value = this.res.id
-        },
-        (error) => {
-          console.log(error);
-        }
-      )
+     this.myname= localStorage.getItem('name')
+     this.creatSession()
+     this.Host=false;
+   
   }
   else{
     this.ChangeService.loginopen()
   }
+  this.ChangeService.loginIdentification
+  .subscribe((event)=>
+  {
+      if(this.Host)
+      {
+        this.creatSession()
+        this.Host=false
+      }
+  })
 }
 
   copytext() {
@@ -82,5 +82,22 @@ export class HostComponent implements OnInit {
     }
 
 
+  }
+  creatSession()
+  {
+    this.serverservice.getSessionId()
+    .subscribe(
+      (response) => {
+        this.res = response;
+        this.link = "joinchat-3c9d4.web.app/room/" + this.res.id;
+        this.linkbox = document.getElementById('sessionId');
+        this.linkbox.value = this.link
+        this.Id = document.getElementById('sessionIdID')
+        this.Id.value = this.res.id
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
   }
 }

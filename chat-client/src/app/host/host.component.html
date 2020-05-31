@@ -9,7 +9,7 @@
                 <form class="form-group" (submit)="host(c)" #c="ngForm">
                     <label class="left">Name</label>
                     <div class="margin">
-                    <input placeholder="Enter Your Name" class="form-control " ngModel   value="hrllo"
+                    <input placeholder="Enter Your Name" class="form-control "  [(ngModel)]="myname"
                      #name="ngModel"
                         name="userName" required>
                         <span 
