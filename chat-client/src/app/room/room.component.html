@@ -9,13 +9,21 @@
 				<div class="padding">
 					<form class="form-group" (submit)="getToken()" #c="ngForm">
 						<label class="left">Name</label>
+						<div class="margin">
 						<input class="form-control " type="text" id="userName" name="userName" [(ngModel)]="myUserName"
-							required>
+							#userName="ngModel" required>
+						<span class="help-block" *ngIf="!userName.valid && userName.touched" style="color:red;">Your
+							name is required</span>
+						</div>	
 						<label class="left">Session</label>
+						<div class="margin">
 						<input placeholder="Enter session " class="form-control " type="text" id="sessionId"
-							name="sessionId" [(ngModel)]="mySessionId" required>
+							name="sessionId" [(ngModel)]="mySessionId" #SessionId="ngModel" required>
+						<span class="help-block" *ngIf="!SessionId.valid && SessionId.touched" style="color:red;">SessionId
+						 is required</span>
+						</div>
 						<div class="center">
-							<button  class="join-button">Join the meeting</button>
+							<button class="join-button" [disabled]="!c.valid">Join the meeting</button>
 						</div>
 					</form>
 				</div>
@@ -42,11 +50,13 @@
 		<h1 id="session-title" class="box-head">{{mySessionId}}</h1>
 
 		<div id="session-header">
-			<button class="normal-button text-center pd1" (click)="videochange()"><img [src]="src" alt="video-off"></button>
+			<button class="normal-button text-center pd1" (click)="videochange()"><img [src]="src"
+					alt="video-off"></button>
 			<button class="leave-button text-center" (click)="leaveSession()"><img style="width: 20px;"
 					src="../../assets/images/call-disconnect.png"></button>
 			<button class="normal-button text-center pd2" (click)="audiochange()"><img [src]="src2"></button>
-			<button class="normal-button text-center pd3" (click)="chat()"><img src="../../assets/images/chat.png"></button>
+			<button class="normal-button text-center pd3" (click)="chat()"><img
+					src="../../assets/images/chat.png"></button>
 
 		</div>
 		<div *ngIf="mainStreamManager" id="main-video" class="col-md-6">
@@ -60,17 +70,18 @@
 			<div *ngFor="let sub of subscribers" class="stream-container col-md-6 col-xs-6">
 				<user-video [streamManager]="sub" (click)="updateMainStreamManager(sub)"></user-video>
 				<div *ngIf="sub.stream.connection.connectionId==audioconnectionId">
-				<div *ngIf="!subaudio" ><img class="audiooff"  src="../../assets/images/audiooff.png"></div>
-                </div>
+					<div *ngIf="!subaudio"><img class="audiooff" src="../../assets/images/audiooff.png"></div>
+				</div>
 				<div class="row">
 					<div class="col-xs-4">
 						<div *ngIf="sub.stream.connection.connectionId == connectionId">
-							<div *ngIf="startSpeaking" ><img class="small" src="../../assets/images/giphy.gif"></div>
-							<div *ngIf="!startSpeaking" ><img class="small" src="../../assets/images/stopspeak.png"></div>
+							<div *ngIf="startSpeaking"><img class="small" src="../../assets/images/giphy.gif"></div>
+							<div *ngIf="!startSpeaking"><img class="small" src="../../assets/images/stopspeak.png">
+							</div>
 						</div>
 					</div>
 					<div class="col-xs-4">
-                    	<button (click)="subaudiooff(sub)" class="leave-button">AudioOff</button>
+						<button (click)="subaudiooff(sub)" class="leave-button">AudioOff</button>
 					</div>
 					<div class="col-xs-4">
 						<button (click)="subvideooff(sub)" class="leave-button">VideoOff</button>
