@@ -18,6 +18,7 @@ export class HostComponent implements OnInit {
   copyText: any;
   link: any;
   linkbox: any;
+  Id:any;
 
   constructor(private Router: Router,
     private serverservice: ServerService,
@@ -34,6 +35,8 @@ export class HostComponent implements OnInit {
           this.link = "joinchat-3c9d4.web.app/room/" + this.res.id;
           this.linkbox = document.getElementById('sessionId');
           this.linkbox.value = this.link
+          this.Id = document.getElementById('sessionIdID')
+          this.Id.value = this.res.id
         },
         (error) => {
           console.log(error);
@@ -51,6 +54,13 @@ export class HostComponent implements OnInit {
     this.copyText.setSelectionRange(0, 99999)
     document.execCommand("copy");
 
+  }
+  copyID()
+  {
+    this.copyText = document.getElementById("sessionIdID");
+    this.copyText.select();
+    this.copyText.setSelectionRange(0, 99999)
+    document.execCommand("copy");
   }
 
   host(f: NgForm) {
