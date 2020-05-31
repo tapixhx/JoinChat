@@ -1,6 +1,9 @@
 .stream-container {
 	padding: 0;
 }
+input.ng-invalid.ng-touched {
+    border : 2px solid red;
+}
 .heading
 {
 	color: #0B132B;
@@ -104,13 +107,16 @@
 }
 .form-control
 {
-	margin-bottom: 50px;
 	border-radius: 10px 10px ;
 	height: 40px;
 	border: 1.5px solid #9F9F9F;
 	padding: 2px 0px 2px 10px;
 	color: black;
 	font-weight: 600;
+}
+.margin
+{
+	margin-bottom: 50px;
 }
 .form-control::placeholder
 {

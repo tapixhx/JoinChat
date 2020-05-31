@@ -19,6 +19,7 @@ export class HostComponent implements OnInit {
   link: any;
   linkbox: any;
   Id:any;
+  name:any
 
   constructor(private Router: Router,
     private serverservice: ServerService,
@@ -28,6 +29,8 @@ export class HostComponent implements OnInit {
   ngOnInit(): void {
     if(localStorage.getItem('token'))
     {
+     this.name= localStorage.getItem('name')
+     
     this.serverservice.getSessionId()
       .subscribe(
         (response) => {
