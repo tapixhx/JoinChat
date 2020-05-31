@@ -11,7 +11,6 @@ export class CommonVarService {
   loginopen()
   {
     this.signupchange.next(false)
-
     this.loginchange.next(true)
   }
   signupopen()
@@ -22,7 +21,6 @@ export class CommonVarService {
   loginoff()
   {
     this.loginchange.next(false)
-
   }
   signupOff()
   {
