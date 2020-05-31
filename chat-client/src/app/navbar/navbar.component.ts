@@ -18,6 +18,7 @@ export class NavbarComponent implements OnInit {
   wnt_signup = false;
   id: any;
   res: any;
+  cross=false
   auth: any;
   ChangeLoginSubscription:Subscription
   ChangeSignupSubscription:Subscription
@@ -45,6 +46,11 @@ export class NavbarComponent implements OnInit {
 
   signup() {
     this.wnt_signup = true;
+  }
+  click()
+  {
+    this.cross = !this.cross;
+    
   }
 
   close() {
