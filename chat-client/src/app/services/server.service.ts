@@ -7,7 +7,7 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 export class ServerService {
 
   private rootUrl = "https://join-chat.herokuapp.com/"
-
+   token:any;
   constructor(private http:HttpClient) { }
 
   login(data) {
@@ -45,6 +45,36 @@ export class ServerService {
     })
     return this.http.get(this.rootUrl+'user/getSession',
     {headers: headers});
+  }
+  gettoken(sessionId:any) {
+    console.log(sessionId)
+    const body = JSON.stringify({ sessionName: sessionId,});  
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Content-Type':'application/json',
+      'Authorization': `Bearer `+token,
+    })
+    return this.http.post(this.rootUrl+'user/getToken',body,
+    {headers: headers});
+  }
+  gethosttoken(sessionId:any)
+  { console.log(sessionId)
+    const body = JSON.stringify({ sessionName: sessionId, role: "MODERATOR" });  
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Content-Type':'application/json',
+      'Authorization': `Bearer `+token,
+    })
+    return this.http.post(this.rootUrl+'user/getToken',body,
+    {headers: headers});
+  }
+  sethosttoken(token:any)
+  {
+     this.token=token
+  }
+  getsettoken()
+  {
+     return this.token
   }
 
 }

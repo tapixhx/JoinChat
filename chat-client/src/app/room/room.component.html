@@ -7,7 +7,7 @@
 			<div class="col-sm-4 col-xs-12">
 				<div class="heading">Join a meeting</div>
 				<div class="padding">
-					<form class="form-group" (submit)="joinSession()" #c="ngForm">
+					<form class="form-group" (submit)="getToken()" #c="ngForm">
 						<label class="left">Name</label>
 						<input class="form-control " type="text" id="userName" name="userName" [(ngModel)]="myUserName"
 							required>
@@ -15,7 +15,7 @@
 						<input placeholder="Enter session " class="form-control " type="text" id="sessionId"
 							name="sessionId" [(ngModel)]="mySessionId" required>
 						<div class="center">
-							<button class="join-button">Join the meeting</button>
+							<button  class="join-button">Join the meeting</button>
 						</div>
 					</form>
 				</div>
@@ -42,14 +42,11 @@
 		<h1 id="session-title" class="box-head">{{mySessionId}}</h1>
 
 		<div id="session-header">
-			<button class="normal-button" (click)="videochange()"><img [src]="src" alt="video-off"
-					style="width:30px; margin-right:20px;"></button>
-			<button class="leave-button" (click)="leaveSession()"><img style="width: 20px;"
-					src="../../assets/images/phone.svg"></button>
-			<button class="normal-button" (click)="audiochange()"><img [src]="src2"
-					style="width:30px; margin-left:20px;"></button>
-			<button class="normal-button" (click)="chat()"><img src="../../assets/images/chat.svg"
-					style="width:30px; margin-left:20px;"></button>
+			<button class="normal-button text-center pd1" (click)="videochange()"><img [src]="src" alt="video-off"></button>
+			<button class="leave-button text-center" (click)="leaveSession()"><img style="width: 20px;"
+					src="../../assets/images/call-disconnect.png"></button>
+			<button class="normal-button text-center pd2" (click)="audiochange()"><img [src]="src2"></button>
+			<button class="normal-button text-center pd3" (click)="chat()"><img src="../../assets/images/chat.png"></button>
 
 		</div>
 		<div *ngIf="mainStreamManager" id="main-video" class="col-md-6">

@@ -12,6 +12,9 @@
     margin-top: 60px;
 
 }
+.body{
+    padding-top: 50px;
+}
 .heading
 {
     color: #0B132B;
@@ -30,7 +33,7 @@
 }
 .padding
 {
-    padding: 100px 3vw 0px 7vw;
+    padding: 120px 3vw 0px 7vw;
 }
 .Buttons
 {
@@ -92,11 +95,25 @@ button:focus
    }
   
 }
+@media only screen and (max-width: 767px)
+{
+    
+    .margin
+  {
+      margin-bottom: 30px;
+  }
+}
+
 @media only screen and (max-width: 455px)
 {
   .col-md-6{
       width: 103vw;
   }
+  .col-xs-12
+    {
+        text-align: left!important;
+        
+    }
   .statement{
       font-size: 3vw;
   }
@@ -104,15 +121,7 @@ button:focus
   {
      font-size: 4vw;
   }
-  .col-xs-12
-  {
-      text-align: left!important;
-      
-  }
-  .margin
-  {
-      margin-bottom: 30px;
-  }
+ 
 }
 @media only screen and (max-width: 376px)
 {
