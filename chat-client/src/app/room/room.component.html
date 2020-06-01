@@ -1,3 +1,4 @@
+
 <div style="width: 100vw;">
 	<div *ngIf="!session" id="join">
 		<div class="row body">
@@ -10,17 +11,19 @@
 					<form class="form-group" (submit)="getToken()" #c="ngForm">
 						<label class="left">Name</label>
 						<div class="margin">
-						<input class="form-control " type="text" id="userName" name="userName" [(ngModel)]="myUserName"
-							#userName="ngModel" required>
-						<span class="help-block" *ngIf="!userName.valid && userName.touched" style="color:red;">Your
-							name is required</span>
-						</div>	
+							<input class="form-control " type="text" id="userName" name="userName"
+								[(ngModel)]="myUserName" #userName="ngModel" required>
+							<span class="help-block" *ngIf="!userName.valid && userName.touched" style="color:red;">
+								Your name is required
+							</span>
+						</div>
 						<label class="left">Session</label>
 						<div class="margin">
-						<input placeholder="Enter session " class="form-control " type="text" id="sessionId"
-							name="sessionId" [(ngModel)]="mySessionId" #SessionId="ngModel" required>
-						<span class="help-block" *ngIf="!SessionId.valid && SessionId.touched" style="color:red;">SessionId
-						 is required</span>
+							<input placeholder="Enter session " class="form-control " type="text" id="sessionId"
+								name="sessionId" [(ngModel)]="mySessionId" #SessionId="ngModel" required>
+							<span class="help-block" *ngIf="!SessionId.valid && SessionId.touched"
+								style="color:red;">SessionId
+								is required</span>
 						</div>
 						<div class="center">
 							<button class="join-button" [disabled]="!c.valid">Join the meeting</button>
@@ -95,7 +98,6 @@
 							   <button (click)="subvideooff(sub)" class="leave-button">VideoOff</button>
 						   </div>
 					   </div>
-
 					</div>
 				</div>
 				
@@ -103,19 +105,21 @@
 			</div>
 		</div>
 
+
 		</div>
 		</div>
+
 		<div class="text-box" [class.display]="show" [class.undisplay]="!show">
-			<div class="text-box">	
-			<div *ngFor="let message of messages">
-				<div class="name">{{message.name}}</div>
-				<div class="message">{{message.message}}</div>
-			</div>
+			<div class="text-box">
+				<div *ngFor="let message of messages">
+					<div class="name">{{message.name}}</div>
+					<div class="message">{{message.message}}</div>
+				</div>
 			</div>
 
 			<div class="message-container">
 				<form (ngSubmit)="onSubmit(f)" #f="ngForm">
-					<input name="chat" placeholder="Type message..." class="message-box">
+					<input name="chat" placeholder="Type message..." class="message-box" ngModel>
 					<button class="message-btn" type="submit">Send</button>
 				</form>
 			</div>
