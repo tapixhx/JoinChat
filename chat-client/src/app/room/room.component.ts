@@ -375,7 +375,6 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   chat() {
     this.show = !this.show;
-
   }
   audiochange() {
     this.audioOn = !this.audioOn
