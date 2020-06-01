@@ -7,9 +7,9 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { ChangeService } from '../services/chat.service';
 import { messages } from '../shared/message.model';
-import { stringify } from 'querystring';
 import { ServerService } from '../services/server.service';
 import { CommonVarService } from '../services/common-var.service';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -120,7 +120,11 @@ export class RoomComponent implements OnInit, OnDestroy {
     },
     error=>
     {
-      alert(error.error.error)
+      Swal.fire(
+        'Oops!',
+        error.error.error,
+        'error'
+      )
     })
   }
   else{
@@ -138,11 +142,23 @@ export class RoomComponent implements OnInit, OnDestroy {
 
     this.session = this.OV.initSession();
 
-    this.session.on('reconnecting', () => alert('Oops! Trying to reconnect to the session'));
-    this.session.on('reconnected', () => alert('Hurray! You successfully reconnected to the session'));
+    this.session.on('reconnecting', () => Swal.fire(
+      'Oops!',
+      'Oops! Trying to reconnect to the session',
+      'error'
+    ));
+    this.session.on('reconnected', () => Swal.fire(
+      'Success',
+      'Hurray! You successfully reconnected to the session',
+      'success'
+    ));
     this.session.on('sessionDisconnected', (event: any) => {
       if (event.reason === 'networkDisconnect') {
-        alert('Dang-it... You lost your connection to the session');
+        Swal.fire(
+          'Oops!',
+          'Dang-it... You lost your connection to the session',
+          'error'
+        );
       } else {
         // Disconnected from the session for other reason than a network drop
       }
@@ -188,10 +204,14 @@ export class RoomComponent implements OnInit, OnDestroy {
         this.audiochange()
       }
       if (this.myUserName != message[0]) {
-        alert(message[2] + ' muted ' + message[0])
+        Swal.fire(
+          message[2] + ' muted ' + message[0]
+        )
       }
       else {
-        alert(message[2] + ' muted You')
+        Swal.fire(
+          message[2] + ' muted You'
+        )
 
       }
 
@@ -203,10 +223,14 @@ export class RoomComponent implements OnInit, OnDestroy {
         this.videochange()
       }
       if (this.myUserName != message[0]) {
-        alert(message[2] + ' unpublish ' + message[0])
+        Swal.fire(
+          message[2] + ' unpublish ' + message[0]
+        )
       }
       else {
-        alert(message[2] + ' unpublish You')
+        Swal.fire(
+          message[2] + ' unpublish You'
+        )
 
       }
     })
