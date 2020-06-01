@@ -4,8 +4,8 @@ import { NgForm } from '@angular/forms';
 import { ServerService } from '../services/server.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CommonVarService } from '../services/common-var.service';
-
-
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-host',
@@ -26,7 +26,8 @@ export class HostComponent implements OnInit {
   constructor(private Router: Router,
     private serverservice: ServerService,
     private httpClient: HttpClient,
-    private ChangeService:CommonVarService) { }
+    private ChangeService: CommonVarService,
+    private ngxservice: NgxUiLoaderService, ) { }
   session: any;
   ngOnInit(): void {
     this.Host=true
@@ -50,16 +51,13 @@ export class HostComponent implements OnInit {
       }
   })
 }
-
   copytext() {
     this.copyText = document.getElementById("sessionId");
     this.copyText.select();
     this.copyText.setSelectionRange(0, 99999)
     document.execCommand("copy");
-
   }
-  copyID()
-  {
+  copyID() {
     this.copyText = document.getElementById("sessionIdID");
     this.copyText.select();
     this.copyText.setSelectionRange(0, 99999)
@@ -67,21 +65,29 @@ export class HostComponent implements OnInit {
   }
 
   host(f: NgForm) {
+    this.ngxservice.start();
     if (localStorage.getItem("token")) {
       this.serverservice.gethosttoken(this.res.id)
         .subscribe((response: any) => {
           console.log(response)
           this.serverservice.sethosttoken(response.token)
           this.Router.navigate(['room', 'Host', this.res.id])
-
-        }
+          this.ngxservice.stop();
+        },
+          (error) => {
+            console.log(error);
+            this.ngxservice.stop();
+            Swal.fire(
+              'Oops!',
+              'LogIn or SignUp again and try again!',
+              'error'
+            )
+          }
         )
     }
-    else{
+    else {
       this.ChangeService.loginopen()
     }
-
-
   }
   creatSession()
   {
