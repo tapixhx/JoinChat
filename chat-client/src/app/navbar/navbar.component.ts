@@ -77,6 +77,7 @@ export class NavbarComponent implements OnInit {
           localStorage.setItem('token', this.res.token);
           localStorage.setItem('name', this.res.name);
           this.ngxservice.stop();
+          this.changeService.logined()
         },
         (error: HttpErrorResponse) => {
           console.log(error);

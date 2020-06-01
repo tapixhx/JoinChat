@@ -18,7 +18,10 @@ export class HostComponent implements OnInit {
   copyText: any;
   link: any;
   linkbox: any;
-  Id: any;
+  Id:any;
+  myname:any
+  Host=false;
+  
 
   constructor(private Router: Router,
     private serverservice: ServerService,
@@ -27,36 +30,27 @@ export class HostComponent implements OnInit {
     private ngxservice: NgxUiLoaderService, ) { }
   session: any;
   ngOnInit(): void {
-    this.ngxservice.start();
-    if (localStorage.getItem('token')) {
-      this.serverservice.getSessionId()
-        .subscribe(
-          (response) => {
-            this.res = response;
-            this.link = "joinchat-3c9d4.web.app/room/" + this.res.id;
-            this.linkbox = document.getElementById('sessionId');
-            this.linkbox.value = this.link
-            this.Id = document.getElementById('sessionIdID')
-            this.Id.value = this.res.id;
-            this.ngxservice.stop();
-          },
-          (error) => {
-            console.log(error);
-            this.ngxservice.stop();
-            Swal.fire(
-              'Oops!',
-              'LogIn or SignUp and try again!',
-              'error'
-            )
-          }
-        )
-    }
-    else {
-      this.ChangeService.loginopen()
-      this.ngxservice.stop();
-    }
+    this.Host=true
+    if(localStorage.getItem('token'))
+    {
+     this.myname= localStorage.getItem('name')
+     this.creatSession()
+     this.Host=false;
+   
   }
-
+  else{
+    this.ChangeService.loginopen()
+  }
+  this.ChangeService.loginIdentification
+  .subscribe((event)=>
+  {
+      if(this.Host)
+      {
+        this.creatSession()
+        this.Host=false
+      }
+  })
+}
   copytext() {
     this.copyText = document.getElementById("sessionId");
     this.copyText.select();
@@ -94,5 +88,22 @@ export class HostComponent implements OnInit {
     else {
       this.ChangeService.loginopen()
     }
+  }
+  creatSession()
+  {
+    this.serverservice.getSessionId()
+    .subscribe(
+      (response) => {
+        this.res = response;
+        this.link = "joinchat-3c9d4.web.app/room/" + this.res.id;
+        this.linkbox = document.getElementById('sessionId');
+        this.linkbox.value = this.link
+        this.Id = document.getElementById('sessionIdID')
+        this.Id.value = this.res.id
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
   }
 }

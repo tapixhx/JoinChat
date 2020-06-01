@@ -51,6 +51,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   pub = true
   exp: any;
+  local=false;
   // Main video of the page, will be 'publisher' or one of the 'subscribers',
   // updated by click event in UserVideoComponent children
   mainStreamManager: StreamManager;
@@ -63,7 +64,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.generateParticipantInfo();
   }
   ngOnInit() {
-
+    this.local=true
     this.Router.params
       .subscribe((params: Params) => {
         if (params.session) {
@@ -73,13 +74,24 @@ export class RoomComponent implements OnInit, OnDestroy {
 
           this.joinSession()
         }
-        if (params.name) {
-          this.myUserName = params.name;
-        }
+       
         if (params.id) {
           this.mySessionId = params.id;
 
         }
+        if(localStorage.getItem('token'))
+        {
+          this.myUserName = localStorage.getItem('name')
+        }
+        else{
+        this.commeonservice.loginopen()
+
+        }
+        this.commeonservice.loginIdentification.subscribe((event)=>
+        {
+          this.myUserName = localStorage.getItem('name')
+          this.local = false
+        })
 
 
       }
