@@ -216,14 +216,16 @@ export class RoomComponent implements OnInit, OnDestroy {
         this.audiochange()
       }
       if (this.myUserName != message[0]) {
-        Swal.fire(
-          message[2] + ' muted ' + message[0]
-        )
+        Swal.fire({
+          title:message[2] + ' muted ' + message[0],
+          timer:1500,
+        })
       }
       else {
-        Swal.fire(
-          message[2] + ' muted You'
-        )
+        Swal.fire({
+          title:message[2] + ' muted You',
+          timer:1500,
+        })
 
       }
 
@@ -235,14 +237,16 @@ export class RoomComponent implements OnInit, OnDestroy {
         this.videochange()
       }
       if (this.myUserName != message[0]) {
-        Swal.fire(
-          message[2] + ' unpublish ' + message[0]
-        )
+        Swal.fire({
+          title:message[2] + ' unpublish ' + message[0],
+          timer:1500
+        })
       }
       else {
-        Swal.fire(
-          message[2] + ' unpublish You'
-        )
+        Swal.fire({
+          title:message[2] + ' unpublish You',
+          timer:1500,
+        })
 
       }
     })
