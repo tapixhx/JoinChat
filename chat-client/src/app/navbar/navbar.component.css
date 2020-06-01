@@ -10,6 +10,11 @@ nav {
 	border-top-right-radius: 0 !important;
 	border-top-left-radius: 0 !important;
 }
+.navbar{
+  position: fixed;
+  top:0;   
+  width: 100vw;
+}
 
 .navbar-header {
 	width: 100%;

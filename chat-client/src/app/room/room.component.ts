@@ -47,7 +47,8 @@ export class RoomComponent implements OnInit, OnDestroy {
   connectionId: any;
   audioconnectionId: any;
   subaudio: any;
-  token: any
+
+  token:any
 
   pub = true
   exp: any;

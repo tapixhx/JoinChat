@@ -14,12 +14,17 @@ input.ng-invalid.ng-touched {
 .border {
 	padding: 0px 100px;
 }
-
-.mainstream {
+#session
+{
+	background: black;
+}
+.mainstream
+{
 	height: 200px !important;
 }
 
-.audiooff {
+.audiooff
+{
 	width: 20%;
 	position: relative;
 	top: -10px;
@@ -126,17 +131,22 @@ input.ng-invalid.ng-touched {
 }
 
 button:focus {
-	outline: none;
+	outline:none;
 }
 
-.join-button,
-.leave-button,
-.normal-button {
-	font-size: 120%;
-	font-family: Montserrat;
-	border-radius: 50%;
-	border: 0px;
-	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.14), 0 6px 6px rgba(0, 0, 0, 0.20);
+#video-container
+{
+	background: white;
+	height: 100vh;
+	overflow: scroll;
+}
+.join-button,.leave-button,.normal-button
+{
+    font-size: 120%;
+    font-family: Montserrat;
+    border-radius: 50%;
+    border: 0px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.14), 0 6px 6px rgba(0,0,0,0.20);
 	transition: all 0.3s;
 	background: #5BC0BE;
 	color: white;
@@ -240,19 +250,10 @@ button:focus {
 #session-header {
 	background-color: #E7E7E7;
 }
-
-.row {
-	overflow-x: hidden;
-}
-
-.main-vid-con {
-	padding: 0 0 0 50rem;
-	height: 500px;
-	overflow: hidden;
-}
-
-@media only screen and (max-width: 768px) {
-	.undisplay2 {
+@media only screen and (max-width: 768px)
+{
+	.undisplay2
+	{
 		display: block;
 		margin: 0px;
 		margin-bottom: 100px;
@@ -288,14 +289,16 @@ button:focus {
 
 }
 
-@media only screen and (max-width: 455px) {
-	.body {
-		margin: 0px 0px;
-		width: 100vw;
-	}
 
-	.col-xs-12 {
-		padding: 0px 0px;
+@media only screen and (max-width: 455px)
+{
+  .body{
+	  margin: 0px 0px;
+	  
+  }
+  .col-xs-12
+	{
+		padding: 0px 0px ;
 		margin-left: 0px;
 	}
 
@@ -316,6 +319,27 @@ button:focus {
 		margin-bottom: 30px;
 		font-size: 170%;
 	}
+
+	
+	#main-video
+	{
+		height: 50vh;
+	}
+	#session-header{
+		position:relative;
+		margin: 0px 0px 0px;
+		z-index: 10;
+		width: 100vw;
+		text-align: center;
+	}
+	.video-margin
+	{
+		margin: 0px 0px ;
+	}
+  
+  
+}
+
 
 
 }
