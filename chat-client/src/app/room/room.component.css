@@ -12,10 +12,15 @@ input.ng-invalid.ng-touched {
 {
 	padding: 0px 100px;
 }
+#session
+{
+	background: black;
+}
 .mainstream
 {
 	height: 200px !important;
 }
+
 .audiooff
 {
 	width: 20%;
@@ -123,6 +128,13 @@ input.ng-invalid.ng-touched {
 button:focus {
 	outline:none;
 }
+
+#video-container
+{
+	background: white;
+	height: 100vh;
+	overflow: scroll;
+}
 .join-button,.leave-button,.normal-button
 {
     font-size: 120%;
@@ -220,14 +232,6 @@ button:focus {
 #session-header{
 	background-color:#E7E7E7;
 }
-.row {
-	overflow-x:hidden;
-}
-.main-vid-con {
-	padding:0 0 0 50rem;
-	height:500px;
-	overflow:hidden;
-}
 @media only screen and (max-width: 768px)
 {
 	.undisplay2
@@ -271,7 +275,7 @@ button:focus {
 {
   .body{
 	  margin: 0px 0px;
-	  width: 100vw;
+	  
   }
   .col-xs-12
 	{
@@ -292,6 +296,23 @@ button:focus {
 	.heading{
 	   margin-bottom: 30px;
 	   font-size: 170%;
+	}
+	
+	
+	#main-video
+	{
+		height: 50vh;
+	}
+	#session-header{
+		position:relative;
+		margin: 0px 0px 0px;
+		z-index: 10;
+		width: 100vw;
+		text-align: center;
+	}
+	.video-margin
+	{
+		margin: 0px 0px ;
 	}
   
   

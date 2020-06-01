@@ -2,10 +2,10 @@ import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular
 import { StreamManager } from 'openvidu-browser';
 
 @Component({
-    selector: 'ov-video',
-    template: '<div style="height:25vh;overflow:hidden"><video style="width:100%"#videoElement></video><div>'
+    selector: 'Main-video',
+    template: '<div style="overflow:hidden;text-align:center ;padding-top:4vh;height:100vh"><video style="width:75%" #videoElement ></video><div>'
 })
-export class OpenViduVideoComponent implements AfterViewInit {
+export class MainViduVideoComponent implements AfterViewInit {
 
     @ViewChild('videoElement') elementRef: ElementRef;
 

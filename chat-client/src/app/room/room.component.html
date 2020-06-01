@@ -1,5 +1,5 @@
-<div>
-	<div *ngIf="session" id="join">
+<div style="width: 100vw;">
+	<div *ngIf="!session" id="join">
 		<div class="row body">
 			<div class="col-sm-4 col-xs-0 height center display2">
 				<img class="image1" src="../../assets/images/Layer 1.svg">
@@ -46,58 +46,63 @@
 
 	</div>
 
-	<div *ngIf="!session" class="container-room" id="session">
-		<div class="container-room1">
-		<div class="row text-center mx-auto main-vid-con">
-		<div *ngIf="mainStreamManager" id="main-video" class="col-md-6">
-		<div id="session-header">
-			<h1 id="session-title" class="box-head">{{mySessionId}}</h1><br>
+	<div *ngIf="session" id="session">
+    
+		
+		<div class="row video-margin">
+		<div *ngIf="mainStreamManager" style="padding:0px 0px;"  id="main-video" class="col-sm-10 col-xs-12">
+			<Main-video [streamManager]="mainStreamManager"></Main-video>
+			<div id="session-header">
+				<button class="normal-button text-center pd1" (click)="videochange()"><img [src]="src"
+						alt="video-off"></button>
+				<button class="leave-button text-center" (click)="leaveSession()"><img style="width: 20px;"
+						src="../../assets/images/call-disconnect.png"></button>
+				<button class="normal-button text-center pd2" (click)="audiochange()"><img [src]="src2"></button>
+				<button class="normal-button text-center pd3" (click)="chat()"><img
+						src="../../assets/images/chat.png"></button>
+	
+			</div>
+		</div>
+		<div id="video-container" style="padding:0px 0px;" class="col-sm-2 col-xs-12  padding-video">
+			<div *ngIf="publisher"  class="stream-container">
 
-			<button class="normal-button text-center pd1" (click)="videochange()"><img [src]="src"
-				alt="video-off"></button>
-			<button class="leave-button text-center" (click)="leaveSession()"><img style="width: 20px;"
-					src="../../assets/images/call-disconnect.png"></button>
-			<button class="normal-button text-center pd2" (click)="audiochange()"><img [src]="src2"></button>
-			<button class="normal-button text-center pd3" (click)="chat()"><img
-					src="../../assets/images/chat.png"></button>
-			<user-video [streamManager]="mainStreamManager"></user-video>
-		</div>
-			
-		</div>
-		</div>
-		</div>
-		<div class="container-room2">
-		<div class="row">
-		<div id="video-container" class="col-md-6">
-			<div *ngIf="publisher" class="stream-container col-md-6 col-xs-6">
 				<user-video [streamManager]="publisher" (click)="updateMainStreamManager(publisher)"></user-video>
 			</div>
-			<div *ngFor="let sub of subscribers" class="stream-container col-md-6 col-xs-6">
-				<user-video [streamManager]="sub" (click)="updateMainStreamManager(sub)"></user-video>
-				<div *ngIf="sub.stream.connection.connectionId==audioconnectionId">
-					<div *ngIf="!subaudio"><img class="audiooff" src="../../assets/images/omico-off.png"></div>
-				</div>
+
+			<div *ngFor="let sub of subscribers" class="stream-container" >
 				<div class="row">
-					<div class="col-xs-4">
-						<div *ngIf="sub.stream.connection.connectionId == connectionId">
-							<div *ngIf="startSpeaking"><img class="small" src="../../assets/images/giphy.gif"></div>
-							<div *ngIf="!startSpeaking"><img class="small" src="../../assets/images/stopspeak.png">
+					<div class="col-md-12">
+						<user-video [streamManager]="sub" (click)="updateMainStreamManager(sub)"></user-video>
+					</div>
+					<div class="col-md-12">
+						<div class="row">
+							<div class="col-xs-3">
+							   <div *ngIf="sub.stream.connection.connectionId==audioconnectionId">
+								   <div *ngIf="!subaudio"><img class="audiooff" src="../../assets/images/mico-off.png"></div>
+							   </div>
 							</div>
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<button (click)="subaudiooff(sub)" class="normal-button text-center pd2">
-							<!-- <img src="../../assets/images/mico-off.png" alt="mic-off"> --> 
-						</button>
-					</div>
-					<div class="col-xs-4">
-						<button (click)="subvideooff(sub)" class="normal-button text-center pd1">
-							<!-- <img src="../../assets/images/ovideo-off.png" alt="video-off"> -->
-						</button>
+						   <div class="col-xs-3">
+							   <div *ngIf="sub.stream.connection.connectionId == connectionId">
+								   <div *ngIf="startSpeaking"><img class="small" src="../../assets/images/giphy.gif"></div>
+								   <div *ngIf="!startSpeaking"><img class="small" src="../../assets/images/stopspeak.png">
+								   </div>
+							   </div>
+						   </div>
+						   <div class="col-xs-3">
+							   <button (click)="subaudiooff(sub)" class="leave-button">AudioOff</button>
+						   </div>
+						   <div class="col-xs-3">
+							   <button (click)="subvideooff(sub)" class="leave-button">VideoOff</button>
+						   </div>
+					   </div>
+
 					</div>
 				</div>
+				
+				
 			</div>
 		</div>
+
 		</div>
 		</div>
 		<div class="text-box" [class.display]="show" [class.undisplay]="!show">
@@ -115,7 +120,9 @@
 				</form>
 			</div>
 		</div>
+		
 
+	
 	</div>
 
 </div>
