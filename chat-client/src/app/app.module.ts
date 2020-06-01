@@ -18,6 +18,7 @@ import { FooterComponent } from './footer/footer.component';
 import { HostComponent } from './host/host.component';
 import { ConfirmPasswordDirective } from './shared/confirm-password.directive';
 import { VerficationComponent } from './verfication/verfication.component';
+import { MainViduVideoComponent } from './main-video.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { VerficationComponent } from './verfication/verfication.component';
     FooterComponent,
     HostComponent,
     ConfirmPasswordDirective,
-    VerficationComponent
+    VerficationComponent,
+    MainViduVideoComponent
   ],
   imports: [
     BrowserModule,

@@ -57,7 +57,7 @@ export class NavbarComponent implements OnInit {
     this.cross = !this.cross;
     
   }
-
+ 
   close() {
     this.wnt_login = false;
     this.wnt_signup = false;
