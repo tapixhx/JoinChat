@@ -3,6 +3,7 @@ import { Server } from 'http';
 import { ServerService } from '../services/server.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-verfication',
@@ -18,7 +19,8 @@ export class VerficationComponent implements OnInit {
 
   constructor(private serverservice:ServerService,
               private route:ActivatedRoute,
-              private router:Router) { }
+              private router:Router,
+              private appcomponent:AppComponent,) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params.id;
@@ -49,9 +51,11 @@ export class VerficationComponent implements OnInit {
         this.router.navigate(['/']);
         localStorage.setItem('token', this.res.token);
         localStorage.setItem('name',this.res.name);
+        this.appcomponent.success('Successfully verified');
       },
       (error) =>{
         console.log(error);
+        this.appcomponent.error(error.error.error);
       }, 
     );
   }
@@ -79,6 +83,7 @@ export class VerficationComponent implements OnInit {
         },
       (error) =>{ 
         console.log(error);
+        this.appcomponent.error(error.error.error);
       },
     );
   }

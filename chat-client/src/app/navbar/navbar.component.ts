@@ -6,6 +6,9 @@ import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
 import { Subscribable, Subscription } from 'rxjs';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import Swal from 'sweetalert2';
+import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-navbar',
@@ -25,7 +28,9 @@ export class NavbarComponent implements OnInit {
   constructor(private serverservice: ServerService,
     private router: Router,
     public authservice: AuthService,
-    private changeService: CommonVarService) { }
+    private changeService: CommonVarService,
+    private ngxservice:NgxUiLoaderService,
+    private appcomponent:AppComponent,) { }
 
   ngOnInit(): void {
     this.wnt_login = false;
@@ -61,6 +66,7 @@ export class NavbarComponent implements OnInit {
   }
 
   loginform(form: NgForm) {
+    this.ngxservice.start();
     const value = form.value;
     this.serverservice.login(value)
       .subscribe(
@@ -70,6 +76,7 @@ export class NavbarComponent implements OnInit {
           this.res = response;
           localStorage.setItem('token', this.res.token);
           localStorage.setItem('name', this.res.name);
+          this.ngxservice.stop();
           this.changeService.logined()
         },
         (error: HttpErrorResponse) => {
@@ -77,12 +84,15 @@ export class NavbarComponent implements OnInit {
           if (error.error.message === "User is not verified") {
             this.router.navigate(['/verify', error.error.userId]);
             this.wnt_login = false;
+            this.ngxservice.stop();
           }
+          this.appcomponent.error(error.error.error);
         }
       )
   }
 
   signupform(sform: NgForm) {
+    this.ngxservice.start();
     const value = sform.value;
     this.serverservice.signup(value)
       .subscribe(
@@ -91,9 +101,12 @@ export class NavbarComponent implements OnInit {
           this.id = response;
           this.wnt_signup = false;
           this.router.navigate(['/verify', this.id.userId]);
+          this.ngxservice.stop();
         },
         (error) => {
           console.log(error);
+          this.ngxservice.stop();
+          this.appcomponent.error(error.error.error);
         }
       )
   }
