@@ -49,7 +49,7 @@ nav i.fa:hover {
     height:100vh;
 	background-color:rgba(0,0,0,0.2);
 	backdrop-filter:blur(8px);
-	z-index:800;
+	z-index:1;
 }
 .contain-popup {
     background-color: #fff;
