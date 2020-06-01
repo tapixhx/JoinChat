@@ -65,8 +65,8 @@
 		</div>
 		<div id="video-container" style="padding:0px 0px;" class="col-sm-2 col-xs-12  padding-video">
 			<div *ngIf="publisher"  class="stream-container">
-				<user-video [streamManager]="publisher" (click)="updateMainStreamManager(publisher)"></user-video>
 
+				<user-video [streamManager]="publisher" (click)="updateMainStreamManager(publisher)"></user-video>
 			</div>
 
 			<div *ngFor="let sub of subscribers" class="stream-container" >
@@ -95,12 +95,30 @@
 							   <button (click)="subvideooff(sub)" class="leave-button">VideoOff</button>
 						   </div>
 					   </div>
+
 					</div>
 				</div>
 				
 				
 			</div>
 		</div>
+
+		</div>
+		</div>
+		<div class="text-box" [class.display]="show" [class.undisplay]="!show">
+			<div class="text-box">	
+			<div *ngFor="let message of messages">
+				<div class="name">{{message.name}}</div>
+				<div class="message">{{message.message}}</div>
+			</div>
+			</div>
+
+			<div class="message-container">
+				<form (ngSubmit)="onSubmit(f)" #f="ngForm">
+					<input name="chat" placeholder="Type message..." class="message-box">
+					<button class="message-btn" type="submit">Send</button>
+				</form>
+			</div>
 		</div>
 		
 

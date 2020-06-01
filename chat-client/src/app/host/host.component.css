@@ -90,6 +90,9 @@ input.ng-invalid.ng-touched {
   border:0px
 
 }
+.copy-button:focus {
+	outline:none;
+}
 .join-button:hover{
     box-shadow: 0 0px 0px;
 

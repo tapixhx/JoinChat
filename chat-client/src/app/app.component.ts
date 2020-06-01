@@ -1,6 +1,4 @@
-
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -12,10 +10,9 @@ export class AppComponent implements OnInit {
   title = 'chat-client';
  
 
-  constructor(private ngxservice:NgxUiLoaderService) {}
+  constructor() {}
 
   ngOnInit() {
-    this.ngxservice.start();
   }
  
 
