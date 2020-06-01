@@ -68,26 +68,37 @@
 				<user-video [streamManager]="publisher" (click)="updateMainStreamManager(publisher)"></user-video>
 
 			</div>
+
 			<div *ngFor="let sub of subscribers" class="stream-container" >
-				<user-video [streamManager]="sub" (click)="updateMainStreamManager(sub)"></user-video>
-				<div *ngIf="sub.stream.connection.connectionId==audioconnectionId">
-					<div *ngIf="!subaudio"><img class="audiooff" src="../../assets/images/audiooff.png"></div>
-				</div>
 				<div class="row">
-					<div class="col-xs-4">
-						<div *ngIf="sub.stream.connection.connectionId == connectionId">
-							<div *ngIf="startSpeaking"><img class="small" src="../../assets/images/giphy.gif"></div>
-							<div *ngIf="!startSpeaking"><img class="small" src="../../assets/images/stopspeak.png">
+					<div class="col-md-12">
+						<user-video [streamManager]="sub" (click)="updateMainStreamManager(sub)"></user-video>
+					</div>
+					<div class="col-md-12">
+						<div class="row">
+							<div class="col-xs-3">
+							   <div *ngIf="sub.stream.connection.connectionId==audioconnectionId">
+								   <div *ngIf="!subaudio"><img class="audiooff" src="../../assets/images/mico-off.png"></div>
+							   </div>
 							</div>
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<button (click)="subaudiooff(sub)" class="leave-button">AudioOff</button>
-					</div>
-					<div class="col-xs-4">
-						<button (click)="subvideooff(sub)" class="leave-button">VideoOff</button>
+						   <div class="col-xs-3">
+							   <div *ngIf="sub.stream.connection.connectionId == connectionId">
+								   <div *ngIf="startSpeaking"><img class="small" src="../../assets/images/giphy.gif"></div>
+								   <div *ngIf="!startSpeaking"><img class="small" src="../../assets/images/stopspeak.png">
+								   </div>
+							   </div>
+						   </div>
+						   <div class="col-xs-3">
+							   <button (click)="subaudiooff(sub)" class="leave-button">AudioOff</button>
+						   </div>
+						   <div class="col-xs-3">
+							   <button (click)="subvideooff(sub)" class="leave-button">VideoOff</button>
+						   </div>
+					   </div>
 					</div>
 				</div>
+				
+				
 			</div>
 		</div>
 		</div>
