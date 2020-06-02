@@ -14,17 +14,16 @@ input.ng-invalid.ng-touched {
 .border {
 	padding: 0px 100px;
 }
-#session
-{
+
+#session {
 	background: black;
 }
-.mainstream
-{
+
+.mainstream {
 	height: 200px !important;
 }
 
-.audiooff
-{
+.audiooff {
 	width: 20%;
 	position: relative;
 	top: -10px;
@@ -44,6 +43,43 @@ input.ng-invalid.ng-touched {
 .body {
 	width: 100vw;
 }
+
+
+.session-d {
+	height:93vh;
+	overflow:hidden;
+}
+
+.session-sec2 {
+	height:93vh;
+	overflow-x:hidden;
+	overflow-y:auto;
+	padding:0;
+}
+
+/* Scrollbar */
+/* width */
+.session-sec2::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+.session-sec2::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey; 
+    border-radius: 2px;
+}
+
+/* Handle */
+.session-sec2::-webkit-scrollbar-thumb {
+    background: #696969; 
+    border-radius: 2px;
+}
+
+/* Handle on hover */
+.session-sec2::-webkit-scrollbar-thumb:hover {
+    background: #696969; 
+}
+/* Scrollbar */
 
 .text-box {
 	position: fixed;
@@ -120,7 +156,12 @@ input.ng-invalid.ng-touched {
 	color: black;
 	font-size: 16px;
 	margin-bottom: 10px;
+}
 
+.container-videos {
+	padding:0rem 1rem;
+	margin:0 1rem;
+	overflow-x:none;
 }
 
 .name {
@@ -131,22 +172,23 @@ input.ng-invalid.ng-touched {
 }
 
 button:focus {
-	outline:none;
+	outline: none;
 }
 
-#video-container
-{
+#video-container {
 	background: white;
 	height: 100vh;
 	overflow: scroll;
 }
-.join-button,.leave-button,.normal-button
-{
-    font-size: 120%;
-    font-family: Montserrat;
-    border-radius: 50%;
-    border: 0px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.14), 0 6px 6px rgba(0,0,0,0.20);
+
+.join-button,
+.leave-button,
+.normal-button {
+	font-size: 120%;
+	font-family: Montserrat;
+	border-radius: 50%;
+	border: 0px;
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.14), 0 6px 6px rgba(0, 0, 0, 0.20);
 	transition: all 0.3s;
 	background: #5BC0BE;
 	color: white;
@@ -249,11 +291,13 @@ button:focus {
 
 #session-header {
 	background-color: #E7E7E7;
+	position:fixed;
+	bottom:0;
+	left:0;
 }
-@media only screen and (max-width: 768px)
-{
-	.undisplay2
-	{
+
+@media only screen and (max-width: 768px) {
+	.undisplay2 {
 		display: block;
 		margin: 0px;
 		margin-bottom: 100px;
@@ -290,15 +334,14 @@ button:focus {
 }
 
 
-@media only screen and (max-width: 455px)
-{
-  .body{
-	  margin: 0px 0px;
-	  
-  }
-  .col-xs-12
-	{
-		padding: 0px 0px ;
+@media only screen and (max-width: 455px) {
+	.body {
+		margin: 0px 0px;
+
+	}
+
+	.col-xs-12 {
+		padding: 0px 0px;
 		margin-left: 0px;
 	}
 
@@ -320,22 +363,22 @@ button:focus {
 		font-size: 170%;
 	}
 
-	
-	#main-video
-	{
+
+	#main-video {
 		height: 50vh;
 	}
-	#session-header{
-		position:relative;
+
+	#session-header {
+		position: relative;
 		margin: 0px 0px 0px;
 		z-index: 10;
 		width: 100vw;
 		text-align: center;
 	}
-	.video-margin
-	{
-		margin: 0px 0px ;
+
+	.video-margin {
+		margin: 0px 0px;
 	}
-  
-  
+
+
 }
