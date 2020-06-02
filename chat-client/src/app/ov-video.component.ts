@@ -3,7 +3,7 @@ import { StreamManager } from 'openvidu-browser';
 
 @Component({
     selector: 'ov-video',
-    template: '<div style="height:auto;overflow:hidden"><video style="width:100%"#videoElement></video><div>'
+    template: '<div  style="height:33vh"><video style="height:100%;width:auto;" #videoElement></video><div>'
 })
 export class OpenViduVideoComponent implements AfterViewInit {
 
