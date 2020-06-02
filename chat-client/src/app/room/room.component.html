@@ -93,11 +93,11 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-xs-3">
+								<div *ngIf="Host" class="col-xs-3">
 									<button (click)="subaudiooff(sub)" class="leave-button">AudioOff</button>
 								</div>
-								<div class="col-xs-3">
-									<button (click)="subvideooff(sub)" class="leave-button">VideoOff</button>
+								<div *ngIf="Host" class="col-xs-3">
+									<button *ngIf="Host" (click)="subvideooff(sub)" class="leave-button">VideoOff</button>
 								</div>
 							</div>
 						</div>
