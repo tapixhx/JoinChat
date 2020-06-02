@@ -5,8 +5,8 @@ import { StreamManager } from 'openvidu-browser';
     selector: 'user-video',
     styles: [`
         ov-video {
-            width: 100%;
-            height: auto;
+            width: auto;
+            height: 100% !important;
             cursor: pointer;
         }
         .name {
