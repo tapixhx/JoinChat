@@ -116,7 +116,7 @@ export class RoomComponent implements OnInit, OnDestroy {
       this.ServerService.gettoken(this.mySessionId)
         .subscribe((response: any) => {
           this.token = response.token
-
+          console.log(response)
           if (response.role == "MODERATOR") {
             this.Host = true
           }

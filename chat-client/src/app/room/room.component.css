@@ -16,7 +16,7 @@ input.ng-invalid.ng-touched {
 }
 
 #session {
-	background:#414141;
+	background: #414141;
 }
 
 .mainstream {
@@ -46,39 +46,40 @@ input.ng-invalid.ng-touched {
 
 
 .session-d {
-	height:93vh;
-	overflow:hidden;
+	height: 93vh;
+	overflow: hidden;
 }
 
 .session-sec2 {
-	height:93vh;
-	overflow-x:hidden;
-	overflow-y:auto;
-	padding:0;
+	height: 93vh;
+	overflow-x: hidden;
+	overflow-y: auto;
+	padding: 0;
 }
 
 /* Scrollbar */
 /* width */
 .session-sec2::-webkit-scrollbar {
-    width: 5px;
+	width: 5px;
 }
 
 /* Track */
 .session-sec2::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px grey; 
-    border-radius: 2px;
+	box-shadow: inset 0 0 5px grey;
+	border-radius: 2px;
 }
 
 /* Handle */
 .session-sec2::-webkit-scrollbar-thumb {
-    background: #696969; 
-    border-radius: 2px;
+	background: #696969;
+	border-radius: 2px;
 }
 
 /* Handle on hover */
 .session-sec2::-webkit-scrollbar-thumb:hover {
-    background: #696969; 
+	background: #696969;
 }
+
 /* Scrollbar */
 
 .text-box {
@@ -159,9 +160,11 @@ input.ng-invalid.ng-touched {
 }
 
 .container-videos {
-	padding:0rem 1rem;
-	margin:0 1rem;
-	overflow-x:none;
+	padding: 0rem 1rem;
+	margin: 0 1rem;
+	overflow-x: none;
+	padding: 0px 0px;
+	margin: 0px 0px;
 }
 
 .name {
@@ -209,15 +212,15 @@ button:focus {
 }
 
 .leave-button {
-	background-image: linear-gradient(to right,#B91372,#6B0F1A);
+	background-image: linear-gradient(to right, #B91372, #6B0F1A);
 	color: white;
 	padding: 10px 30px;
 	margin: 10px;
 }
 
 .participant-ctrl {
-	position:relative;
-	top:-15vh;
+	position: relative;
+	top: -15vh;
 }
 
 .parti-button {
@@ -225,6 +228,10 @@ button:focus {
 	color: white;
 	padding: 10px 10;
 	margin: 10px;
+}
+
+.image {
+	width: 20px !important;
 }
 
 .normal-button {
@@ -279,13 +286,7 @@ button:focus {
 	font-weight: 100;
 }
 
-.image1 {
-	width: 60%;
-}
 
-.image2 {
-	width: 32%;
-}
 
 .left {
 	text-align: left !important;
@@ -304,11 +305,12 @@ button:focus {
 }
 
 #session-header {
-	background-image: linear-gradient(to left, rgba(255,255,255,0), rgba(255,255,255,1));
-	position:fixed;
-	bottom:0;
-	left:0;
-	width:inherit;
+	background-image: linear-gradient(to left, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: inherit;
+	text-align: center;
 }
 
 @media only screen and (max-width: 768px) {
@@ -355,19 +357,16 @@ button:focus {
 
 	}
 
+	
+
+
+
 	.col-xs-12 {
 		padding: 0px 0px;
 		margin-left: 0px;
 	}
 
-	.image1 {
-		width: 80%;
-		margin-top: 50px;
-	}
 
-	.image2 {
-		width: 60%;
-	}
 
 	.join-button {
 		margin-bottom: 50px;
@@ -389,11 +388,26 @@ button:focus {
 		z-index: 10;
 		width: 100vw;
 		text-align: center;
+		top: -60px !important;
 	}
 
 	.video-margin {
 		margin: 0px 0px;
 	}
-
-
 }
+	@media only screen and (max-width: 376px) {
+		
+		.pd1 {
+			padding: 10px 15px;
+		}
+		
+		.pd2 ,.pd3{
+			padding: 6px 15px;
+		}
+		.leave-button
+		{
+			padding: 10px 15px;
+		}
+
+	}
+	
