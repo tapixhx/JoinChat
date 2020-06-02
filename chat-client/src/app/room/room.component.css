@@ -16,7 +16,7 @@ input.ng-invalid.ng-touched {
 }
 
 #session {
-	background: black;
+	background:#414141;
 }
 
 .mainstream {
@@ -176,13 +176,14 @@ button:focus {
 }
 
 #video-container {
-	background: white;
+	background: #434343;
 	height: 100vh;
 	overflow: scroll;
 }
 
 .join-button,
 .leave-button,
+.parti-button,
 .normal-button {
 	font-size: 120%;
 	font-family: Montserrat;
@@ -196,6 +197,7 @@ button:focus {
 
 .join-button:hover,
 .leave-button:hover,
+.parti-button:hover,
 .normal-button:hover {
 	box-shadow: 0 0px 0px;
 
@@ -207,9 +209,21 @@ button:focus {
 }
 
 .leave-button {
-	background: red;
+	background-image: linear-gradient(to right,#B91372,#6B0F1A);
 	color: white;
 	padding: 10px 30px;
+	margin: 10px;
+}
+
+.participant-ctrl {
+	position:relative;
+	top:-15vh;
+}
+
+.parti-button {
+	background: red;
+	color: white;
+	padding: 10px 10;
 	margin: 10px;
 }
 
@@ -290,10 +304,11 @@ button:focus {
 }
 
 #session-header {
-	background-color: #E7E7E7;
+	background-image: linear-gradient(to left, rgba(255,255,255,0), rgba(255,255,255,1));
 	position:fixed;
 	bottom:0;
 	left:0;
+	width:inherit;
 }
 
 @media only screen and (max-width: 768px) {

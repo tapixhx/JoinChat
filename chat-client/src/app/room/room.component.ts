@@ -48,7 +48,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   audioconnectionId: any;
   subaudio: any;
 
-  token:any
+  token: any
 
   pub = true
   exp: any;
@@ -85,20 +85,18 @@ export class RoomComponent implements OnInit, OnDestroy {
         }
         else {
           this.commeonservice.loginopen()
-
         }
         this.commeonservice.loginIdentification.subscribe((event) => {
           this.myUserName = localStorage.getItem('name')
           this.local = false
         })
-
-
       }
       )
 
     this.messageSubscription = this.chatService.messageChanged
       .subscribe((messages) => {
         this.messages = messages
+        this.messages = this.messages.reverse();
         console.log(messages)
       })
   }
