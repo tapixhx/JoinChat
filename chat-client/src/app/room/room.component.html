@@ -56,16 +56,16 @@
 				<Main-video [streamManager]="mainStreamManager"></Main-video>
 				<div id="session-header" class="text-center">
 					<button class="normal-button text-center pd1" (click)="videochange()"><img [src]="src"
-							alt="video-off"></button><br>
+							alt="video-off"></button>
 					<button class="leave-button text-center" (click)="leaveSession()"><img style="width: 20px;"
-							src="../../assets/images/call-disconnect.png"></button><br>
+							src="../../assets/images/call-disconnect.png"></button>
 					<button class="normal-button text-center pd2" (click)="audiochange()"><img [src]="src2" 
-							alt="audio-off"></button><br>
+							alt="audio-off"></button>
 					<button class="normal-button text-center pd3" (click)="chat()"><img src="../../assets/images/chat.png" 
-							alt="chat"></button><br>
+							alt="chat"></button>
 				</div>
 			</div>
-			<div id="video-container" class="col-sm-3 col-xs-12 pull-right session-sec2">
+			<div id="video-container" class="col-sm-3 col-xs-12 pull-right text-center mx-auto session-sec2">
 				<div *ngIf="publisher" class="stream-container">
 
 					<user-video [streamManager]="publisher" (click)="updateMainStreamManager(publisher)"></user-video>
@@ -77,37 +77,37 @@
 							<user-video [streamManager]="sub" (click)="updateMainStreamManager(sub)"></user-video>
 						</div>
 						<div class="col-md-12">
-							<div class="row">
-								<div class="col-xs-3">
+							<div class="participant-ctrl">
+								<div>
 									<div *ngIf="sub.stream.connection.connectionId==audioconnectionId">
-										<div *ngIf="!subaudio"><img class="audiooff"
+										<div class="pull-left" *ngIf="!subaudio"><img class="audiooff"
 												src="../../assets/images/mico-off.png"></div>
 									</div>
 								</div>
-								<div class="col-xs-3">
+								<div>
 									<div *ngIf="sub.stream.connection.connectionId == connectionId">
-										<div *ngIf="startSpeaking"><img class="small"
+										<div class="pull-left" *ngIf="startSpeaking"><img class="small"
 												src="../../assets/images/giphy.gif"></div>
-										<div *ngIf="!startSpeaking"><img class="small"
+										<div class="pull-left" *ngIf="!startSpeaking"><img class="small"
 												src="../../assets/images/stopspeak.png">
 										</div>
 									</div>
 								</div>
-								<div *ngIf="Host" class="col-xs-3">
-									<button (click)="subaudiooff(sub)" class="leave-button">AudioOff</button>
+								<div *ngIf="Host">
+									<button (click)="subaudiooff(sub)" class="parti-button pull-left">
+										Mic-off
+									</button>
 								</div>
-								<div *ngIf="Host" class="col-xs-3">
-									<button *ngIf="Host" (click)="subvideooff(sub)" class="leave-button">VideoOff</button>
+								<div *ngIf="Host">
+									<button *ngIf="Host" (click)="subvideooff(sub)" class="parti-button pull-left">
+										Vid-off
+									</button>
 								</div>
 							</div>
 						</div>
 					</div>
-
-
 				</div>
 			</div>
-
-
 		</div>
 		</div>
 	</div>
