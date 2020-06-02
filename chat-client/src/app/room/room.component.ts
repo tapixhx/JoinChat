@@ -24,7 +24,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   videoSubscription: Subscription;
   audioSubscription: Subscription;
 
-  
+
   src = "../../assets/images/video.png"
   src2 = "../../assets/images/mic.png"
 
@@ -47,11 +47,12 @@ export class RoomComponent implements OnInit, OnDestroy {
   connectionId: any;
   audioconnectionId: any;
   subaudio: any;
+
   token:any
-  
+
   pub = true
   exp: any;
-  local=false;
+  local = false;
   // Main video of the page, will be 'publisher' or one of the 'subscribers',
   // updated by click event in UserVideoComponent children
   mainStreamManager: StreamManager;
@@ -60,35 +61,33 @@ export class RoomComponent implements OnInit, OnDestroy {
   messages: messages[];
   messageSubscription: Subscription
 
-  constructor(private httpClient: HttpClient, private Router: ActivatedRoute, private chatService: ChangeService, private Route: Router,private ServerService:ServerService,private commeonservice:CommonVarService) {
+  constructor(private httpClient: HttpClient, private Router: ActivatedRoute, private chatService: ChangeService, private Route: Router, private ServerService: ServerService, private commeonservice: CommonVarService) {
     this.generateParticipantInfo();
   }
   ngOnInit() {
-    this.local=true
+    this.local = true
     this.Router.params
       .subscribe((params: Params) => {
         if (params.session) {
           this.Host = true;
           this.mySessionId = params.session
-          this.token=this.ServerService.getsettoken()
+          this.token = this.ServerService.getsettoken()
 
           this.joinSession()
         }
-       
+
         if (params.id) {
           this.mySessionId = params.id;
 
         }
-        if(localStorage.getItem('token'))
-        {
+        if (localStorage.getItem('token')) {
           this.myUserName = localStorage.getItem('name')
         }
-        else{
-        this.commeonservice.loginopen()
+        else {
+          this.commeonservice.loginopen()
 
         }
-        this.commeonservice.loginIdentification.subscribe((event)=>
-        {
+        this.commeonservice.loginIdentification.subscribe((event) => {
           this.myUserName = localStorage.getItem('name')
           this.local = false
         })
@@ -114,34 +113,30 @@ export class RoomComponent implements OnInit, OnDestroy {
     // On component destroyed leave session
     this.leaveSession();
   }
-  getToken()
-  { if(localStorage.getItem('token'))
-  {
-    this.ServerService.gettoken(this.mySessionId)
-    .subscribe((response:any)=>
-    {
-       this.token = response.token
-       
-       if(response.role=="MODERATOR")
-       {
-         this.Host=true
-       }
-        
-       this.joinSession()
-        
-    },
-    error=>
-    {
-      Swal.fire(
-        'Oops!',
-        error.error.error,
-        'error'
-      )
-    })
-  }
-  else{
-    this.commeonservice.loginopen()
-  }
+  getToken() {
+    if (localStorage.getItem('token')) {
+      this.ServerService.gettoken(this.mySessionId)
+        .subscribe((response: any) => {
+          this.token = response.token
+
+          if (response.role == "MODERATOR") {
+            this.Host = true
+          }
+
+          this.joinSession()
+
+        },
+          error => {
+            Swal.fire(
+              'Oops!',
+              error.error.error,
+              'error'
+            )
+          })
+    }
+    else {
+      this.commeonservice.loginopen()
+    }
   }
 
   joinSession() {
@@ -217,14 +212,14 @@ export class RoomComponent implements OnInit, OnDestroy {
       }
       if (this.myUserName != message[0]) {
         Swal.fire({
-          title:message[2] + ' muted ' + message[0],
-          timer:1500,
+          title: message[2] + ' muted ' + message[0],
+          timer: 1500,
         })
       }
       else {
         Swal.fire({
-          title:message[2] + ' muted You',
-          timer:1500,
+          title: message[2] + ' muted You',
+          timer: 1500,
         })
 
       }
@@ -238,14 +233,14 @@ export class RoomComponent implements OnInit, OnDestroy {
       }
       if (this.myUserName != message[0]) {
         Swal.fire({
-          title:message[2] + ' unpublish ' + message[0],
-          timer:1500
+          title: message[2] + ' unpublish ' + message[0],
+          timer: 1500
         })
       }
       else {
         Swal.fire({
-          title:message[2] + ' unpublish You',
-          timer:1500,
+          title: message[2] + ' unpublish You',
+          timer: 1500,
         })
 
       }
@@ -256,41 +251,41 @@ export class RoomComponent implements OnInit, OnDestroy {
 
     // 'getToken' method is simulating what your server-side should do.
     // 'token' parameter should be retrieved and returned by your own backend
-    
 
-      // First param is the token got from OpenVidu Server. Second param can be retrieved by every user on event
-      // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
-      this.session.connect(this.token, { clientData: this.myUserName })
-        .then(() => {
 
-          // --- 5) Get your own camera stream ---
+    // First param is the token got from OpenVidu Server. Second param can be retrieved by every user on event
+    // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
+    this.session.connect(this.token, { clientData: this.myUserName })
+      .then(() => {
 
-          // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
-          // element: we will manage it on our own) and with the desired properties
-          let publisher: Publisher = this.OV.initPublisher(undefined, {
-            audioSource: undefined, // The source of audio. If undefined default microphone
-            videoSource: undefined, // The source of video. If undefined default webcam
-            publishAudio: true,     // Whether you want to start publishing with your audio unmuted or not
-            publishVideo: true,     // Whether you want to start publishing with your video enabled or not
-            resolution: '640x480',  // The resolution of your video
-            frameRate: 30,          // The frame rate of your video
-            insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
-            mirror: true           // Whether to mirror your local video or not
-          });
+        // --- 5) Get your own camera stream ---
 
-          // --- 6) Publish your stream ---
-
-          this.session.publish(publisher);
-
-          // Set the main video in the page to display our webcam and store our Publisher
-          this.mainStreamManager = publisher;
-          this.publisher = publisher;
-        })
-        .catch(error => {
-          console.log('There was an error connecting to the session:', error.code, error.message);
-          console.log("1");
+        // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
+        // element: we will manage it on our own) and with the desired properties
+        let publisher: Publisher = this.OV.initPublisher(undefined, {
+          audioSource: undefined, // The source of audio. If undefined default microphone
+          videoSource: undefined, // The source of video. If undefined default webcam
+          publishAudio: true,     // Whether you want to start publishing with your audio unmuted or not
+          publishVideo: true,     // Whether you want to start publishing with your video enabled or not
+          resolution: '640x480',  // The resolution of your video
+          frameRate: 30,          // The frame rate of your video
+          insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
+          mirror: true           // Whether to mirror your local video or not
         });
-   
+
+        // --- 6) Publish your stream ---
+
+        this.session.publish(publisher);
+
+        // Set the main video in the page to display our webcam and store our Publisher
+        this.mainStreamManager = publisher;
+        this.publisher = publisher;
+      })
+      .catch(error => {
+        console.log('There was an error connecting to the session:', error.code, error.message);
+        console.log("1");
+      });
+
 
     this.session.on('publisherStartSpeaking', (event: any) => {
       this.startSpeaking = true;
@@ -358,11 +353,11 @@ export class RoomComponent implements OnInit, OnDestroy {
    *   3) The token must be consumed in Session.connect() method of OpenVidu Browser
    */
 
-  
 
-  
 
-  
+
+
+
 
   onSubmit(f: NgForm) {
     const data = f.value.chat
