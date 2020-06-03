@@ -52,7 +52,7 @@
 		<div class="container-videos">
 
 		<div class="row video-margin">
-			<div *ngIf="mainStreamManager" style="padding:0px 0px;" id="main-video" class="col-sm-8 col-xs-12">
+			<div *ngIf="mainStreamManager" style="padding:0px 0px;" id="main-video" class="col-sm-9 col-xs-12">
 				<Main-video [streamManager]="mainStreamManager"></Main-video>
 				<div id="session-header" >
 					<button class="normal-button text-center pd1" (click)="videochange()"><img [src]="src"
@@ -65,18 +65,54 @@
 						class="image2"	alt="chat"></button>
 				</div>
 			</div>
-			<div id="video-container" class="col-sm-3 col-xs-12 pull-right text-center mx-auto session-sec2">
-				<div *ngIf="publisher" class="stream-container">
-
+			<div id="video-container" class="col-sm-3 col-xs-12 ">
+				<div *ngIf="publisher" class="stream-container row">
+                    <div class="col-sm-12 col-xs-4 disable-padding">
 					<user-video [streamManager]="publisher" (click)="updateMainStreamManager(publisher)"></user-video>
+					<div>
+					<img class="subsaudiooff"  src="../../assets/images/audiooff.png" alt="audio-off">
+					</div>
+                    </div>
+					<div class="col-sm-12 col-xs-8"style="padding:0px 0px ">
+						<div class="row row-padding" >
+							<div  class="username col-xs-3 col-sm-4 disable-padding center">
+								Anushka Mishra
+							</div>
+							 <div class="col-xs-3 col-sm-4 disable-padding center">
+								 <button><img src="../../assets/images/audiooff.png"class="" (click)="subaudiooff(publisher)"	alt="audio-off"></button>
+							 </div>
+							 <div class="col-xs-3 col-sm-4 disable-padding center">
+								 <button><img src="../../assets/images/video-off.png"class="" (click)="subvideooff(publisher)" alt="audio-off"></button>
+							 </div>
+						</div>
+					</div>
 				</div>
 
 				<div *ngFor="let sub of subscribers" class="stream-container">
 					<div class="row">
-						<div class="col-md-12">
+						<div class="col-sm-12 col-xs-4 disable-padding">
+							<user-video [streamManager]="sub" (click)="updateMainStreamManager(publisher)"></user-video>
+							<div>
+							<img class="subsaudiooff"  src="../../assets/images/audiooff.png" alt="audio-off">
+							</div>
+							</div>
+							<div class="col-sm-12 col-xs-8"style="padding:0px 0px ">
+								<div class="row row-padding" >
+									<div  class="username col-xs-3 col-sm-4 disable-padding center">
+										{{getNicknameTag(sub)}}
+									</div>
+									 <div class="col-xs-3 col-sm-4 disable-padding center">
+										 <button><img src="../../assets/images/audiooff.png"class="" (click)="subaudiooff(publisher)"	alt="audio-off"></button>
+									 </div>
+									 <div class="col-xs-3 col-sm-4 disable-padding center">
+										 <button><img src="../../assets/images/video-off.png"class="" (click)="subvideooff(publisher)" alt="audio-off"></button>
+									 </div>
+								</div>
+							</div>
+						<!-- <div class="col-md-10 col-xs-4">
 							<user-video [streamManager]="sub" (click)="updateMainStreamManager(sub)"></user-video>
 						</div>
-						<div class="col-md-12">
+						<div class="col-md-2 col-xs-8">
 							<div class="participant-ctrl">
 								<div>
 									<div *ngIf="sub.stream.connection.connectionId==audioconnectionId">
@@ -104,7 +140,7 @@
 									</button>
 								</div>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</div>

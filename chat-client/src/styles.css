@@ -155,8 +155,7 @@ input.btn {
 }
 
 #video-container video {
-	position: relative;
-	float: left;
+	
 	cursor: pointer;
 }
 
@@ -200,14 +199,7 @@ video {
 	vertical-align: baseline;
 }
 
-#session #video-container img {
-	position: relative;
-	float: left;
-	width: 50%;
-	cursor: pointer;
-	object-fit: cover;
-	height: 180px;
-}
+
 
 
 
