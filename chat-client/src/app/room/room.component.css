@@ -1,6 +1,7 @@
 .stream-container {
 
-	padding: 0px 0px
+	padding: 0px 0px;
+	background:black
 }
 
 input.ng-invalid.ng-touched {
@@ -160,8 +161,7 @@ input.ng-invalid.ng-touched {
 }
 
 .container-videos {
-	padding: 0rem 1rem;
-	margin: 0 1rem;
+	
 	overflow-x: none;
 	padding: 0px 0px;
 	margin: 0px 0px;
@@ -173,7 +173,11 @@ input.ng-invalid.ng-touched {
 	margin-bottom: 2px;
 
 }
-
+.username
+{
+	color: white;
+	
+}
 button:focus {
 	outline: none;
 }
@@ -229,6 +233,13 @@ button:focus {
 	padding: 10px 10;
 	margin: 10px;
 }
+.subsaudiooff
+{
+	position: absolute;
+	top:30vh;
+	width:30px !important;
+	left:2vw;
+}
 
 .image {
 	width: 20px !important;
@@ -249,6 +260,9 @@ button:focus {
 
 .pd3 {
 	padding: 6px 30px;
+}
+.pd5 {
+	padding: 6px 15px;
 }
 
 .center {
@@ -303,7 +317,18 @@ button:focus {
 .container-room2 {
 	padding: 0 2rem;
 }
+.disable-padding
+{
+  padding:0px 0px
+}
+.row-padding
+{
+   text-align: center;
+   padding: 0px 3vw;
+   padding-top:5px;
 
+   
+}
 #session-header {
 	background-image: linear-gradient(to left, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
 	position: fixed;
@@ -356,14 +381,21 @@ button:focus {
 		margin: 0px 0px;
 
 	}
-
 	
-
-
-
-	.col-xs-12 {
+	.image5{
+		height: 4vh;
+	}
+	#video-container
+	{
+		height: 50vh;
+	}
+    .col-xs-12,.col-xs-4 {
 		padding: 0px 0px;
 		margin-left: 0px;
+	}
+	.image5
+	{
+		widows: 1px !important;;
 	}
 
 

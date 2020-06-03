@@ -22,7 +22,13 @@ import { StreamManager } from 'openvidu-browser';
             margin: 0;
             background-color: rgb(11,12,16,0.5) !important;
             color: #66fcf1 !important;
-        }`],
+        }
+        @media only screen and (max-width: 455px) {
+            .name
+            {
+                display:none
+            }
+           }`],
     template: `
         <div>
         <div class="name"><p>{{getNicknameTag()}}</p></div>

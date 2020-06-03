@@ -414,6 +414,9 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.session.signal(mess)
 
   }
+  getNicknameTag(sub:any) {
+    return JSON.parse(sub.stream.connection.data).clientData;
+}
 
 
 
