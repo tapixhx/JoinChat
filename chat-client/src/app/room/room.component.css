@@ -193,6 +193,7 @@ button:focus {
 	background: #434343;
 	height: 100vh;
 	overflow: scroll;
+	padding-bottom:4rem;
 }
 
 .join-button,
@@ -324,22 +325,23 @@ button:focus {
 .container-room2 {
 	padding: 0 2rem;
 }
-.disable-padding
-{
+
+.disable-padding {
   padding:0px 0px
 }
-.row-padding
-{
+
+.row-padding {
    text-align: center;
    padding: 5px 3vw;
 }
-.host-button
-{
+
+.host-button {
 	background:white;
 	padding:10px;
 	border:0px solid black;
 	border-radius:50%
 }
+
 #session-header {
 	background-image: linear-gradient(to left, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
 	position: fixed;
@@ -389,6 +391,7 @@ button:focus {
 @media only screen and (max-width: 992px) {
 	.username{
 		display: block;
+		color:#fff;
 	}
 	.row-padding
 	{
@@ -471,19 +474,61 @@ button:focus {
 		margin: 0px 0px;
 	}
 }
-	@media only screen and (max-width: 376px) {
-		
-		.pd1 {
-			padding: 10px 15px;
-		}
-		
-		.pd2 ,.pd3{
-			padding: 6px 15px;
-		}
-		.leave-button
-		{
-			padding: 10px 15px;
-		}
-
+@media only screen and (max-width: 376px) {
+	
+	.pd1 {
+		padding: 10px 15px;
 	}
 	
+	.pd2 ,.pd3{
+		padding: 6px 15px;
+	}
+	.leave-button
+	{
+		padding: 10px 15px;
+	}
+
+}
+
+/* footer */
+.footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 60px;
+	background-color: #0b0c10;
+}
+
+.footer .text-muted {
+	margin: 20px 0;
+	float: right;
+	color: #ccc;
+}
+
+.openvidu-logo {
+	height: 35px;
+	float: left;
+	margin: 12px 0;
+	-webkit-transition: all 0.1s ease-in-out;
+	-moz-transition: all 0.1s ease-in-out;
+	-o-transition: all 0.1s ease-in-out;
+	transition: all 0.1s ease-in-out;
+}
+
+.openvidu-logo:hover {
+	-webkit-filter: grayscale(0.5);
+	filter: grayscale(0.5);
+}
+
+.demo-logo {
+	margin: 0;
+	height: 22px;
+	float: left;
+	padding-right: 8px;
+}
+
+a:hover .demo-logo {
+	-webkit-filter: brightness(0.7);
+	filter: brightness(0.7);
+}
+/* footer */
