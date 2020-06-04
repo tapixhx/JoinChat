@@ -133,6 +133,12 @@ input.ng-invalid.ng-touched {
 	color: #fff;
 	transition: 0.2s all ease;
 }
+.host-leave-button
+{
+	background:red;
+	border-radius:100%;
+	padding:4px;
+}
 
 .display {
 	display: block;
@@ -175,7 +181,8 @@ input.ng-invalid.ng-touched {
 }
 .username
 {
-	color: white;
+	
+	display: none;
 	
 }
 button:focus {
@@ -238,7 +245,7 @@ button:focus {
 	position: absolute;
 	top:30vh;
 	width:30px !important;
-	left:2vw;
+	left:3vw;
 }
 
 .image {
@@ -324,10 +331,14 @@ button:focus {
 .row-padding
 {
    text-align: center;
-   padding: 0px 3vw;
-   padding-top:5px;
-
-   
+   padding: 5px 3vw;
+}
+.host-button
+{
+	background:white;
+	padding:10px;
+	border:0px solid black;
+	border-radius:50%
 }
 #session-header {
 	background-image: linear-gradient(to left, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
@@ -371,15 +382,48 @@ button:focus {
 	.form-control {
 		margin-bottom: 30px;
 	}
+	
 
 
 }
-
+@media only screen and (max-width: 992px) {
+	.username{
+		display: block;
+	}
+	.row-padding
+	{
+		padding-top: 8vh;
+	}
+	.subsaudiooff
+	{
+		top:14.5vh;
+		left:9vw
+	
+	}
+}
 
 @media only screen and (max-width: 455px) {
 	.body {
 		margin: 0px 0px;
 
+	}
+	.row-padding
+	{    padding:0px 15px;
+		padding-top: 4vh;
+
+	}
+	.host-leave-button
+	{
+		padding: 0px;
+	}
+	.host-button
+	{
+		padding:2px;
+	}
+	.subsaudiooff{
+		top:9vh;
+		left:27vw;
+		width: 20% !important;
 	}
 	
 	.image5{
