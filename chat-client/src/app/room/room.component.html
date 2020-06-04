@@ -45,74 +45,86 @@
 
 			</div>
 		</div>
-
+		<footer class="footer">
+			<div class="container-fluid">
+				<div class="text-muted">JoinChat © 2020</div>
+				<a href="http://silive.in/" target="_blank"><img class="openvidu-logo" src="assets/images/whitesilogo.png"/></a>
+			</div>
+		</footer>
 	</div>
 
 	<div *ngIf="session" id="session" class="session-d">
 		<div class="container-videos">
 
-		<div class="row video-margin">
-			<div *ngIf="mainStreamManager" style="padding:0px 0px;" id="main-video" class="col-md-9 col-sm-12 col-xs-12">
-				<Main-video [streamManager]="mainStreamManager"></Main-video>
-				<div id="session-header" >
-					<button class="normal-button text-center pd1" (click)="videochange()"><img [src]="src"
-						class="image2"	alt="video-off"></button>
-					<button class="leave-button text-center" (click)="leaveSession()"><img 
-						class="image"	src="../../assets/images/call-disconnect.png"></button>
-					<button class="normal-button text-center pd2" (click)="audiochange()"><img [src]="src2" 
-						class="image2"	alt="audio-off"></button>
-					<button class="normal-button text-center pd3" (click)="chat()"><img src="../../assets/images/chat.png" 
-						class="image2"	alt="chat"></button>
-				</div>
-			</div>
-			<div id="video-container" class="col-md-3 col-sm-12 col-xs-12 s disable-padding ">
-				<div *ngIf="publisher" class="stream-container row">
-                    <div class="col-md-12 col-xs-4 disable-padding">
-					<user-video [streamManager]="publisher" (click)="updateMainStreamManager(publisher)"></user-video>
-					<div >
-					<img *ngIf="!audioOn"class="subsaudiooff"  src="../../assets/images/audiooff.png" alt="audio-off">
-					</div>
-                    </div>
-					<div class="col-md-12 col-xs-8"style="padding:0px 0px ">
-						<div class="row row-padding" >
-							<div  class="username col-xs-3 col-md-4 disable-padding center">
-							      {{myUserName}}
-							</div>
-							 <div class="col-xs-3 col-md-4 disable-padding center">
-							 </div>
-							 <div class="col-xs-3 col-md-4 disable-padding center">
-							</div>
-							 <div class="col-xs-3 col-md-4 disable-padding center">
-							 </div>
-						</div>
+			<div class="row video-margin">
+				<div *ngIf="mainStreamManager" style="padding:0px 0px;" id="main-video"
+					class="col-md-9 col-sm-12 col-xs-12">
+					<Main-video [streamManager]="mainStreamManager"></Main-video>
+					<div id="session-header">
+						<button class="normal-button text-center pd1" (click)="videochange()"><img [src]="src"
+								class="image2" alt="video-off"></button>
+						<button class="leave-button text-center" (click)="leaveSession()"><img class="image"
+								src="../../assets/images/call-disconnect.png"></button>
+						<button class="normal-button text-center pd2" (click)="audiochange()"><img [src]="src2"
+								class="image2" alt="audio-off"></button>
+						<button class="normal-button text-center pd3" (click)="chat()"><img
+								src="../../assets/images/chat.png" class="image2" alt="chat"></button>
 					</div>
 				</div>
-
-				<div *ngFor="let sub of subscribers" class="stream-container">
-					<div class="row disable-padding">
-						<div class="col-md-12  col-xs-4 disable-padding">
-							<user-video [streamManager]="sub" (click)="updateMainStreamManager(sub)"></user-video>
+				<div id="video-container" class="col-md-3 col-sm-12 col-xs-12 s disable-padding ">
+					<div *ngIf="publisher" class="stream-container row">
+						<div class="col-md-12 col-xs-4 disable-padding">
+							<user-video [streamManager]="publisher" (click)="updateMainStreamManager(publisher)">
+							</user-video>
 							<div>
-							<img *ngIf="checksubaudiooff(sub)" class="subsaudiooff"  src="../../assets/images/audiooff.png" alt="audio-off">
+								<img *ngIf="!audioOn" class="subsaudiooff" src="../../assets/images/audiooff.png" alt="audio-off">
 							</div>
-							</div>
-							<div class="col-md-12 col-xs-8"style="padding:0px 0px ">
-								<div class="row row-padding" >
-									<div  class="username col-xs-3 col-sm-4 disable-padding center">
-										{{getNicknameTag(sub)}}
-									</div>
-									 <div class="col-xs-3 col-md-4 disable-padding center">
-										 <button class="host-button"><img src="../../assets/images/audiooff.png"class="" (click)="subaudiooff(sub)"	alt="audio-off"></button>
-									 </div>
-									 <div class="col-xs-3 col-md-4 disable-padding center">
-										<button class="host-leave-button"><img style="width:40%" src="../../assets/images/call-disconnect.png"class="" (click)="disconnect(sub)"	alt="audio-off"></button>
-									</div>
-									 <div class="col-xs-3 col-md-4 disable-padding center">
-										 <button class="host-button"><img src="../../assets/images/video-off.png"class="" (click)="subvideooff(sub)" alt="audio-off"></button>
-									 </div>
+						</div>
+						<div class="col-md-12 col-xs-8" style="padding:0px 0px ">
+							<div class="row row-padding">
+								<div class="username col-xs-3 col-md-4 disable-padding center">
+									{{myUserName}}
+								</div>
+								<div class="col-xs-3 col-md-4 disable-padding center">
+								</div>
+								<div class="col-xs-3 col-md-4 disable-padding center">
+								</div>
+								<div class="col-xs-3 col-md-4 disable-padding center">
 								</div>
 							</div>
-						<!-- <div class="col-md-10 col-xs-4">
+						</div>
+					</div>
+
+					<div *ngFor="let sub of subscribers" class="stream-container">
+						<div class="row disable-padding">
+							<div class="col-md-12  col-xs-4 disable-padding">
+								<user-video [streamManager]="sub" (click)="updateMainStreamManager(sub)"></user-video>
+								<div>
+									<img *ngIf="checksubaudiooff(sub)" class="subsaudiooff"
+										src="../../assets/images/audiooff.png" alt="audio-off">
+								</div>
+							</div>
+							<div class="col-md-12 col-xs-8" style="padding:0px 0px ">
+								<div class="row row-padding">
+									<div class="username col-xs-3 col-sm-4 disable-padding center">
+										{{getNicknameTag(sub)}}
+									</div>
+									<div class="col-xs-3 col-md-4 disable-padding center">
+										<button *ngIf="Host" class="host-button"><img src="../../assets/images/audiooff.png" class=""
+												(click)="subaudiooff(sub)" alt="audio-off"></button>
+									</div>
+									<div class="col-xs-3 col-md-4 disable-padding center">
+										<button *ngIf="Host" class="host-leave-button"><img style="width:40%"
+												src="../../assets/images/call-disconnect.png" class=""
+												(click)="disconnect(sub)" alt="call-disconnect"></button>
+									</div>
+									<div class="col-xs-3 col-md-4 disable-padding center">
+										<button *ngIf="Host" class="host-button"><img src="../../assets/images/video-off-other.png"
+												class="" (click)="subvideooff(sub)" alt="video-off"></button>
+									</div>
+								</div>
+							</div>
+							<!-- <div class="col-md-10 col-xs-4">
 							<user-video [streamManager]="sub" (click)="updateMainStreamManager(sub)"></user-video>
 						</div>
 						<div class="col-md-2 col-xs-8">
@@ -144,10 +156,10 @@
 								</div>
 							</div>
 						</div> -->
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
 		</div>
 	</div>
 

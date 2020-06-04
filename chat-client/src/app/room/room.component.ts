@@ -37,7 +37,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   publisher: any; // Local
   subscribers: StreamManager[] = []; // Remotes
   connection: Connection[] = [];
-  audioconnectionId:any[]=[];
+  audioconnectionId: any[] = [];
   show = false;
   Host = false;
   // Join form
@@ -62,7 +62,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   messageSubscription: Subscription
 
   constructor(private httpClient: HttpClient, private Router: ActivatedRoute, private chatService: ChangeService, private Route: Router, private ServerService: ServerService, private commeonservice: CommonVarService) {
-    
+
   }
   ngOnInit() {
     this.local = true
@@ -112,7 +112,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     // On component destroyed leave session
     this.leaveSession();
   }
-  getToken(c:NgForm) {
+  getToken(c: NgForm) {
     if (localStorage.getItem('token')) {
       this.ServerService.gettoken(this.mySessionId)
         .subscribe((response: any) => {
@@ -180,17 +180,17 @@ export class RoomComponent implements OnInit, OnDestroy {
       let subscriber: Subscriber = this.session.subscribe(event.stream, undefined);
       this.subscribers.push(subscriber);
       this.connection.push(subscriber.stream.connection);
-      const mess: any = { "data": String(this.audioOn), "to":subscriber.stream.connection , "type": "audio" }
-    this.session.signal(mess)
-      
-      
+      const mess: any = { "data": String(this.audioOn), "to": subscriber.stream.connection, "type": "audio" }
+      this.session.signal(mess)
+
+
     });
 
     // On every Stream destroyed...
     this.session.on('streamDestroyed', (event: StreamEvent) => {
-
       // Remove the stream from 'subscribers' array
       this.deleteSubscriber(event.stream.streamManager);
+      this.connection.splice(this.connection.indexOf(event.stream.connection), 1)
     });
 
 
@@ -205,11 +205,9 @@ export class RoomComponent implements OnInit, OnDestroy {
       this.subaudio = JSON.parse(data.data)
       if (!this.subaudio) {
         this.audioconnectionId.push(data.from.connectionId)
-        
       }
       else {
         this.audioconnectionId.splice(this.audioconnectionId.indexOf(data.from.connectionId), 1)
-        
       }
     });
     this.session.on('signal:video', (data: any) => {
@@ -322,7 +320,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     delete this.publisher;
     delete this.session;
     delete this.OV;
-    
+
     this.Route.navigate([''])
   }
 
@@ -403,7 +401,6 @@ export class RoomComponent implements OnInit, OnDestroy {
     }
     else {
       this.src = "../../assets/images/video-off.png"
-
     }
 
   }
@@ -415,20 +412,18 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   }
   subvideooff(sub: any) {
-
     const message: string = "" + (JSON.parse(sub.stream.connection.data)).clientData + ',' + sub.stream.connection.connectionId + ',' + this.myUserName + ""
     console.log(message)
     const mess: any = { "data": message, "to": this.connection, "type": "stopRemoteVideo" }
     this.session.signal(mess)
-
   }
+
   getNicknameTag(sub: any) {
     return JSON.parse(sub.stream.connection.data).clientData;
   }
-  checksubaudiooff(sub:any)
-  {
-  return this.audioconnectionId.includes(sub.stream.connection.connectionId)
-    
+
+  checksubaudiooff(sub: any) {
+    return this.audioconnectionId.includes(sub.stream.connection.connectionId)
   }
 
 
