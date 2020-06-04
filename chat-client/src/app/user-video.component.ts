@@ -23,7 +23,7 @@ import { StreamManager } from 'openvidu-browser';
             background-color: rgb(11,12,16,0.5) !important;
             color: #66fcf1 !important;
         }
-        @media only screen and (max-width: 455px) {
+        @media only screen and (max-width: 992px) {
             .name
             {
                 display:none

@@ -37,6 +37,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   publisher: any; // Local
   subscribers: StreamManager[] = []; // Remotes
   connection: Connection[] = [];
+  audioconnectionId:any[]=[];
   show = false;
   Host = false;
   // Join form
@@ -45,7 +46,6 @@ export class RoomComponent implements OnInit, OnDestroy {
   tk: any;
   startSpeaking = false;
   connectionId: any;
-  audioconnectionId: any;
   subaudio: any;
 
   token: any
@@ -62,7 +62,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   messageSubscription: Subscription
 
   constructor(private httpClient: HttpClient, private Router: ActivatedRoute, private chatService: ChangeService, private Route: Router, private ServerService: ServerService, private commeonservice: CommonVarService) {
-    this.generateParticipantInfo();
+    
   }
   ngOnInit() {
     this.local = true
@@ -72,6 +72,7 @@ export class RoomComponent implements OnInit, OnDestroy {
           this.Host = true;
           this.mySessionId = params.session
           this.token = this.ServerService.getsettoken()
+          this.myUserName = localStorage.getItem('name')
 
           this.joinSession()
         }
@@ -111,11 +112,12 @@ export class RoomComponent implements OnInit, OnDestroy {
     // On component destroyed leave session
     this.leaveSession();
   }
-  getToken() {
+  getToken(c:NgForm) {
     if (localStorage.getItem('token')) {
       this.ServerService.gettoken(this.mySessionId)
         .subscribe((response: any) => {
-          this.token = response.token
+          this.token = response.token;
+          this.myUserName = c.value.userName
           console.log(response)
           if (response.role == "MODERATOR") {
             this.Host = true
@@ -178,6 +180,10 @@ export class RoomComponent implements OnInit, OnDestroy {
       let subscriber: Subscriber = this.session.subscribe(event.stream, undefined);
       this.subscribers.push(subscriber);
       this.connection.push(subscriber.stream.connection);
+      const mess: any = { "data": String(this.audioOn), "to":subscriber.stream.connection , "type": "audio" }
+    this.session.signal(mess)
+      
+      
     });
 
     // On every Stream destroyed...
@@ -197,7 +203,14 @@ export class RoomComponent implements OnInit, OnDestroy {
     });
     this.session.on('signal:audio', (data: any) => {
       this.subaudio = JSON.parse(data.data)
-      this.audioconnectionId = data.from.connectionId
+      if (!this.subaudio) {
+        this.audioconnectionId.push(data.from.connectionId)
+        
+      }
+      else {
+        this.audioconnectionId.splice(this.audioconnectionId.indexOf(data.from.connectionId), 1)
+        
+      }
     });
     this.session.on('signal:video', (data: any) => {
       console.log(data)
@@ -309,16 +322,11 @@ export class RoomComponent implements OnInit, OnDestroy {
     delete this.publisher;
     delete this.session;
     delete this.OV;
-    this.generateParticipantInfo();
+    
     this.Route.navigate([''])
   }
 
 
-  private generateParticipantInfo() {
-    // Random user nickname and sessionId
-
-    this.myUserName = 'Participant' + Math.floor(Math.random() * 100);
-  }
 
   private deleteSubscriber(streamManager: StreamManager): void {
     let index = this.subscribers.indexOf(streamManager, 0);
@@ -414,10 +422,14 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.session.signal(mess)
 
   }
-  getNicknameTag(sub:any) {
+  getNicknameTag(sub: any) {
     return JSON.parse(sub.stream.connection.data).clientData;
-}
-
+  }
+  checksubaudiooff(sub:any)
+  {
+  return this.audioconnectionId.includes(sub.stream.connection.connectionId)
+    
+  }
 
 
 }

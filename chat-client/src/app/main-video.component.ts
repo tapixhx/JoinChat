@@ -8,7 +8,7 @@ import { StreamManager } from 'openvidu-browser';
      {
      text-align:center ;padding-top:4vh;height:100vh
      }
-     @media only screen and (max-width: 455px) {
+     @media only screen and (max-width: 992px) {
        .adjust
        {
            height:50vh
