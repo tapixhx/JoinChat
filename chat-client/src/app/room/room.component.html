@@ -102,6 +102,10 @@
 								<div>
 									<img *ngIf="checksubaudiooff(sub)" class="subsaudiooff"
 										src="../../assets/images/audiooff.png" alt="audio-off">
+									<div *ngIf="!checksubaudiooff(sub)">
+										<img *ngIf="checkspecking(sub)" class="subsaudiooff"
+										src="../../assets/images/giphy.gif" alt="audio-off">
+									</div>	
 								</div>
 							</div>
 							<div class="col-md-12 col-xs-8" style="padding:0px 0px ">
