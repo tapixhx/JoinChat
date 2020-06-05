@@ -15,7 +15,16 @@ nav {
   top:0;   
   width: 100vw;
 }
-
+a{
+	text-decoration: none;
+}
+.link
+{
+	text-align: center;
+	letter-spacing: 2px;
+    font-family: 'Montserrat', sans-serif;
+	margin-top: 3vh;
+}
 .navbar-header {
 	width: 100%;
 	color:#c5c6c7;
