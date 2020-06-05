@@ -64,6 +64,16 @@ export class NavbarComponent implements OnInit {
     this.changeService.loginoff()
     this.changeService.signupOff()
   }
+  logintosignup()
+  {
+    this.close()
+    this.signup()
+  }
+  signuptologin()
+  {
+    this.close()
+    this.login()
+  }
 
   loginform(form: NgForm) {
     this.ngxservice.start();
