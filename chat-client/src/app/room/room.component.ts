@@ -44,7 +44,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   mySessionId: string;
   myUserName: string;
   tk: any;
-  startSpeaking = false;
+  startSpeaking:any[] = [];
   connectionId: any;
   subaudio: any;
   ename:any;
@@ -195,7 +195,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     });
 
     // On every Stream destroyed...
-    this.session.on('streamDestroyed', (event: StreamEvent) => {
+    this.session.on('streamDestroyed', (event: any) => {
       // Remove the stream from 'subscribers' array
       this.deleteSubscriber(event.stream.streamManager);
       this.connection.splice(this.connection.indexOf(event.stream.connection), 1)
@@ -311,15 +311,17 @@ export class RoomComponent implements OnInit, OnDestroy {
 
 
     this.session.on('publisherStartSpeaking', (event: any) => {
-      this.startSpeaking = true;
+      
       this.connectionId = event.connection.connectionId;
-
-
-    });
+      let connectionIndex = this.connection.indexOf(event.connection)
+      this.updateMainStreamManager(this.subscribers[connectionIndex])
+      this.startSpeaking.push(event.connection.connectionId)
+});
 
     this.session.on('publisherStopSpeaking', (event: any) => {
-      this.startSpeaking = false;
-
+   
+      this.startSpeaking.splice(this.startSpeaking.indexOf(event.connection.connectionId),1)
+   
     });
   }
 
@@ -438,6 +440,10 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   checksubaudiooff(sub: any) {
     return this.audioconnectionId.includes(sub.stream.connection.connectionId)
+  }
+  checkspecking(sub:any)
+  {
+    return this.startSpeaking.includes(sub.stream.connection.connectionId)
   }
 
 
