@@ -71,6 +71,7 @@ export class HostComponent implements OnInit {
         .subscribe((response: any) => {
           console.log(response)
           this.serverservice.sethosttoken(response.token)
+          localStorage.setItem('name',f.value.userName)
           this.Router.navigate(['room', 'Host', this.res.id])
           this.ngxservice.stop();
         },

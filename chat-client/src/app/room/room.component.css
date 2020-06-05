@@ -1,6 +1,7 @@
 .stream-container {
 
-	padding: 0px 0px
+	padding: 0px 0px;
+	background:black
 }
 
 input.ng-invalid.ng-touched {
@@ -16,7 +17,7 @@ input.ng-invalid.ng-touched {
 }
 
 #session {
-	background: black;
+	background: #414141;
 }
 
 .mainstream {
@@ -46,39 +47,40 @@ input.ng-invalid.ng-touched {
 
 
 .session-d {
-	height:93vh;
-	overflow:hidden;
+	height: 93vh;
+	overflow: hidden;
 }
 
 .session-sec2 {
-	height:93vh;
-	overflow-x:hidden;
-	overflow-y:auto;
-	padding:0;
+	height: 93vh;
+	overflow-x: hidden;
+	overflow-y: auto;
+	padding: 0;
 }
 
 /* Scrollbar */
 /* width */
 .session-sec2::-webkit-scrollbar {
-    width: 5px;
+	width: 5px;
 }
 
 /* Track */
 .session-sec2::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px grey; 
-    border-radius: 2px;
+	box-shadow: inset 0 0 5px grey;
+	border-radius: 2px;
 }
 
 /* Handle */
 .session-sec2::-webkit-scrollbar-thumb {
-    background: #696969; 
-    border-radius: 2px;
+	background: #696969;
+	border-radius: 2px;
 }
 
 /* Handle on hover */
 .session-sec2::-webkit-scrollbar-thumb:hover {
-    background: #696969; 
+	background: #696969;
 }
+
 /* Scrollbar */
 
 .text-box {
@@ -131,6 +133,12 @@ input.ng-invalid.ng-touched {
 	color: #fff;
 	transition: 0.2s all ease;
 }
+.host-leave-button
+{
+	background:red;
+	border-radius:100%;
+	padding:4px;
+}
 
 .display {
 	display: block;
@@ -159,9 +167,10 @@ input.ng-invalid.ng-touched {
 }
 
 .container-videos {
-	padding:0rem 1rem;
-	margin:0 1rem;
-	overflow-x:none;
+	
+	overflow-x: none;
+	padding: 0px 0px;
+	margin: 0px 0px;
 }
 
 .name {
@@ -170,19 +179,26 @@ input.ng-invalid.ng-touched {
 	margin-bottom: 2px;
 
 }
-
+.username
+{
+	
+	display: none;
+	
+}
 button:focus {
 	outline: none;
 }
 
 #video-container {
-	background: white;
+	background: #434343;
 	height: 100vh;
 	overflow: scroll;
+	padding-bottom:4rem;
 }
 
 .join-button,
 .leave-button,
+.parti-button,
 .normal-button {
 	font-size: 120%;
 	font-family: Montserrat;
@@ -196,6 +212,7 @@ button:focus {
 
 .join-button:hover,
 .leave-button:hover,
+.parti-button:hover,
 .normal-button:hover {
 	box-shadow: 0 0px 0px;
 
@@ -207,10 +224,33 @@ button:focus {
 }
 
 .leave-button {
-	background: red;
+	background-image: linear-gradient(to right, #B91372, #6B0F1A);
 	color: white;
 	padding: 10px 30px;
 	margin: 10px;
+}
+
+.participant-ctrl {
+	position: relative;
+	top: -15vh;
+}
+
+.parti-button {
+	background: red;
+	color: white;
+	padding: 10px 10;
+	margin: 10px;
+}
+.subsaudiooff
+{
+	position: absolute;
+	top:30vh;
+	width:30px !important;
+	left:3vw;
+}
+
+.image {
+	width: 20px !important;
 }
 
 .normal-button {
@@ -228,6 +268,9 @@ button:focus {
 
 .pd3 {
 	padding: 6px 30px;
+}
+.pd5 {
+	padding: 6px 15px;
 }
 
 .center {
@@ -265,13 +308,7 @@ button:focus {
 	font-weight: 100;
 }
 
-.image1 {
-	width: 60%;
-}
 
-.image2 {
-	width: 32%;
-}
 
 .left {
 	text-align: left !important;
@@ -289,11 +326,29 @@ button:focus {
 	padding: 0 2rem;
 }
 
+.disable-padding {
+  padding:0px 0px
+}
+
+.row-padding {
+   text-align: center;
+   padding: 5px 3vw;
+}
+
+.host-button {
+	background:white;
+	padding:10px;
+	border:0px solid black;
+	border-radius:50%
+}
+
 #session-header {
-	background-color: #E7E7E7;
-	position:fixed;
-	bottom:0;
-	left:0;
+	background-image: linear-gradient(to left, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: inherit;
+	text-align: center;
 }
 
 @media only screen and (max-width: 768px) {
@@ -329,30 +384,68 @@ button:focus {
 	.form-control {
 		margin-bottom: 30px;
 	}
+	
 
 
 }
-
+@media only screen and (max-width: 992px) {
+	.username{
+		display: block;
+		color:#fff;
+	}
+	.row-padding
+	{
+		padding-top: 8vh;
+	}
+	.subsaudiooff
+	{
+		top:14.5vh;
+		left:9vw
+	
+	}
+}
 
 @media only screen and (max-width: 455px) {
 	.body {
 		margin: 0px 0px;
 
 	}
+	.row-padding
+	{    padding:0px 15px;
+		padding-top: 4vh;
 
-	.col-xs-12 {
+	}
+	.host-leave-button
+	{
+		padding: 0px;
+	}
+	.host-button
+	{
+		padding:2px;
+	}
+	.subsaudiooff{
+		top:9vh;
+		left:27vw;
+		width: 20% !important;
+	}
+	
+	.image5{
+		height: 4vh;
+	}
+	#video-container
+	{
+		height: 50vh;
+	}
+    .col-xs-12,.col-xs-4 {
 		padding: 0px 0px;
 		margin-left: 0px;
 	}
-
-	.image1 {
-		width: 80%;
-		margin-top: 50px;
+	.image5
+	{
+		widows: 1px !important;;
 	}
 
-	.image2 {
-		width: 60%;
-	}
+
 
 	.join-button {
 		margin-bottom: 50px;
@@ -374,11 +467,68 @@ button:focus {
 		z-index: 10;
 		width: 100vw;
 		text-align: center;
+		top: -60px !important;
 	}
 
 	.video-margin {
 		margin: 0px 0px;
 	}
-
+}
+@media only screen and (max-width: 376px) {
+	
+	.pd1 {
+		padding: 10px 15px;
+	}
+	
+	.pd2 ,.pd3{
+		padding: 6px 15px;
+	}
+	.leave-button
+	{
+		padding: 10px 15px;
+	}
 
 }
+
+/* footer */
+.footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 60px;
+	background-color: #0b0c10;
+}
+
+.footer .text-muted {
+	margin: 20px 0;
+	float: right;
+	color: #ccc;
+}
+
+.openvidu-logo {
+	height: 35px;
+	float: left;
+	margin: 12px 0;
+	-webkit-transition: all 0.1s ease-in-out;
+	-moz-transition: all 0.1s ease-in-out;
+	-o-transition: all 0.1s ease-in-out;
+	transition: all 0.1s ease-in-out;
+}
+
+.openvidu-logo:hover {
+	-webkit-filter: grayscale(0.5);
+	filter: grayscale(0.5);
+}
+
+.demo-logo {
+	margin: 0;
+	height: 22px;
+	float: left;
+	padding-right: 8px;
+}
+
+a:hover .demo-logo {
+	-webkit-filter: brightness(0.7);
+	filter: brightness(0.7);
+}
+/* footer */
