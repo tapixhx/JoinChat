@@ -52,7 +52,8 @@ export class RoomComponent implements OnInit, OnDestroy {
   exitname:any;
   exit=false;
 
-  token: any
+  token: any;
+  seconds=0;
 
   pub = true
   exp: any;
@@ -77,7 +78,6 @@ export class RoomComponent implements OnInit, OnDestroy {
           this.mySessionId = params.session
           this.token = this.ServerService.getsettoken()
           this.myUserName = localStorage.getItem('name')
-
           this.joinSession()
         }
 
@@ -188,10 +188,16 @@ export class RoomComponent implements OnInit, OnDestroy {
       this.session.signal(mess);
       console.log(this.getNicknameTag(event))
       this.enter=true;
-      this.ename=this.getNicknameTag(event)+'joined';
-      setTimeout(function()  {
-        this.enter=false;
-      }, 2000);
+      this.ename=this.getNicknameTag(event)+' joined';
+      let guest = setInterval(()=>{
+
+        this.seconds=this.seconds+1;
+        if(this.seconds==2) {
+          this.enter=false;
+          this.seconds=0;
+          clearInterval(guest);
+        }
+      },1000);
     });
 
     // On every Stream destroyed...
@@ -201,7 +207,7 @@ export class RoomComponent implements OnInit, OnDestroy {
       this.connection.splice(this.connection.indexOf(event.stream.connection), 1)
       console.log(this.getNicknameTag(event))
       this.exit=true;
-      this.exitname=this.getNicknameTag(event)+'left';
+      this.exitname=this.getNicknameTag(event)+' left';
       setTimeout(function()  {
         this.exit=false;
       }, 2000);

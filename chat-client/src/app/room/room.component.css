@@ -351,6 +351,32 @@ button:focus {
 	text-align: center;
 }
 
+/* popup */
+.contain-popup {
+	background-color: #F5F5F5;
+	color:#000;
+    position:fixed;
+    bottom:100px;
+    right:4vw;
+    width:30rem;
+	height:auto;
+	z-index:1;
+	overflow-x:none;
+	border-bottom:2px solid #5BC0BE;
+    padding:2.6rem 2rem;
+    border-radius:10px;
+    animation: appear 0.5s 1;
+}
+@keyframes appear {
+    from{transform:scale(0);}
+    to{transform:scale(1);};
+}
+.entername {
+	font-size:2rem
+}
+/* popup */
+
+
 @media only screen and (max-width: 768px) {
 	.undisplay2 {
 		display: block;
