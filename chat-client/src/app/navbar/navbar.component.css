@@ -288,6 +288,7 @@ button {
   
 	.contain-popup {
 		left:3rem;
+		top:15vh
 	}
 	.col-wid {
 		width:35rem;
