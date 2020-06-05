@@ -47,6 +47,10 @@ export class RoomComponent implements OnInit, OnDestroy {
   startSpeaking = false;
   connectionId: any;
   subaudio: any;
+  ename:any;
+  enter=false;
+  exitname:any;
+  exit=false;
 
   token: any
 
@@ -181,9 +185,13 @@ export class RoomComponent implements OnInit, OnDestroy {
       this.subscribers.push(subscriber);
       this.connection.push(subscriber.stream.connection);
       const mess: any = { "data": String(this.audioOn), "to": subscriber.stream.connection, "type": "audio" }
-      this.session.signal(mess)
-
-
+      this.session.signal(mess);
+      console.log(this.getNicknameTag(event))
+      this.enter=true;
+      this.ename=this.getNicknameTag(event)+'joined';
+      setTimeout(function()  {
+        this.enter=false;
+      }, 2000);
     });
 
     // On every Stream destroyed...
@@ -191,6 +199,12 @@ export class RoomComponent implements OnInit, OnDestroy {
       // Remove the stream from 'subscribers' array
       this.deleteSubscriber(event.stream.streamManager);
       this.connection.splice(this.connection.indexOf(event.stream.connection), 1)
+      console.log(this.getNicknameTag(event))
+      this.exit=true;
+      this.exitname=this.getNicknameTag(event)+'left';
+      setTimeout(function()  {
+        this.exit=false;
+      }, 2000);
     });
 
 
