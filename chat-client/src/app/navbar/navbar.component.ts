@@ -95,7 +95,6 @@ export class NavbarComponent implements OnInit {
           if (error.error.message === "User is not verified") {
             this.router.navigate(['/verify', error.error.userId]);
             this.wnt_login = false;
-            this.ngxservice.stop();
           }
           this.appcomponent.error(error.error.error);
         }
@@ -112,7 +111,6 @@ export class NavbarComponent implements OnInit {
           this.id = response;
           this.wnt_signup = false;
           this.router.navigate(['/verify', this.id.userId]);
-          this.ngxservice.stop();
           this.appcomponent.load=false;
         },
         (error) => {

@@ -177,7 +177,7 @@ input.ng-invalid.ng-touched {
 	color: #0B132B;
 	font-size: 18px;
 	margin-bottom: 2px;
-
+	padding-left:14px;
 }
 .username
 {
@@ -328,6 +328,10 @@ button:focus {
 
 .disable-padding {
   padding:0px 0px
+}
+
+.flow {
+	overflow-x: hidden;
 }
 
 .row-padding {
