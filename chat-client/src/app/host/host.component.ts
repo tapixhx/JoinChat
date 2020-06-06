@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CommonVarService } from '../services/common-var.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import Swal from 'sweetalert2';
+import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-host',
@@ -27,7 +28,7 @@ export class HostComponent implements OnInit {
     private serverservice: ServerService,
     private httpClient: HttpClient,
     private ChangeService: CommonVarService,
-    private ngxservice: NgxUiLoaderService, ) { }
+    private appcomponent:AppComponent, ) { }
   session: any;
   ngOnInit(): void {
     this.Host=true
@@ -65,7 +66,7 @@ export class HostComponent implements OnInit {
   }
 
   host(f: NgForm) {
-    this.ngxservice.start();
+    this.appcomponent.load=true;
     if (localStorage.getItem("token")) {
       this.serverservice.gethosttoken(this.res.id)
         .subscribe((response: any) => {
@@ -73,11 +74,11 @@ export class HostComponent implements OnInit {
           this.serverservice.sethosttoken(response.token)
           localStorage.setItem('name',f.value.userName)
           this.Router.navigate(['room', 'Host', this.res.id])
-          this.ngxservice.stop();
+          this.appcomponent.load=false;
         },
           (error) => {
             console.log(error);
-            this.ngxservice.stop();
+            this.appcomponent.load=false;
             Swal.fire(
               'Oops!',
               'LogIn or SignUp again and try again!',
@@ -92,6 +93,7 @@ export class HostComponent implements OnInit {
   }
   creatSession()
   {
+    this.appcomponent.load=true;
     this.serverservice.getSessionId()
     .subscribe(
       (response) => {
@@ -101,9 +103,11 @@ export class HostComponent implements OnInit {
         this.linkbox.value = this.link
         this.Id = document.getElementById('sessionIdID')
         this.Id.value = this.res.id
+        this.appcomponent.load=false;
       },
       (error) => {
         console.log(error);
+        this.appcomponent.load=false;
       }
     )
   }

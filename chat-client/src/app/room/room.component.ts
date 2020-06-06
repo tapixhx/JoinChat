@@ -10,6 +10,7 @@ import { messages } from '../shared/message.model';
 import { ServerService } from '../services/server.service';
 import { CommonVarService } from '../services/common-var.service';
 import Swal from 'sweetalert2';
+import { AppComponent } from '../app.component';
 
 
 @Component({
@@ -66,7 +67,13 @@ export class RoomComponent implements OnInit, OnDestroy {
   messages: messages[];
   messageSubscription: Subscription
 
-  constructor(private httpClient: HttpClient, private Router: ActivatedRoute, private chatService: ChangeService, private Route: Router, private ServerService: ServerService, private commeonservice: CommonVarService) {
+  constructor(private httpClient: HttpClient, 
+              private Router: ActivatedRoute, 
+              private chatService: ChangeService, 
+              private Route: Router, 
+              private ServerService: ServerService, 
+              private commeonservice: CommonVarService,
+              private appcomponent: AppComponent) {
 
   }
   ngOnInit() {
@@ -117,6 +124,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.leaveSession();
   }
   getToken(c: NgForm) {
+    this.appcomponent.load=true;
     if (localStorage.getItem('token')) {
       this.ServerService.gettoken(this.mySessionId)
         .subscribe((response: any) => {
@@ -126,7 +134,7 @@ export class RoomComponent implements OnInit, OnDestroy {
           if (response.role == "MODERATOR") {
             this.Host = true
           }
-
+          this.appcomponent.load=false;
           this.joinSession()
 
         },
@@ -136,6 +144,7 @@ export class RoomComponent implements OnInit, OnDestroy {
               error.error.error,
               'error'
             )
+            this.appcomponent.load=false;
           })
     }
     else {
@@ -190,7 +199,6 @@ export class RoomComponent implements OnInit, OnDestroy {
       this.enter=true;
       this.ename=this.getNicknameTag(event)+' joined';
       let guest = setInterval(()=>{
-
         this.seconds=this.seconds+1;
         if(this.seconds==2) {
           this.enter=false;
@@ -208,9 +216,14 @@ export class RoomComponent implements OnInit, OnDestroy {
       console.log(this.getNicknameTag(event))
       this.exit=true;
       this.exitname=this.getNicknameTag(event)+' left';
-      setTimeout(function()  {
-        this.exit=false;
-      }, 2000);
+      let guest = setInterval(()=>{
+        this.seconds=this.seconds+1;
+        if(this.seconds==2) {
+          this.exit=false;
+          this.seconds=0;
+          clearInterval(guest);
+        }
+      },1000);
     });
 
 
