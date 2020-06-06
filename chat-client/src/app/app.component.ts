@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 export class AppComponent implements OnInit {
   title = 'chat-client';
  
+  public load=false;
 
   constructor() {}
 
