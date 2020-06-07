@@ -40,7 +40,6 @@ export class RoomComponent implements OnInit, OnDestroy {
   audioconnectionId: any[] = [];
   show = false;
   Host = false;
-  // Join form
   mySessionId: string;
   myUserName: string;
   tk: any;
