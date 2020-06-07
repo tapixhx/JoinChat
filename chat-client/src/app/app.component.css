@@ -2,3 +2,41 @@
 {
     margin-top: 50px;
 }
+/* loader */
+.loader-background {
+    position:fixed;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    width:100%;
+    height:100vh;
+	background-color:rgba(0,0,0,0.2);
+	backdrop-filter:blur(10px);
+	z-index:1;
+}
+.load-logo {
+    position:fixed;
+    top:16vw;
+    left:38vw;
+    width:16%;
+    animation: pump 1s infinite alternate;
+}
+@keyframes pump {
+    0%{transform: scale(.5);}
+    100%{transform: scale(1.1);}
+}
+@media only screen and (max-width:1024px) {
+    .load-logo {
+        top:18vw;
+        left:42vw;
+    }
+}
+@media only screen and (max-width:455px) {
+    .load-logo {
+        top:65vw;
+        left:42vw;
+        width:20%;
+    }
+}
+/* loader */

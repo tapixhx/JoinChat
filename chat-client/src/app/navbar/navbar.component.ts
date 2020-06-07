@@ -76,25 +76,25 @@ export class NavbarComponent implements OnInit {
   }
 
   loginform(form: NgForm) {
-    this.ngxservice.start();
+    this.appcomponent.load=true;
     const value = form.value;
     this.serverservice.login(value)
       .subscribe(
         (response) => {
+          this.appcomponent.load=false;
           console.log(response);
           this.wnt_login = false;
           this.res = response;
           localStorage.setItem('token', this.res.token);
           localStorage.setItem('name', this.res.name);
-          this.ngxservice.stop();
           this.changeService.logined()
         },
         (error: HttpErrorResponse) => {
           console.log(error);
+          this.appcomponent.load=false;
           if (error.error.message === "User is not verified") {
             this.router.navigate(['/verify', error.error.userId]);
             this.wnt_login = false;
-            this.ngxservice.stop();
           }
           this.appcomponent.error(error.error.error);
         }
@@ -102,7 +102,7 @@ export class NavbarComponent implements OnInit {
   }
 
   signupform(sform: NgForm) {
-    this.ngxservice.start();
+    this.appcomponent.load=true;
     const value = sform.value;
     this.serverservice.signup(value)
       .subscribe(
@@ -111,11 +111,11 @@ export class NavbarComponent implements OnInit {
           this.id = response;
           this.wnt_signup = false;
           this.router.navigate(['/verify', this.id.userId]);
-          this.ngxservice.stop();
+          this.appcomponent.load=false;
         },
         (error) => {
           console.log(error);
-          this.ngxservice.stop();
+          this.appcomponent.load=false;
           this.appcomponent.error(error.error.error);
         }
       )

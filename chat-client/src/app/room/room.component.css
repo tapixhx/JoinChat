@@ -177,7 +177,7 @@ input.ng-invalid.ng-touched {
 	color: #0B132B;
 	font-size: 18px;
 	margin-bottom: 2px;
-
+	padding-left:14px;
 }
 .username
 {
@@ -330,6 +330,10 @@ button:focus {
   padding:0px 0px
 }
 
+.flow {
+	overflow-x: hidden;
+}
+
 .row-padding {
    text-align: center;
    padding: 5px 3vw;
@@ -350,6 +354,32 @@ button:focus {
 	width: inherit;
 	text-align: center;
 }
+
+/* popup */
+.contain-popup {
+	background-color: #F5F5F5;
+	color:#000;
+    position:fixed;
+    bottom:100px;
+    right:4vw;
+    width:30rem;
+	height:auto;
+	z-index:1;
+	overflow-x:none;
+	border-bottom:2px solid #5BC0BE;
+    padding:2.6rem 2rem;
+    border-radius:10px;
+    animation: appear 0.5s 1;
+}
+@keyframes appear {
+    from{transform:scale(0);}
+    to{transform:scale(1);};
+}
+.entername {
+	font-size:2rem
+}
+/* popup */
+
 
 @media only screen and (max-width: 768px) {
 	.undisplay2 {

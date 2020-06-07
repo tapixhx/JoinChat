@@ -42,7 +42,7 @@ export class VerficationComponent implements OnInit {
 
   Verify(form : NgForm) {
     const value = form.value;
-    // console.log(this.id);
+    this.appcomponent.load=true;
     this.serverservice.verifyUser(value.otp, this.id)
     .subscribe(
       (response) =>{
@@ -52,15 +52,18 @@ export class VerficationComponent implements OnInit {
         localStorage.setItem('token', this.res.token);
         localStorage.setItem('name',this.res.name);
         this.appcomponent.success('Successfully verified');
+        this.appcomponent.load=false;
       },
       (error) =>{
         console.log(error);
+        this.appcomponent.load=false;
         this.appcomponent.error(error.error.error);
       }, 
     );
   }
 
   onResend() {
+    this.appcomponent.load=true;
     this.seconds=60;
     this.minute=1;
     setInterval(()=>{
@@ -80,10 +83,12 @@ export class VerficationComponent implements OnInit {
     .subscribe(
       (response) =>{
          console.log(response);
+         this.appcomponent.load=false;
         },
       (error) =>{ 
         console.log(error);
         this.appcomponent.error(error.error.error);
+        this.appcomponent.load=false;
       },
     );
   }

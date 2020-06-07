@@ -10,6 +10,7 @@ import { messages } from '../shared/message.model';
 import { ServerService } from '../services/server.service';
 import { CommonVarService } from '../services/common-var.service';
 import Swal from 'sweetalert2';
+import { AppComponent } from '../app.component';
 
 
 @Component({
@@ -51,7 +52,8 @@ export class RoomComponent implements OnInit, OnDestroy {
   exitname:any;
   exit=false;
 
-  token: any
+  token: any;
+  seconds=0;
 
   pub = true
   exp: any;
@@ -64,7 +66,13 @@ export class RoomComponent implements OnInit, OnDestroy {
   messages: messages[];
   messageSubscription: Subscription
 
-  constructor(private httpClient: HttpClient, private Router: ActivatedRoute, private chatService: ChangeService, private Route: Router, private ServerService: ServerService, private commeonservice: CommonVarService) {
+  constructor(private httpClient: HttpClient, 
+              private Router: ActivatedRoute, 
+              private chatService: ChangeService, 
+              private Route: Router, 
+              private ServerService: ServerService, 
+              private commeonservice: CommonVarService,
+              private appcomponent: AppComponent) {
 
   }
   ngOnInit() {
@@ -76,7 +84,6 @@ export class RoomComponent implements OnInit, OnDestroy {
           this.mySessionId = params.session
           this.token = this.ServerService.getsettoken()
           this.myUserName = localStorage.getItem('name')
-
           this.joinSession()
         }
 
@@ -116,6 +123,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.leaveSession();
   }
   getToken(c: NgForm) {
+    this.appcomponent.load=true;
     if (localStorage.getItem('token')) {
       this.ServerService.gettoken(this.mySessionId)
         .subscribe((response: any) => {
@@ -125,7 +133,7 @@ export class RoomComponent implements OnInit, OnDestroy {
           if (response.role == "MODERATOR") {
             this.Host = true
           }
-
+          this.appcomponent.load=false;
           this.joinSession()
 
         },
@@ -135,6 +143,7 @@ export class RoomComponent implements OnInit, OnDestroy {
               error.error.error,
               'error'
             )
+            this.appcomponent.load=false;
           })
     }
     else {
@@ -187,10 +196,15 @@ export class RoomComponent implements OnInit, OnDestroy {
       this.session.signal(mess);
       console.log(this.getNicknameTag(event))
       this.enter=true;
-      this.ename=this.getNicknameTag(event)+'joined';
-      setTimeout(function()  {
-        this.enter=false;
-      }, 2000);
+      this.ename=this.getNicknameTag(event)+' joined';
+      let guest = setInterval(()=>{
+        this.seconds=this.seconds+1;
+        if(this.seconds==2) {
+          this.enter=false;
+          this.seconds=0;
+          clearInterval(guest);
+        }
+      },1000);
     });
 
     // On every Stream destroyed...
@@ -200,10 +214,15 @@ export class RoomComponent implements OnInit, OnDestroy {
       this.connection.splice(this.connection.indexOf(event.stream.connection), 1)
       console.log(this.getNicknameTag(event))
       this.exit=true;
-      this.exitname=this.getNicknameTag(event)+'left';
-      setTimeout(function()  {
-        this.exit=false;
-      }, 2000);
+      this.exitname=this.getNicknameTag(event)+' left';
+      let guest = setInterval(()=>{
+        this.seconds=this.seconds+1;
+        if(this.seconds==2) {
+          this.exit=false;
+          this.seconds=0;
+          clearInterval(guest);
+        }
+      },1000);
     });
 
 

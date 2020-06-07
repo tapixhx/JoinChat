@@ -71,7 +71,7 @@
 								src="../../assets/images/chat.png" class="image2" alt="chat"></button>
 					</div>
 				</div>
-				<div id="video-container" class="col-md-3 col-sm-12 col-xs-12 s disable-padding ">
+				<div id="video-container" class="col-md-3 col-sm-12 col-xs-12 disable-padding flow">
 					<div *ngIf="publisher" class="stream-container row">
 						<div class="col-md-12 col-xs-4 disable-padding">
 							<user-video [streamManager]="publisher" (click)="updateMainStreamManager(publisher)">
@@ -162,6 +162,14 @@
 						</div> -->
 						</div>
 					</div>
+					<!-- enter exit -->
+					<div *ngIf="enter" class="contain-popup">
+						<p class="text-center entername">{{ename}}</p>
+					</div>
+					<div *ngIf="exit" class="contain-popup">
+						<p class="text-center entername">{{exitname}}</p>
+					</div>
+					<!-- enter exit -->
 				</div>
 			</div>
 		</div>
