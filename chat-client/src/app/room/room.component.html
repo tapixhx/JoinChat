@@ -128,38 +128,7 @@
 									</div>
 								</div>
 							</div>
-							<!-- <div class="col-md-10 col-xs-4">
-							<user-video [streamManager]="sub" (click)="updateMainStreamManager(sub)"></user-video>
-						</div>
-						<div class="col-md-2 col-xs-8">
-							<div class="participant-ctrl">
-								<div>
-									<div *ngIf="sub.stream.connection.connectionId==audioconnectionId">
-										<div class="pull-left" *ngIf="!subaudio"><img class="audiooff"
-												src="../../assets/images/mico-off.png"></div>
-									</div>
-								</div>
-								<div>
-									<div *ngIf="sub.stream.connection.connectionId == connectionId">
-										<div class="pull-left" *ngIf="startSpeaking"><img class="small"
-												src="../../assets/images/giphy.gif"></div>
-										<div class="pull-left" *ngIf="!startSpeaking"><img class="small"
-												src="../../assets/images/stopspeak.png">
-										</div>
-									</div>
-								</div>
-								<div *ngIf="Host">
-									<button (click)="subaudiooff(sub)" class="parti-button pull-left">
-										Mic-off
-									</button>
-								</div>
-								<div *ngIf="Host">
-									<button *ngIf="Host" (click)="subvideooff(sub)" class="parti-button pull-left">
-										Vid-off
-									</button>
-								</div>
-							</div>
-						</div> -->
+						
 						</div>
 					</div>
 					<!-- enter exit -->
@@ -176,7 +145,8 @@
 	</div>
 
 	<div class="text-box" [class.display]="show" [class.undisplay]="!show">
-		<div class="text-box">
+		<div class="bottom">
+		<div class="text-box-padding" #scroll>
 			<div *ngFor="let message of messages">
 				<div class="name">{{message.name}}</div>
 				<div class="message">{{message.message}}</div>
@@ -188,6 +158,7 @@
 				<input name="chat" placeholder="Type message..." class="message-box" ngModel>
 				<button class="message-btn" type="submit">Send</button>
 			</form>
+		</div>
 		</div>
 	</div>
 </div>
