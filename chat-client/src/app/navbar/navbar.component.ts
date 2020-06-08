@@ -19,6 +19,7 @@ export class NavbarComponent implements OnInit {
 
   wnt_login = false;
   wnt_signup = false;
+  logoutShow=true;
   id: any;
   res: any;
   cross=false
@@ -41,8 +42,11 @@ export class NavbarComponent implements OnInit {
     this.ChangeLoginSubscription=this.changeService.loginchange.subscribe((event => {
       this.wnt_login = event
     }))
-
-
+    this.changeService.logoutchange.subscribe((event)=>
+    {
+      this.logoutShow=event
+    }
+    )
   }
 
   login() {
@@ -121,6 +125,9 @@ export class NavbarComponent implements OnInit {
       )
   }
 
-
+  TrueLogout()
+  {
+    this.changeService.logoutTrue()
+  }
 
 }
