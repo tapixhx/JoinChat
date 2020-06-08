@@ -47,6 +47,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   mySessionId: string;
   myUserName: string;
   tk: any;
+  hovered=false;
   startSpeaking:any[] = [];
   connectionId: any;
   subaudio: any;
@@ -58,6 +59,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   token: any;
   seconds=0;
+  seconds2=0
 
   pub = true
   exp: any;
@@ -156,7 +158,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   joinSession() {
 
-    // --- 1) Get an OpenVidu object ---
+    
 
     this.OV = new OpenVidu();
 
@@ -167,6 +169,8 @@ export class RoomComponent implements OnInit, OnDestroy {
     // --- 2) Init a session ---
 
     this.session = this.OV.initSession();
+
+    this.commeonservice.logoutfasle()
 
     this.session.on('reconnecting', () => Swal.fire(
       'Oops!',
@@ -320,7 +324,7 @@ export class RoomComponent implements OnInit, OnDestroy {
           resolution: '640x480',  // The resolution of your video
           frameRate: 30,          // The frame rate of your video
           insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
-          mirror: true           // Whether to mirror your local video or not
+          mirror: false           // Whether to mirror your local video or not
         });
 
         // --- 6) Publish your stream ---
@@ -363,7 +367,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     delete this.publisher;
     delete this.session;
     delete this.OV;
-
+    this.commeonservice.logoutTrue()
     this.Route.navigate([''])
   }
 
@@ -433,7 +437,7 @@ export class RoomComponent implements OnInit, OnDestroy {
       resolution: '640x480',  // The resolution of your video
       frameRate: 30,          // The frame rate of your video
       insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
-      mirror: true           // Whether to mirror your local video or not
+      mirror: false          // Whether to mirror your local video or not
     });
     this.publisher=publisher;
     this.session.publish(publisher);
@@ -513,6 +517,21 @@ export class RoomComponent implements OnInit, OnDestroy {
   checkspecking(sub:any) {
     return this.startSpeaking.includes(sub.stream.connection.connectionId)
   }
+  Hovered()
+  { this.seconds2=0
+    console.log(this.hovered)
 
+    this.hovered=true;
+    let guest = setInterval(()=>{
+      this.seconds2=this.seconds2+1;
+      if(this.seconds2==10) {
+        this.seconds2=0;
+        this.hovered=false
+        clearInterval(guest);
+
+      }
+    },1000);
+
+  }
 
 }

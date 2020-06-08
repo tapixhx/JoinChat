@@ -1,5 +1,6 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
+import { CommonVarService } from './services/common-var.service';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,7 @@ export class AppComponent implements OnInit {
  
   public load=false;
 
-  constructor() {}
+  constructor(private changeService:CommonVarService) {}
 
   ngOnInit() {
   }
@@ -26,12 +27,16 @@ export class AppComponent implements OnInit {
   }
 
   error(message) {
+  
+
+    
     Swal.fire(
       'Please try again!',
       message,  
       'error'
     )
-  }
+  
+}
 
   
 }

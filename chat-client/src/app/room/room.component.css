@@ -232,6 +232,7 @@ button:focus {
 	height: 100vh;
 	overflow: scroll;
 	padding-bottom:4rem;
+	
 }
 
 .join-button,
@@ -310,7 +311,10 @@ button:focus {
 .pd5 {
 	padding: 6px 15px;
 }
-
+.pd6
+{
+	padding: 11px 30px;
+}
 .center {
 	text-align: center;
 }
@@ -471,6 +475,10 @@ button:focus {
 		left:9vw
 	
 	}
+	#session-header
+	{
+		position: relative;
+	}
 }
 
 @media only screen and (max-width: 455px) {
@@ -503,6 +511,9 @@ button:focus {
 	#video-container
 	{
 		height: 50vh;
+		position: relative;
+		z-index:0;
+		margin-top:60px;
 	}
     .col-xs-12,.col-xs-4 {
 		padding: 0px 0px;
@@ -532,19 +543,28 @@ button:focus {
 	#session-header {
 		position: relative;
 		margin: 0px 0px 0px;
-		z-index: 10;
+		z-index:0;
 		width: 100vw;
+
 		text-align: center;
-		top: -60px !important;
+		
+
+	}
+	.session-header-undisplay{
+		display:none;
+		transition: all 4s !important;
+	}
+	.session-header-display
+	{
+		display:block;
+		transition: all  4s !important;
+		
 	}
 
 	.video-margin {
 		margin: 0px 0px;
 	}
-}
-@media only screen and (max-width: 376px) {
-	
-	.pd1 {
+	.pd1,.pd6 {
 		padding: 10px 15px;
 	}
 	
@@ -556,6 +576,42 @@ button:focus {
 		padding: 10px 15px;
 	}
 
+}
+@media only screen and (max-width: 376px) {
+	
+	#video-container
+	{
+		height: 50vh;
+		margin-top:25px;
+	}
+
+}
+@media only screen and (max-width: 357px) 
+{
+	#video-container
+	{
+		margin-top: -25px;
+		
+	}
+	#session-header
+	{
+		text-align:left
+	}
+	.pd1 {
+		padding: 10px 15px;
+		margin:5px
+	}
+	
+	.pd2 ,.pd3{
+		padding: 6px 15px;
+		margin:5px
+	}
+	.leave-button
+	{
+		padding: 10px 15px;
+		margin:5px;
+	}
+	
 }
 
 /* footer */

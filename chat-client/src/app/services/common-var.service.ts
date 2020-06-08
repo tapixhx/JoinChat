@@ -8,6 +8,7 @@ export class CommonVarService {
   loginchange= new Subject<boolean>();
   signupchange=new Subject<boolean>()
   loginIdentification = new Subject<boolean>();
+  logoutchange = new Subject<boolean>();
   constructor() { }
   loginopen()
   {
@@ -31,5 +32,14 @@ export class CommonVarService {
   {
      this.loginIdentification.next(true)
   }
-
+  logoutfasle()
+  {
+    this.logoutchange.next(false)
+  }
+  logoutTrue()
+  {
+    this.logoutchange.next(true)
+  }
+  
+  
 }

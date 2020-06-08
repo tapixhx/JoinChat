@@ -57,7 +57,7 @@
 		<div class="container-videos">
 
 			<div class="row video-margin">
-				<div *ngIf="mainStreamManager" style="padding:0px 0px;" id="main-video"
+				<div *ngIf="mainStreamManager" (click)="Hovered()" style="padding:0px 0px;" id="main-video"
 					class="col-md-9 col-sm-12 col-xs-12">
 					<Main-video [streamManager]="mainStreamManager"></Main-video>
 					<div id="session-header">
@@ -69,9 +69,9 @@
 								class="image2" alt="audio-off"></button>
 						<button class="normal-button text-center pd3" (click)="chat()"><img
 								src="../../assets/images/chat.png" class="image2" alt="chat"></button>
-						<button class="normal-button text-center pd1" *ngIf="!share" (click)="shareScreen()"><img
+						<button class="normal-button text-center pd6" style *ngIf="!share" (click)="shareScreen()"><img
 							src="../../assets/images/share-screen.png" class="image2" alt="share"></button>
-						<button class="normal-button text-center pd1" *ngIf="share" (click)="stopShare()"><img
+						<button class="normal-button text-center pd6"  *ngIf="share" (click)="stopShare()"><img
 							src="../../assets/images/stop-share.png" class="image2" alt="share"></button>
 					</div>
 				</div>
@@ -135,14 +135,14 @@
 						
 						</div>
 					</div>
-					<!-- enter exit -->
+					
 					<div *ngIf="enter" class="contain-popup">
 						<p class="text-center entername">{{ename}}</p>
 					</div>
 					<div *ngIf="exit" class="contain-popup">
 						<p class="text-center entername">{{exitname}}</p>
 					</div>
-					<!-- enter exit -->
+					
 				</div>
 			</div>
 		</div>
