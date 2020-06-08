@@ -30,6 +30,10 @@ a{
 	color:#c5c6c7;
 }
 
+.link-nav:hover {
+	cursor: pointer;
+}
+
 .nav-icon {
 	padding: 5px 15px 5px 15px;
 	float: right;
@@ -69,7 +73,7 @@ nav i.fa:hover {
     background-color: #fff;
     position:fixed;
     top:150px;
-    left:27vw;
+    left:23vw;
     width:80rem;
     height:auto;
     overflow-x:none;

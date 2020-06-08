@@ -18,7 +18,7 @@
 .load-logo {
     position:fixed;
     top:16vw;
-    left:38vw;
+    left:41vw;
     width:16%;
     animation: pump 1s infinite alternate;
 }
