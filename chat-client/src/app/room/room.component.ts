@@ -54,6 +54,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   enter=false;
   exitname:any;
   exit=false;
+  share=false;
 
   token: any;
   seconds=0;
@@ -158,6 +159,10 @@ export class RoomComponent implements OnInit, OnDestroy {
     // --- 1) Get an OpenVidu object ---
 
     this.OV = new OpenVidu();
+
+    this.OV.setAdvancedConfiguration(
+      { screenShareChromeExtension: "https://chrome.google.com/webstore/detail/EXTENSION_NAME/EXTENSION_ID" }
+    );
 
     // --- 2) Init a session ---
 
@@ -417,6 +422,43 @@ export class RoomComponent implements OnInit, OnDestroy {
   {
     this.show =false
   }
+
+  shareScreen() {
+    this.session.unpublish(this.publisher);
+    let publisher: Publisher = this.OV.initPublisher(undefined, {
+      audioSource: undefined, // The source of audio. If undefined default microphone
+      videoSource: 'screen', // The source of video. If undefined default webcam
+      publishAudio: true,     // Whether you want to start publishing with your audio unmuted or not
+      publishVideo: true,     // Whether you want to start publishing with your video enabled or not
+      resolution: '640x480',  // The resolution of your video
+      frameRate: 30,          // The frame rate of your video
+      insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
+      mirror: true           // Whether to mirror your local video or not
+    });
+    this.publisher=publisher;
+    this.session.publish(publisher);
+    this.updateMainStreamManager(publisher);
+    this.share=!this.share;
+  }
+
+  stopShare() {
+    this.session.unpublish(this.publisher);
+    let publisher: Publisher = this.OV.initPublisher(undefined, {
+      audioSource: undefined, // The source of audio. If undefined default microphone
+      videoSource: undefined, // The source of video. If undefined default webcam
+      publishAudio: true,     // Whether you want to start publishing with your audio unmuted or not
+      publishVideo: true,     // Whether you want to start publishing with your video enabled or not
+      resolution: '640x480',  // The resolution of your video
+      frameRate: 30,          // The frame rate of your video
+      insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
+      mirror: true           // Whether to mirror your local video or not
+    });
+    this.publisher=publisher;
+    this.session.publish(publisher);
+    this.updateMainStreamManager(publisher);
+    this.share=!this.share;
+  }
+
   audiochange() {
     this.audioOn = !this.audioOn
     this.publisher.publishAudio(this.audioOn);

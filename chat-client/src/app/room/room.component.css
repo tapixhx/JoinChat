@@ -90,6 +90,7 @@ input.ng-invalid.ng-touched {
 	height: 90vh;
 	background: #E9E9E9;
 	font-family: 'Montserrat', sans-serif;
+	overflow-x:hidden;
 }
 .text-box-padding
 {
@@ -98,7 +99,6 @@ input.ng-invalid.ng-touched {
 	max-height: 80vh;
 	overflow-x:hidden;
 	padding:2vw 1vw;
-
 }
 .bottom
 {
