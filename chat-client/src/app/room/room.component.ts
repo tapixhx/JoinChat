@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { OpenVidu, Publisher, Session, StreamEvent, StreamManager, Subscriber, Connection } from 'openvidu-browser';
 import { throwError as observableThrowError, Subscription } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -22,9 +22,12 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   // OPENVIDU_SERVER_URL = 'https://' + '192.168.99.100' + ':4443';
   // OPENVIDU_SERVER_SECRET = 'MY_SECRET';
+  @ViewChild('scroll',{static:false}) scroll: ElementRef;
   videoSubscription: Subscription;
   audioSubscription: Subscription;
-
+  ngAfterViewChecked() {
+    this.scroll.nativeElement.scrollTop = this.scroll.nativeElement.scrollHeight
+  }
 
   src = "../../assets/images/video.png"
   src2 = "../../assets/images/mic.png"
@@ -41,7 +44,6 @@ export class RoomComponent implements OnInit, OnDestroy {
   audioconnectionId: any[] = [];
   show = false;
   Host = false;
-  // Join form
   mySessionId: string;
   myUserName: string;
   tk: any;
@@ -108,7 +110,6 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.messageSubscription = this.chatService.messageChanged
       .subscribe((messages) => {
         this.messages = messages
-        this.messages = this.messages.reverse();
         console.log(messages)
       })
   }
@@ -411,6 +412,10 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   chat() {
     this.show = !this.show;
+  }
+  nochat()
+  {
+    this.show =false
   }
   audiochange() {
     this.audioOn = !this.audioOn
