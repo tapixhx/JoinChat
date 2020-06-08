@@ -54,6 +54,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   enter=false;
   exitname:any;
   exit=false;
+  share=false;
 
   token: any;
   seconds=0;
@@ -159,6 +160,10 @@ export class RoomComponent implements OnInit, OnDestroy {
 
     this.OV = new OpenVidu();
 
+    this.OV.setAdvancedConfiguration(
+      { screenShareChromeExtension: "https://chrome.google.com/webstore/detail/EXTENSION_NAME/EXTENSION_ID" }
+    );
+
     // --- 2) Init a session ---
 
     this.session = this.OV.initSession();
@@ -213,7 +218,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.session.on('streamDestroyed', (event: any) => {
       // Remove the stream from 'subscribers' array
       this.deleteSubscriber(event.stream.streamManager);
-      this.connection.splice(this.connection.indexOf(event.stream.connection), 1)
+      this.connection.splice(this.connection.indexOf(event.stream.connection), 1) //remove connectionId from array
       console.log(this.getNicknameTag(event))
       this.exit=true;
       this.exitname=this.getNicknameTag(event)+' left';
@@ -232,9 +237,8 @@ export class RoomComponent implements OnInit, OnDestroy {
       const clientData = JSON.parse(data.from.data)
       const messages: messages = { 'name': clientData.clientData, 'message': data.data }
       this.chatService.addmessage(messages)
-
-
     });
+
     this.session.on('signal:audio', (data: any) => {
       this.subaudio = JSON.parse(data.data)
       if (!this.subaudio) {
@@ -244,9 +248,11 @@ export class RoomComponent implements OnInit, OnDestroy {
         this.audioconnectionId.splice(this.audioconnectionId.indexOf(data.from.connectionId), 1)
       }
     });
+
     this.session.on('signal:video', (data: any) => {
       console.log(data)
     });
+
     this.session.on('signal:stopRemoteAudio', (data: any) => {
       const message = data.data.split(',')
       if (message[1] == this.publisher.stream.connection.connectionId) {
@@ -268,6 +274,7 @@ export class RoomComponent implements OnInit, OnDestroy {
       }
 
     })
+    
     this.session.on('signal:stopRemoteVideo', (data: any) => {
       const message = data.data.split(',')
       if (message[1] == this.publisher.stream.connection.connectionId) {
@@ -415,6 +422,43 @@ export class RoomComponent implements OnInit, OnDestroy {
   {
     this.show =false
   }
+
+  shareScreen() {
+    this.session.unpublish(this.publisher);
+    let publisher: Publisher = this.OV.initPublisher(undefined, {
+      audioSource: undefined, // The source of audio. If undefined default microphone
+      videoSource: 'screen', // The source of video. If undefined default webcam
+      publishAudio: true,     // Whether you want to start publishing with your audio unmuted or not
+      publishVideo: true,     // Whether you want to start publishing with your video enabled or not
+      resolution: '640x480',  // The resolution of your video
+      frameRate: 30,          // The frame rate of your video
+      insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
+      mirror: true           // Whether to mirror your local video or not
+    });
+    this.publisher=publisher;
+    this.session.publish(publisher);
+    this.updateMainStreamManager(publisher);
+    this.share=!this.share;
+  }
+
+  stopShare() {
+    this.session.unpublish(this.publisher);
+    let publisher: Publisher = this.OV.initPublisher(undefined, {
+      audioSource: undefined, // The source of audio. If undefined default microphone
+      videoSource: undefined, // The source of video. If undefined default webcam
+      publishAudio: true,     // Whether you want to start publishing with your audio unmuted or not
+      publishVideo: true,     // Whether you want to start publishing with your video enabled or not
+      resolution: '640x480',  // The resolution of your video
+      frameRate: 30,          // The frame rate of your video
+      insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
+      mirror: true           // Whether to mirror your local video or not
+    });
+    this.publisher=publisher;
+    this.session.publish(publisher);
+    this.updateMainStreamManager(publisher);
+    this.share=!this.share;
+  }
+
   audiochange() {
     this.audioOn = !this.audioOn
     this.publisher.publishAudio(this.audioOn);
@@ -449,8 +493,8 @@ export class RoomComponent implements OnInit, OnDestroy {
     console.log(message)
     const mess: any = { "data": message, "to": this.connection, "type": "stopRemoteAudio" }
     this.session.signal(mess)
-
   }
+
   subvideooff(sub: any) {
     const message: string = "" + (JSON.parse(sub.stream.connection.data)).clientData + ',' + sub.stream.connection.connectionId + ',' + this.myUserName + ""
     console.log(message)
@@ -465,8 +509,8 @@ export class RoomComponent implements OnInit, OnDestroy {
   checksubaudiooff(sub: any) {
     return this.audioconnectionId.includes(sub.stream.connection.connectionId)
   }
-  checkspecking(sub:any)
-  {
+
+  checkspecking(sub:any) {
     return this.startSpeaking.includes(sub.stream.connection.connectionId)
   }
 

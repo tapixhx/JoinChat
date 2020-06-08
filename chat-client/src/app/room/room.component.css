@@ -88,8 +88,9 @@ input.ng-invalid.ng-touched {
 	top:10;
 	width: 300px;
 	height: 90vh;
-	background: #E9E9E9;
+	background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0),rgba(255, 255, 255, .8) , rgba(255, 255, 255, 1));
 	font-family: 'Montserrat', sans-serif;
+	overflow-x:hidden;
 }
 .text-box-padding
 {
@@ -98,8 +99,33 @@ input.ng-invalid.ng-touched {
 	max-height: 80vh;
 	overflow-x:hidden;
 	padding:2vw 1vw;
-
 }
+
+/* Scrollbar */
+/* width */
+/* .text-box::-webkit-scrollbar {
+	width: 10px;
+} */
+
+/* Track */
+/* .text-box::-webkit-scrollbar-track {
+	box-shadow: inset 0 0 5px grey;
+	border-radius: 2px;
+} */
+
+/* Handle */
+/* .text-box::-webkit-scrollbar-thumb {
+	background:#565656;
+	border-radius: 2px;
+} */
+
+/* Handle on hover */
+/* .text-box::-webkit-scrollbar-thumb:hover {
+	background: #343434;
+} */
+
+/* Scrollbar */
+
 .bottom
 {
 	position: absolute;

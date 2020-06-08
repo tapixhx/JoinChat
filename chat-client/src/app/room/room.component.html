@@ -69,6 +69,10 @@
 								class="image2" alt="audio-off"></button>
 						<button class="normal-button text-center pd3" (click)="chat()"><img
 								src="../../assets/images/chat.png" class="image2" alt="chat"></button>
+						<button class="normal-button text-center pd1" *ngIf="!share" (click)="shareScreen()"><img
+							src="../../assets/images/share-screen.png" class="image2" alt="share"></button>
+						<button class="normal-button text-center pd1" *ngIf="share" (click)="stopShare()"><img
+							src="../../assets/images/stop-share.png" class="image2" alt="share"></button>
 					</div>
 				</div>
 				<div id="video-container" class="col-md-3 col-sm-12 col-xs-12 disable-padding flow">
@@ -155,7 +159,7 @@
 
 		<div class="message-container">
 			<form (ngSubmit)="onSubmit(f)" #f="ngForm">
-				<input name="chat" placeholder="Type message..." class="message-box" ngModel>
+				<input name="chat" autofocus placeholder="Type message..." class="message-box" ngModel>
 				<button class="message-btn" type="submit">Send</button>
 			</form>
 		</div>

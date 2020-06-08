@@ -12,7 +12,7 @@ import { StreamManager } from 'openvidu-browser';
         .name {
             
             background: rgb(11,12,16,0.5);
-            padding-left: 5px;
+            padding-left: 14px;
             padding-right: 5px;
             color: #66fcf1;
             font-weight: bold;
