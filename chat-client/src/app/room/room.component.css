@@ -85,20 +85,29 @@ input.ng-invalid.ng-touched {
 
 .text-box {
 	position: fixed;
-	bottom: 0;
-	right: 0;
+	top:10;
 	width: 300px;
-	height: 620px;
+	height: 90vh;
 	background: #E9E9E9;
-	overflow-y: auto;
-	padding: 1rem 0rem 1rem 3rem;
 	font-family: 'Montserrat', sans-serif;
+}
+.text-box-padding
+{
+	width:400px;
+	overflow:scroll !important;
+	max-height: 80vh;
+	overflow-x:hidden;
+	padding:2vw 1vw;
+
+}
+.bottom
+{
+	position: absolute;
+	bottom: 0rem !important;
 }
 
 .message-container {
 	position: fixed;
-	bottom: 0rem;
-	right: 0rem;
 	padding: .5rem 0 1rem 2rem;
 	width: 300px;
 	background-color: #E9E9E9;
@@ -141,11 +150,14 @@ input.ng-invalid.ng-touched {
 }
 
 .display {
-	display: block;
+	right: 0;
+	transition: right 0.5s;
 }
 
 .undisplay {
-	display: none;
+	right:-300px;
+	transition: right 0.5s;
+
 }
 
 .chat {
