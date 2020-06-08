@@ -212,7 +212,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.session.on('streamDestroyed', (event: any) => {
       // Remove the stream from 'subscribers' array
       this.deleteSubscriber(event.stream.streamManager);
-      this.connection.splice(this.connection.indexOf(event.stream.connection), 1)
+      this.connection.splice(this.connection.indexOf(event.stream.connection), 1) //remove connectionId from array
       console.log(this.getNicknameTag(event))
       this.exit=true;
       this.exitname=this.getNicknameTag(event)+' left';
@@ -231,9 +231,8 @@ export class RoomComponent implements OnInit, OnDestroy {
       const clientData = JSON.parse(data.from.data)
       const messages: messages = { 'name': clientData.clientData, 'message': data.data }
       this.chatService.addmessage(messages)
-
-
     });
+
     this.session.on('signal:audio', (data: any) => {
       this.subaudio = JSON.parse(data.data)
       if (!this.subaudio) {
@@ -243,9 +242,11 @@ export class RoomComponent implements OnInit, OnDestroy {
         this.audioconnectionId.splice(this.audioconnectionId.indexOf(data.from.connectionId), 1)
       }
     });
+
     this.session.on('signal:video', (data: any) => {
       console.log(data)
     });
+
     this.session.on('signal:stopRemoteAudio', (data: any) => {
       const message = data.data.split(',')
       if (message[1] == this.publisher.stream.connection.connectionId) {
@@ -267,6 +268,7 @@ export class RoomComponent implements OnInit, OnDestroy {
       }
 
     })
+    
     this.session.on('signal:stopRemoteVideo', (data: any) => {
       const message = data.data.split(',')
       if (message[1] == this.publisher.stream.connection.connectionId) {
@@ -444,8 +446,8 @@ export class RoomComponent implements OnInit, OnDestroy {
     console.log(message)
     const mess: any = { "data": message, "to": this.connection, "type": "stopRemoteAudio" }
     this.session.signal(mess)
-
   }
+
   subvideooff(sub: any) {
     const message: string = "" + (JSON.parse(sub.stream.connection.data)).clientData + ',' + sub.stream.connection.connectionId + ',' + this.myUserName + ""
     console.log(message)
@@ -460,8 +462,8 @@ export class RoomComponent implements OnInit, OnDestroy {
   checksubaudiooff(sub: any) {
     return this.audioconnectionId.includes(sub.stream.connection.connectionId)
   }
-  checkspecking(sub:any)
-  {
+
+  checkspecking(sub:any) {
     return this.startSpeaking.includes(sub.stream.connection.connectionId)
   }
 

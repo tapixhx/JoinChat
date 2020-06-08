@@ -30,6 +30,10 @@ a{
 	color:#c5c6c7;
 }
 
+.link-nav:hover {
+	cursor: pointer;
+}
+
 .nav-icon {
 	padding: 5px 15px 5px 15px;
 	float: right;
