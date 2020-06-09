@@ -74,7 +74,7 @@ nav i.fa:hover {
     background-color: #fff;
     position:fixed;
     top:150px;
-    left:23vw;
+    left:26.4vw;
     width:80rem;
     height:auto;
     overflow-x:none;
@@ -222,11 +222,7 @@ nav i.fa:hover {
 button {
 	outline:none;
 }
-@media only screen and (max-width:1024px) {
-	.contain-popup {
-		left:12.5rem;
-	}
-}
+
 @media only screen and (max-width: 768px)
 {
 	.undisplay2
@@ -266,7 +262,8 @@ button {
 	.contain-popup {
 		width:39rem;
 		top:15rem;
-		left:19rem;
+	
+	
 	}
 }
 
@@ -301,8 +298,8 @@ button {
 	}
   
 	.contain-popup {
-		left:3rem;
-		top:15vh
+		left:4.5vw;
+		top:15vh;
 	}
 	.col-wid {
 		width:35rem;
@@ -310,24 +307,35 @@ button {
 }
 @media only screen and (max-width:430px) {
 	.contain-popup {
-		left:2rem;
+		left:4.7vw;
+		width:90vw;
+		
 	}
 }
 @media only screen and (max-width:375px) {
 	.contain-popup {
-		width:33rem;
+		width:95vw;
+		left:3vw;
 	}
 	.col-wid {
 		width:30rem;
 	}
+	.container-fluid
+	{
+		padding-right:0px;
+		padding-left: 0px;
+	}
+	
 }
-@media only screen and (max-width:320px) {
+@media only screen and (max-width:354px) {
 	.col-wid {
 		width:26rem;
 	}
 	.contain-popup {
-		width:30rem;
-		left:1rem;
+		
+		left:3vw;
+		
 	}
+	
 }
 /* login */
