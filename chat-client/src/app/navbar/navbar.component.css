@@ -40,7 +40,7 @@ a{
 }
 
 nav a {
-	color: #ccc !important;
+	color: #fff !important;
 }
 
 nav i.fa {
@@ -49,12 +49,13 @@ nav i.fa {
 }
 
 nav a:hover {
-	color: #a9a9a9 !important;
+	color: #FCFCFC !important;
 }
 
 nav i.fa:hover {
 	color: #a9a9a9;
 }
+
 
 /* Popup */
 .popup-background {
