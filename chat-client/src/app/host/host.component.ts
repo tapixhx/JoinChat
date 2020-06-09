@@ -70,14 +70,14 @@ export class HostComponent implements OnInit {
     if (localStorage.getItem("token")) {
       this.serverservice.gethosttoken(this.res.id)
         .subscribe((response: any) => {
-          console.log(response)
+          // console.log(response);
           this.serverservice.sethosttoken(response.token)
           localStorage.setItem('name',f.value.userName)
           this.Router.navigate(['room', 'Host', this.res.id])
           this.appcomponent.load=false;
         },
           (error) => {
-            console.log(error);
+            // console.log(error);
             this.appcomponent.load=false;
             Swal.fire(
               'Oops!',
@@ -106,7 +106,7 @@ export class HostComponent implements OnInit {
         this.appcomponent.load=false;
       },
       (error) => {
-        console.log(error);
+        // console.log(error);
         this.appcomponent.load=false;
       }
     )
