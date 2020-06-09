@@ -1,5 +1,7 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
+import { CommonVarService } from './services/common-var.service';
+import { createElementCssSelector } from '@angular/compiler';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +13,7 @@ export class AppComponent implements OnInit {
  
   public load=false;
 
-  constructor() {}
+  constructor(private changeService:CommonVarService) {}
 
   ngOnInit() {
   }
@@ -26,11 +28,20 @@ export class AppComponent implements OnInit {
   }
 
   error(message) {
+  if(message=="jwt expired")
+  {
+     this.changeService.loginopen()
+  }
+  else 
+  {
+    
     Swal.fire(
       'Please try again!',
       message,  
       'error'
     )
+  
+}
   }
 
   
