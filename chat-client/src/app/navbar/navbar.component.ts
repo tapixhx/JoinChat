@@ -86,7 +86,7 @@ export class NavbarComponent implements OnInit {
       .subscribe(
         (response) => {
           this.appcomponent.load=false;
-          console.log(response);
+          // console.log(response);
           this.wnt_login = false;
           this.res = response;
           localStorage.setItem('token', this.res.token);
@@ -94,7 +94,7 @@ export class NavbarComponent implements OnInit {
           this.changeService.logined()
         },
         (error: HttpErrorResponse) => {
-          console.log(error);
+          // console.log(error);
           this.appcomponent.load=false;
           if (error.error.message === "User is not verified") {
             this.router.navigate(['/verify', error.error.userId]);
@@ -111,14 +111,14 @@ export class NavbarComponent implements OnInit {
     this.serverservice.signup(value)
       .subscribe(
         (response) => {
-          console.log(response);
+          // console.log(response);
           this.id = response;
           this.wnt_signup = false;
           this.router.navigate(['/verify', this.id.userId]);
           this.appcomponent.load=false;
         },
         (error) => {
-          console.log(error);
+          // console.log(error);
           this.appcomponent.load=false;
           this.appcomponent.error(error.error.error);
         }

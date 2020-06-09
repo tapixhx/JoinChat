@@ -112,7 +112,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.messageSubscription = this.chatService.messageChanged
       .subscribe((messages) => {
         this.messages = messages
-        console.log(messages)
+        // console.log(messages);
       })
   }
 
@@ -133,7 +133,7 @@ export class RoomComponent implements OnInit, OnDestroy {
         .subscribe((response: any) => {
           this.token = response.token;
           this.myUserName = c.value.userName
-          console.log(response)
+          // console.log(response);
           if (response.role == "MODERATOR") {
             this.Host = true
           }
@@ -204,7 +204,7 @@ export class RoomComponent implements OnInit, OnDestroy {
       this.connection.push(subscriber.stream.connection);
       const mess: any = { "data": String(this.audioOn), "to": subscriber.stream.connection, "type": "audio" }
       this.session.signal(mess);
-      console.log(this.getNicknameTag(event))
+      // console.log(this.getNicknameTag(event));
       this.enter=true;
       this.ename=this.getNicknameTag(event)+' joined';
       let guest = setInterval(()=>{
@@ -222,7 +222,7 @@ export class RoomComponent implements OnInit, OnDestroy {
       // Remove the stream from 'subscribers' array
       this.deleteSubscriber(event.stream.streamManager);
       this.connection.splice(this.connection.indexOf(event.stream.connection), 1) //remove connectionId from array
-      console.log(this.getNicknameTag(event))
+      // console.log(this.getNicknameTag(event));
       this.exit=true;
       this.exitname=this.getNicknameTag(event)+' left';
       let guest = setInterval(()=>{
@@ -253,7 +253,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     });
 
     this.session.on('signal:video', (data: any) => {
-      console.log(data)
+      // console.log(data);
     });
 
     this.session.on('signal:stopRemoteAudio', (data: any) => {
@@ -335,8 +335,7 @@ export class RoomComponent implements OnInit, OnDestroy {
         this.publisher = publisher;
       })
       .catch(error => {
-        console.log('There was an error connecting to the session:', error.code, error.message);
-        console.log("1");
+        // console.log('There was an error connecting to the session:', error.code, error.message);
       });
 
 
@@ -493,14 +492,14 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
   subaudiooff(sub: any) {
     const message: string = "" + (JSON.parse(sub.stream.connection.data)).clientData + ',' + sub.stream.connection.connectionId + ',' + this.myUserName + ""
-    console.log(message)
+    // console.log(message);
     const mess: any = { "data": message, "to": this.connection, "type": "stopRemoteAudio" }
     this.session.signal(mess)
   }
 
   subvideooff(sub: any) {
     const message: string = "" + (JSON.parse(sub.stream.connection.data)).clientData + ',' + sub.stream.connection.connectionId + ',' + this.myUserName + ""
-    console.log(message)
+    // console.log(message);
     const mess: any = { "data": message, "to": this.connection, "type": "stopRemoteVideo" }
     this.session.signal(mess)
   }
