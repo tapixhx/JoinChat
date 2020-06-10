@@ -233,6 +233,12 @@ button:focus {
 	padding-bottom:4rem;
 	
 }
+.position
+{
+	position:absolute;
+
+
+}
 
 .join-button,
 .leave-button,
@@ -579,6 +585,11 @@ button:focus {
 	{
 		padding: 10px 15px;
 	}
+	.text-box
+	{
+		height: 85vh;
+	}
+	
 
 }
 @media only screen and (max-width: 376px) {
@@ -599,7 +610,7 @@ button:focus {
 	}
 	#session-header
 	{
-		text-align:left
+		text-align:center
 	}
 	.pd1 {
 		padding: 10px 15px;
