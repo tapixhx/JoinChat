@@ -63,6 +63,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   pub = true
   exp: any;
   local = false;
+  countMessages=0;
   // Main video of the page, will be 'publisher' or one of the 'subscribers',
   // updated by click event in UserVideoComponent children
   mainStreamManager: StreamManager;
@@ -112,7 +113,11 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.messageSubscription = this.chatService.messageChanged
       .subscribe((messages) => {
         this.messages = messages
-        // console.log(messages);
+        this.countMessages=this.countMessages+1;
+        if(this.show)
+        {
+          this.countMessages=0
+        }
       })
   }
 
@@ -419,6 +424,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   chat() {
     this.show = !this.show;
+    this.countMessages=0;
   }
   nochat()
   {

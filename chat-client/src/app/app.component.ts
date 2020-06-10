@@ -28,6 +28,7 @@ export class AppComponent implements OnInit {
   }
 
   error(message) {
+    alert(message)
   if(message=="jwt expired")
   {
     this.changeService.loginopen()

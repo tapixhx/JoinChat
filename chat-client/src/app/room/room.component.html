@@ -59,12 +59,13 @@
 			<div class="row video-margin">
 				<div *ngIf="mainStreamManager"  style="padding:0px 0px;" id="main-video"
 					class="col-md-9 col-sm-12 col-xs-12">
+					<div class="curr-session">{{ mySessionId }}</div>
 					<div (click)="chatClose()">
 					<Main-video [streamManager]="mainStreamManager"></Main-video>
 					</div>
 					<div id="session-header">
 						<button class="normal-button text-center pd3" (click)="chat()"><img
-							src="../../assets/images/chat.png" class="image2" alt="chat"></button>
+							src="../../assets/images/chat.png" class="image2" alt="chat"><span *ngIf="countMessages" class="position">{{countMessages}}</span></button>
 						<button class="normal-button text-center pd1" (click)="videochange()"><img [src]="src"
 								class="image2" alt="video-off"></button>
 						<button class="leave-button text-center" (click)="leaveSession()"><img class="image"
@@ -149,9 +150,10 @@
 			</div>
 		</div>
 	</div>
-
+     
 	<div class="text-box" [class.display]="show" [class.undisplay]="!show">
-		<div class="cross" (click)="chatClose()"><button class="btn btn-primary">X</button></div>
+		<div class="cross" (click)="chatClose()"><button class="btn  btn-primary">X</button></div>
+
 		<div class="bottom">
 			
 		<div class="text-box-padding" #scroll>

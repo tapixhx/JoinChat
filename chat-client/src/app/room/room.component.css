@@ -189,7 +189,16 @@ input.ng-invalid.ng-touched {
 
 }
 
-
+.curr-session {
+	position:fixed;
+	top:5rem;
+	left:0;
+	background-color: rgba(0, 0, 0, 0.5);
+	color:#5BC0BE;
+	padding:.5rem .8rem;
+	font-size:1.6rem;
+	z-index:5;
+}
 
 .container-videos {
 	
@@ -232,6 +241,12 @@ button:focus {
 	overflow: scroll;
 	padding-bottom:4rem;
 	
+}
+.position
+{
+	position:absolute;
+
+
 }
 
 .join-button,
@@ -528,7 +543,9 @@ button:focus {
 		widows: 1px !important;;
 	}
 
-
+	.curr-session {
+		font-size:1.2rem;
+	}
 
 	.join-button {
 		margin-bottom: 50px;
@@ -579,6 +596,11 @@ button:focus {
 	{
 		padding: 10px 15px;
 	}
+	.text-box
+	{
+		height: 85vh;
+	}
+	
 
 }
 @media only screen and (max-width: 376px) {
@@ -599,7 +621,7 @@ button:focus {
 	}
 	#session-header
 	{
-		text-align:left
+		text-align:center
 	}
 	.pd1 {
 		padding: 10px 15px;
