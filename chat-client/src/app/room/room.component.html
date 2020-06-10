@@ -63,17 +63,17 @@
 					<Main-video [streamManager]="mainStreamManager"></Main-video>
 					</div>
 					<div id="session-header">
+						<button class="normal-button text-center pd3" (click)="chat()"><img
+							src="../../assets/images/chat.png" class="image2" alt="chat"></button>
 						<button class="normal-button text-center pd1" (click)="videochange()"><img [src]="src"
 								class="image2" alt="video-off"></button>
 						<button class="leave-button text-center" (click)="leaveSession()"><img class="image"
 								src="../../assets/images/call-disconnect.png"></button>
 						<button class="normal-button text-center pd2" (click)="audiochange()"><img [src]="src2"
 								class="image2" alt="audio-off"></button>
-						<button class="normal-button text-center pd3" (click)="chat()"><img
-								src="../../assets/images/chat.png" class="image2" alt="chat"></button>
-						<button class="normal-button text-center pd6" style *ngIf="!share" (click)="shareScreen()"><img
+						<button class="normal-button text-center button-hide pd6" style *ngIf="!share" (click)="shareScreen()"><img
 							src="../../assets/images/share-screen.png" class="image2" alt="share"></button>
-						<button class="normal-button text-center pd6"  *ngIf="share" (click)="stopShare()"><img
+						<button class="normal-button text-center button-hide pd6"  *ngIf="share" (click)="stopShare()"><img
 							src="../../assets/images/stop-share.png" class="image2" alt="share"></button>
 					</div>
 				</div>

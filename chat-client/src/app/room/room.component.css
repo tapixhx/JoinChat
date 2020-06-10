@@ -482,6 +482,10 @@ button:focus {
 }
 
 @media only screen and (max-width: 455px) {
+	.button-hide {
+		display:none;
+	}
+	
 	.body {
 		margin: 0px 0px;
 
