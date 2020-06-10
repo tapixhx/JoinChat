@@ -189,7 +189,16 @@ input.ng-invalid.ng-touched {
 
 }
 
-
+.curr-session {
+	position:fixed;
+	top:5rem;
+	left:0;
+	background-color: rgba(0, 0, 0, 0.5);
+	color:#5BC0BE;
+	padding:.5rem .8rem;
+	font-size:1.6rem;
+	z-index:5;
+}
 
 .container-videos {
 	
@@ -534,7 +543,9 @@ button:focus {
 		widows: 1px !important;;
 	}
 
-
+	.curr-session {
+		font-size:1.2rem;
+	}
 
 	.join-button {
 		margin-bottom: 50px;

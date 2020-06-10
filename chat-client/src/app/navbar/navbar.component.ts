@@ -96,7 +96,7 @@ export class NavbarComponent implements OnInit {
         (error: HttpErrorResponse) => {
           // console.log(error);
           this.appcomponent.load=false;
-          if (error.error.message === "User is not verified") {
+          if (error.error.error === "User is not verified") {
             this.router.navigate(['/verify', error.error.userId]);
             this.wnt_login = false;
           }
