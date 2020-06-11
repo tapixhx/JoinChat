@@ -59,6 +59,7 @@
 			<div class="row video-margin">
 				<div *ngIf="mainStreamManager"  style="padding:0px 0px;" id="main-video"
 					class="col-md-9 col-sm-12 col-xs-12">
+					<div class="curr-session">{{ mySessionId }}</div>
 					<div (click)="chatClose()">
 					<Main-video [streamManager]="mainStreamManager"></Main-video>
 					</div>
