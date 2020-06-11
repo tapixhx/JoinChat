@@ -83,6 +83,8 @@
 						<div class="col-md-12 col-xs-4 disable-padding">
 							<user-video [streamManager]="publisher" (click)="updateMainStreamManager(publisher)">
 							</user-video>
+							<div *ngIf="!videoOn" [ngStyle]="{'background': getRandomColor(7)}" class="FirstLetter">{{Myfirstletter()}}</div>
+
 							<div>
 								<img *ngIf="!audioOn" class="subsaudiooff" src="../../assets/images/audiooff.png" alt="audio-off">
 							</div>
@@ -102,7 +104,7 @@
 						</div>
 					</div>
 
-					<div *ngFor="let sub of subscribers" class="stream-container">
+					<div *ngFor="let sub of subscribers,let i=index" class="stream-container">
 						<div class="row disable-padding">
 							<div class="col-md-12  col-xs-4 disable-padding">
 								<user-video [streamManager]="sub" (click)="updateMainStreamManager(sub)"></user-video>
@@ -114,6 +116,11 @@
 										src="../../assets/images/giphy.gif" alt="audio-off">
 									</div>	
 								</div>
+								<!-- <div *ngIf="checkVideo(sub)" class="FirstLetter">{{getFirstLetter(sub)}}</div> -->
+								<div *ngIf="checkVideo(sub)" [ngStyle]="{'background': getRandomColor(i)}" class="FirstLetter">{{getFirstLetter(sub)}}</div>
+							
+
+
 							</div>
 							<div class="col-md-12 col-xs-8" style="padding:0px 0px ">
 								<div class="row row-padding">
