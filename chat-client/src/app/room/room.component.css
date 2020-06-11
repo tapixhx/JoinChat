@@ -7,7 +7,16 @@
 input.ng-invalid.ng-touched {
 	border: 2px solid red;
 }
-
+.FirstLetter
+{
+	color: white;
+	font-size:7vw;
+	position: absolute;
+	top:6.5vh;
+	left:8vw;
+	border-radius:50%;
+    padding: 0.1vw 3vw;
+}
 .container-room {
 	padding: 0 1rem;
 }
@@ -495,6 +504,14 @@ button:focus {
 		position: relative;
 	}
 }
+@media only screen and (max-width: 991px) {
+
+.FirstLetter{
+	top:4vh;
+	left:10vw
+
+}	
+}
 
 @media only screen and (max-width: 455px) {
 	.button-hide {
@@ -526,6 +543,11 @@ button:focus {
 	
 	.image5{
 		height: 4vh;
+	}
+	.FirstLetter
+	{
+		top:3vh;
+		left:13vw;
 	}
 	#video-container
 	{
