@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, HostListener, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { OpenVidu, Publisher, Session, StreamEvent, StreamManager, Subscriber, Connection } from 'openvidu-browser';
 import { throwError as observableThrowError, Subscription } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, first } from 'rxjs/operators';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { ChangeService } from '../services/chat.service';
@@ -42,6 +42,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   subscribers: StreamManager[] = []; // Remotes
   connection: Connection[] = [];
   audioconnectionId: any[] = [];
+  videoconnectionId: any[] = [];
   show = false;
   Host = false;
   mySessionId: string;
@@ -51,12 +52,13 @@ export class RoomComponent implements OnInit, OnDestroy {
   startSpeaking:any[] = [];
   connectionId: any;
   subaudio: any;
+  subvideo:any;
   ename:any;
   enter=false;
   exitname:any;
   exit=false;
   share=false;
-
+  color=["#F1C40F","#212F3C","#F4D03F","#1F618D","#212F3C","#F4D03F","#2E86C1","#F8C471","#1F618D"] 
   token: any;
   seconds=0;
 
@@ -209,6 +211,8 @@ export class RoomComponent implements OnInit, OnDestroy {
       this.connection.push(subscriber.stream.connection);
       const mess: any = { "data": String(this.audioOn), "to": subscriber.stream.connection, "type": "audio" }
       this.session.signal(mess);
+      const messs: any = { "data": String(this.videoOn), "to":subscriber.stream.connection, "type": "video" }
+      this.session.signal(messs)
       // console.log(this.getNicknameTag(event));
       this.enter=true;
       this.ename=this.getNicknameTag(event)+' joined';
@@ -258,7 +262,13 @@ export class RoomComponent implements OnInit, OnDestroy {
     });
 
     this.session.on('signal:video', (data: any) => {
-      // console.log(data);
+      this.subvideo = JSON.parse(data.data)
+      if (!this.subvideo) {
+        this.videoconnectionId.push(data.from.connectionId)
+      }
+      else {
+        this.videoconnectionId.splice(this.videoconnectionId.indexOf(data.from.connectionId), 1)
+      }
     });
 
     this.session.on('signal:stopRemoteAudio', (data: any) => {
@@ -525,4 +535,25 @@ export class RoomComponent implements OnInit, OnDestroy {
   {
     this.show=false
   }
+  checkVideo(sub:any)
+  {
+    return this.videoconnectionId.includes(sub.stream.connection.connectionId)
+  }
+  getFirstLetter(sub:any)
+  { let FirstName=this.getNicknameTag(sub)
+    FirstName=FirstName.split("")
+     return FirstName[0]
+  }
+  Myfirstletter()
+  {
+    let FirstName:any=this.myUserName;
+    FirstName=FirstName.split("")
+     return FirstName[0]
+  }
+
+    getRandomColor(i:any) {
+      
+      return this.color[i%10]
+    }
+  
 }
