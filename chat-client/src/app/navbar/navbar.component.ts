@@ -100,7 +100,9 @@ export class NavbarComponent implements OnInit {
             this.router.navigate(['/verify', error.error.userId]);
             this.wnt_login = false;
           }
-          this.appcomponent.error(error.error.error);
+          else {
+            this.appcomponent.error(error.error.error);
+          }
         }
       )
   }
