@@ -47,6 +47,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   Host = false;
   mySessionId: string;
   myUserName: string;
+  screenshareOn=false;
   tk: any;
   hovered=false;
   startSpeaking:any[] = [];
@@ -338,7 +339,7 @@ export class RoomComponent implements OnInit, OnDestroy {
           resolution: '640x480',  // The resolution of your video
           frameRate: 30,          // The frame rate of your video
           insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
-          mirror: true          // Whether to mirror your local video or not
+          mirror: false        // Whether to mirror your local video or not
         });
 
         // --- 6) Publish your stream ---
@@ -456,6 +457,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.publisher=publisher;
     this.session.publish(publisher);
     this.updateMainStreamManager(publisher);
+    this.screenshareOn=!this.screenshareOn;
     this.share=!this.share;
   }
 
@@ -469,11 +471,12 @@ export class RoomComponent implements OnInit, OnDestroy {
       resolution: '640x480',  // The resolution of your video
       frameRate: 30,          // The frame rate of your video
       insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
-      mirror: true           // Whether to mirror your local video or not
+      mirror: false           // Whether to mirror your local video or not
     });
     this.publisher=publisher;
     this.session.publish(publisher);
     this.updateMainStreamManager(publisher);
+    this.screenshareOn=!this.screenshareOn;
     this.share=!this.share;
   }
 

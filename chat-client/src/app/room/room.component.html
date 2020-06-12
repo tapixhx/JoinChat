@@ -83,7 +83,7 @@
 						<div class="col-md-12 col-xs-4 disable-padding">
 							<user-video [streamManager]="publisher" (click)="updateMainStreamManager(publisher)">
 							</user-video>
-							<div *ngIf="!videoOn" [ngStyle]="{'background': getRandomColor(7)}" class="FirstLetter">{{Myfirstletter()}}</div>
+							<div *ngIf="!videoOn && !screenshareOn" [ngStyle]="{'background': getRandomColor(7)}" class="FirstLetter">{{Myfirstletter()}}</div>
 
 							<div>
 								<img *ngIf="!audioOn" class="subsaudiooff" src="../../assets/images/audiooff.png" alt="audio-off">
