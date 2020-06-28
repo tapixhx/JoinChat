@@ -113,16 +113,16 @@ export class NavbarComponent implements OnInit {
     this.serverservice.signup(value)
       .subscribe(
         (response) => {
-          // console.log(response);
+          console.log(response);
           this.id = response;
           this.wnt_signup = false;
           this.router.navigate(['/verify', this.id.userId]);
           this.appcomponent.load=false;
         },
         (error) => {
-          // console.log(error);
+          // console.log(error.error.data[0].msg);
           this.appcomponent.load=false;
-          this.appcomponent.error(error.error.error);
+          this.appcomponent.error(error.error.data[0].msg);
         }
       )
   }
