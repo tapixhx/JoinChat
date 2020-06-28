@@ -120,7 +120,7 @@ export class NavbarComponent implements OnInit {
           this.appcomponent.load=false;
         },
         (error) => {
-          // console.log(error.error.data[0].msg);
+          console.log(error);
           this.appcomponent.load=false;
           this.appcomponent.error(error.error.data[0].msg);
         }

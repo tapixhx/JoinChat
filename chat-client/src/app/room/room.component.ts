@@ -478,6 +478,10 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.updateMainStreamManager(publisher);
     this.screenshareOn=!this.screenshareOn;
     this.share=!this.share;
+    this.src = "../../assets/images/video.png";
+    this.videoOn=true;
+    const mess: any = { "data": String(this.videoOn), "to": this.connection, "type": "video" }
+    this.session.signal(mess);
   }
 
   audiochange() {
