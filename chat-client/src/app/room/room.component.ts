@@ -150,13 +150,28 @@ export class RoomComponent implements OnInit, OnDestroy {
 
         },
           error => {
+            if(error.error.error == "jwt expired")
+            {
+                this.commeonservice.loginopen();
+            }
+            else if(error.error.error == "LogIn or SignUp again and try again!") {
+              Swal.fire(
+                'Oops!',
+                'Signup again!',
+                'error'
+              )
+            }
+            else
+            {
             Swal.fire(
               'Oops!',
               error.error.error,
               'error'
             )
             this.appcomponent.load=false;
+            }
           })
+        
     }
     else {
       this.commeonservice.loginopen()
