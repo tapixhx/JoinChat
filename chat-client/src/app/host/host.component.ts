@@ -106,7 +106,7 @@ export class HostComponent implements OnInit {
         this.appcomponent.load=false;
       },
       (error) => {
-        // console.log(error);
+        this.appcomponent.error(error.error.error)
         this.appcomponent.load=false;
       }
     )
