@@ -2,6 +2,7 @@ import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
 import { CommonVarService } from './services/common-var.service';
 import { createElementCssSelector } from '@angular/compiler';
+import { ESTALE } from 'constants';
 
 @Component({
   selector: 'app-root',
@@ -28,13 +29,13 @@ export class AppComponent implements OnInit {
   }
 
   error(message) {
-    if(message=="jwt expired")
+    
+    if(message == "jwt expired")
     {
-      this.changeService.loginopen()
+        this.changeService.loginopen();
     }
-    else 
-    {
-      
+    else
+    {   
       Swal.fire(
         'Please try again!',
         message,  
@@ -42,6 +43,7 @@ export class AppComponent implements OnInit {
       )
     }
   }
+  
 
   
 }
