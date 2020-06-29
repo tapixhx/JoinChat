@@ -81,7 +81,7 @@ export class HostComponent implements OnInit {
             this.appcomponent.load=false;
             Swal.fire(
               'Oops!',
-              'LogIn or SignUp again and try again!',
+              'Signup again!',
               'error'
             )
           }
@@ -106,7 +106,13 @@ export class HostComponent implements OnInit {
         this.appcomponent.load=false;
       },
       (error) => {
-        this.appcomponent.error(error.error.error)
+        if(error.error.error == "jwt expired")
+        {
+            this.ChangeService.loginopen();
+        }
+        else {
+          this.appcomponent.error(error.error.error)
+        }
         this.appcomponent.load=false;
       }
     )
