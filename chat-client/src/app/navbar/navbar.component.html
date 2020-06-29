@@ -1,8 +1,13 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header row">
-            <div class="col-md-3">
+            <div class="col-md-3" *ngIf="logoutShow">
                 <a class="navbar-brand text-center mx-auto" (click)="TrueLogout()" routerLink="./">
+                    <img class="demo-logo text-center mx-auto" src="assets/images/jc-logo.png"/> JoinChat
+                </a>
+            </div>
+            <div class="col-md-3" *ngIf="!logoutShow">
+                <a class="navbar-brand text-center mx-auto">
                     <img class="demo-logo text-center mx-auto" src="assets/images/jc-logo.png"/> JoinChat
                 </a>
             </div>
