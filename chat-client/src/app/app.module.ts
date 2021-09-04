@@ -19,6 +19,7 @@ import { HostComponent } from './host/host.component';
 import { ConfirmPasswordDirective } from './shared/confirm-password.directive';
 import { VerficationComponent } from './verfication/verfication.component';
 import { MainViduVideoComponent } from './main-video.component';
+import { ServerService } from './services/server.service';
 
 @NgModule({
   declarations: [
