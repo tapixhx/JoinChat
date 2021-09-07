@@ -1,6 +1,7 @@
-## Join Chat
+## JoinChat
+![Image](/images/jc-logo.png)
 
-1. Join Char is a video call application based on WEBRTC
+1. JoinChat is a video call application based on WEBRTC
 2. The working of the app will be as follows:
 3. User Have to Register First
 4. Verification of Email
